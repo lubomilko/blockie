@@ -13,6 +13,7 @@ programming language. The template filling logic is defined by the structure of 
 data and supplemented by the user-defined Python script using blockie to make the process of
 filling the templates with data reasonably simple.
 
+Please read the full [documentation here](https://lubomilko.github.io/blockie).
 
 # Quick start
 
@@ -67,5 +68,3 @@ Prints the following generated content:
 Short list: apples, potatoes, rice, orange juice, cooking magazine
 ```
 
-
-Please read a more detailed [documentation here](https://lubomilko.github.io/blockie).
