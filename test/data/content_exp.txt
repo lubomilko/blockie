@@ -1,0 +1,105 @@
+line,
+line,
+line,
+line.
+
+1,
+1,
+
+2,
+2,
+
+3.
+3.
+
+
+    define val_0 =                       cyclic.
+    define val_1 =                       cyclic,
+    define val_2 =                       cyclic,
+    define val_3 =                       cyclic,
+    define val_4 =                       cyclic,
+    define val_5 =                       cyclic,
+    define val_6 =                       cyclic,
+    define val_7 =                       cyclic,
+    define val_8 =                       cyclic,
+    define val_9 =                       cyclic,
+    define val_10 =                      cyclic,
+    define val_11 =                      cyclic
+    define val_333 =                     manual1.
+    define val_4798 =                    manual2
+
+    define val_11 =                      man,
+    define val_22 =                      man,
+    define val_33 =                      man
+
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+30
+30
+
+	val, val, val, val, val, val, val, val, val, val,
+	--------------------
+	val, val, val, val, val, val, val, val, val, val,
+	____________________
+	val, val, val, val, val, val, val, val, val, val,
+	____________________
+	val, val
+	++++++++++++++++++++
+
+	000, 001, 002, 003, 004, 005, 006, 007, 008, 009,
+	(010), (011), (012), (013), (014), (015), (016), (017), (018), (019)
+
+	val, val, val, val, val, val, val, val, val, val,
+	val, val, val, val, val, val, val, val, val, val
+	val, val, val,
+	val, val
+
+const EEP_PARAM_DATA_T app_mirror_as<SECT_NAME>[<SECT_ORIG_NAME>_ARR_SIZE_D] =
+{
+	{data_EE_HNDL_PARAM1_D, (UNSIGNED8)10},
+	{data_EE_HNDL_PARAM2_D, (UNSIGNED8)11}
+};
+
+111ab,222b,333
+
+
+variation 1,											further text
+var2,													further text
+3.														further text
+
+abc_123,												further text
+defghiabc_123456,										further text
+jklmnopqrabc_123456789.									further text
+
+----------------------------------
+| 1        | 23       | 456      |
+| def      | bc       | a        |
+----------------------------------
+
+
+<table>
+    <tr>
+        <th>name<th>
+        <th>surname<th>
+        <th>age<th>
+    </tr>
+    <tr>
+        <td>Johnny<td>
+        <td>Mnemonic<td>
+        <td>35<td>
+    </tr>
+    <tr>
+        <td>Mr.<td>
+        <td>Bean<td>
+        <td>33<td>
+    </tr>
+    <tr>
+        <td>T-1000<td>
+        <td>Terminator<td>
+        <td>30<td>
+    </tr>
+</table>

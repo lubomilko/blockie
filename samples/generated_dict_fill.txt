@@ -1,0 +1,27 @@
+typedef struct
+{
+    UNSIGNED8 u8Var;
+    UNSIGNED16 *au16Var[10];
+    const SIGNED8 ps8Var;
+    const SIGNED16 *aps16Var[20];
+    InvalidVar1;
+    InvalidVar2;
+    InvalidVar3;
+    InvalidVar4;
+}SOME_STRUCT_T;
+
+/* Generated structure members:
+* u8Var
+* au16Var
+* ps8Var
+* aps16Var
+* InvalidVar1
+* InvalidVar2
+* InvalidVar3
+* InvalidVar4
+*/
+
+set content
+
+
+another set content

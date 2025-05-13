@@ -1,0 +1,18 @@
+typedef struct
+{
+<MEMBERS>
+    <TYPE><T> <^TYPE><T> *<^TYPE>const <T> <^TYPE>const <T> *<^TYPE></TYPE><NAME><ARR>[<SIZE>]</ARR>;
+</MEMBERS>
+}<STRUCT_NAME>;
+
+/*
+<MEMBERS>
+* <NAME>
+</MEMBERS>
+*/
+
+<TO_SET>set content</TO_SET>
+<TO_CLEAR>cleared content</TO_CLEAR>
+
+<TO_SET>another set content</TO_SET>
+<TO_CLEAR>another cleared content</TO_CLEAR>

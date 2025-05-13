@@ -1,0 +1,13 @@
+{
+    "pylint.enabled": true,
+    "pylint.args": [
+        "--max-line-length=120"
+    ],
+    "flake8.enabled": true,
+    "flake8.args": [
+        "--max-line-length=120"
+    ],
+    "python.autoComplete.extraPaths": ["src"],
+    "python.analysis.extraPaths": ["src"],
+    "editor.rulers": [99, 119]
+}

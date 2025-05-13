@@ -1,0 +1,29 @@
+List of items with multiple items in a row separated by a comma:
+<ITEMS_1>
+* <ITEMS_ROW><ITEM>, </ITEMS_ROW>
+</ITEMS_1>
+
+
+List of items with proper comma separators:
+<ITEMS_2>
+* <ITEMS_ROW><ITEM><.>, <^.></.></ITEMS_ROW>
+</ITEMS_2>
+
+
+List of items with added number of items in a row:
+<ITEMS_3>
+* <ITEMS_ROW><ITEM><.>, <^.></.></ITEMS_ROW><+>         <NUM>
+</ITEMS_3>
+
+
+List of items with horizontal separators:
+<ITEMS_4>
+* <ITEMS_ROW><ITEM><.>, <^.></.></ITEMS_ROW><+>         <NUM>
+<.>
+<SEP>
+<^.>
+________________________________________________________________
+<^.>
+================================================================
+</.>
+</ITEMS_4>

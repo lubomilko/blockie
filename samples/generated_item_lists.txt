@@ -1,0 +1,37 @@
+List of items with multiple items in a row separated by a comma:
+* red apples, green apples, 
+* oranges, 
+* carrots, peppers, tomatoes, 
+* eggs, 
+* pen, pencil, 
+
+
+List of items with proper comma separators:
+* red apples, green apples
+* oranges
+* carrots, peppers, tomatoes
+* eggs
+* pen, pencil
+
+
+List of items with added number of items in a row:
+* red apples, green apples                              2 kg each
+* oranges                                               5
+* carrots, peppers, tomatoes                            
+* eggs                                                  10
+* pen, pencil                                           
+
+
+List of items with horizontal separators:
+* ITEM NAME                                             NUMBER
+================================================================
+* red apples, green apples                              2 kg each
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+* oranges                                               5
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+* carrots, peppers, tomatoes                            
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+* eggs                                                  10
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+* pen, pencil                                           
+________________________________________________________________
