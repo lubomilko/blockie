@@ -157,14 +157,16 @@ value ``4`` is not followed by a comma):
 Automatic template filling
 ***************************************************************************************************
 
-The automatic template filling is the simplest way to generate a templated content. The data used
-for setting the values in a template is defined by a Python dictionary with keys representing the
-template :ref:`variable and block tag names <tgt_primary_tags>`.
+The automatic template filling is the simplest way to generate a templated content.
 
 To fill the template variables and blocks with data, it is first necessary to load the whole
 template into the primary :py:class:`.Block` object. This can be done by setting a template string
 text or a text file in the :py:meth:`.Block.__init__` constructor. Alternatively, the
 :py:attr:`.Block.template` attribute, or the :py:meth:`.Block.load_template` method can be used.
+
+A template can then be filled using the :py:meth:`.Block.fill` method with the required data
+provided as an argument in a Python **dictionary**. The dictionary keys represent the template
+:ref:`variable and block tags <tgt_primary_tags>`.
 
 
 .. _tgt_auto_fill_basic:
@@ -172,11 +174,8 @@ text or a text file in the :py:meth:`.Block.__init__` constructor. Alternatively
 Basic automatic filling
 ===================================================================================================
 
-A template can be filled using the :py:meth:`.Block.fill` method with the required data provided
-in a Python **dictionary** as an argument.
-
-The dictionary values can perform the operations described in the sections below depending on the
-data type of the dictionary value.
+The values assigned to the data dictionary keys representing template tags can perform various
+operations described in the sections below depending on the data type of the dictionary value.
 
 
 Setting a variable value
@@ -190,7 +189,7 @@ The example below sets the variables ``word1`` and ``word2`` to the string value
 
 .. code-block:: python
 
-    blk = Block("<WORD1> <WORD2>")
+    blk = blockie.Block("<WORD1> <WORD2>")
     blk.fill({"word1": "Hello", "word2": "world!"})
     print(blk.content)
 
@@ -204,24 +203,47 @@ prints:
 Setting the content of a single block
 ---------------------------------------------------------------------------------------------------
 
-The content of a block needs to be set by a **dictionary** (i.e., ``{...}``. For example, the
-``date: {day: 24, month: December}`` sets the ``date`` block content with a template containing
-two variables ``day`` and ``month`` set to values ``24`` and ``December`` respectively.
+The content of a block needs to be set by a **dictionary**, as shown in the following example
+setting the content of a ``date`` block, specifically setting its child ``day`` and ``month``
+variable values:
+
+.. code-block:: python
+
+    blk = blockie.Block("<DATE><DAY> <MONTH></DATE>")
+    blk.fill({"date": {"day": 24, "month": "December"}})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 December
 
 
 Setting the content of block clones
 ---------------------------------------------------------------------------------------------------
 
 A block can be cloned, i.e., duplicated, using a **list or a tuple of dictionaries** with each
-dictionary corresponding to one clone of a block content. As an example, the
-``date: [{day: 24, month: 12}, {day: 25, month: 12}]`` key-value pair creates and sets two clones
-of a ``date`` block with the ``day`` and ``month`` variables in each block  clone set to the
-values ``24``, ``12`` in the first clone and to the ``25``, ``12`` in the second clone.
+dictionary corresponding to one clone of a block content. The example below shows setting of
+two dates in two clones of a ``date`` block:
+
+.. code-block:: python
+
+    blk = blockie.Block("<DATE><DAY> <MONTH>\n</DATE>")
+    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 25, "month": 12}]})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 12
+    25 12
 
 
 .. _tgt_auto_fill_basic_example:
 
-Example
+Basic example
 ---------------------------------------------------------------------------------------------------
 
 The following filling script example shows all simple concepts described above, i.e., the template
@@ -341,7 +363,7 @@ generated content.
 
 .. _tgt_auto_fill_advanced_example:
 
-Example
+Advanced example
 ---------------------------------------------------------------------------------------------------
 
 The filling script below expands the :ref:`basic automatic filling concepts <tgt_auto_fill_basic>`
