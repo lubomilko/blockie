@@ -166,9 +166,16 @@ class Block:
         # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
+                # Check if there is a first element having a simple data type.
+                if len(value) > 0 and isinstance(value[0], (str, int, float, bool)):
+                    # Use the list or tuple of simple types to fill variables.
+                    self.set_variables(**{attrib: value})
                 while True:
                     subblk = self.get_subblock(attrib)
                     if subblk is None:
+                        # If no block is found and value is empty, then try to clear the variables.
+                        if not value:
+                            self.clear_variables(attrib)
                         break
                     if value:
                         for (i, val) in enumerate(value):
@@ -184,7 +191,7 @@ class Block:
                 while True:
                     subblk = self.get_subblock(attrib)
                     if subblk is None:
-                        # If no block is found and data are empty, then try to clear the variables.
+                        # If no block is found and value is empty, then try to clear the variables.
                         if not value:
                             self.clear_variables(attrib)
                         break
@@ -355,12 +362,7 @@ class Block:
 
         if all_children and self.__children:
             for child in self.__children.values():
-                # pylint: disable=protected-access
-                # rationale: Private variable __clone_flag is used primarily internally for cloning operation.
-                # However, in this case it can be used to detect if subblock has been already set to parent block
-                # or not. if clone flag is True, then the subblock needs to be set.
-                if child.__clone_flag:
-                    child.set(vari_idx, all_children=True)
+                child.set(vari_idx, all_children=True)
 
         if self.parent and self.content != self.__template:
             # If content has been changed from the template, then clone the parent block if
@@ -423,7 +425,7 @@ class Block:
                         var_value = val
                 self.content = self.content.replace(tag, f"{var_value}")
             iter_idx += 1
-            if detected_iters_num > 1 or autoclone:
+            if iter_idx < detected_iters_num or autoclone:
                 self.clone()
 
     def clear_variables(self, *var_names: str) -> None:
