@@ -172,19 +172,33 @@ text or a text file in the :py:meth:`.Block.__init__` constructor. Alternatively
 Basic automatic filling
 ===================================================================================================
 
-The template can be filled by the :py:meth:`.Block.fill` method with the required data
-**dictionary** provided as an argument.
+A template can be filled using the :py:meth:`.Block.fill` method with the required data provided
+in a Python **dictionary** as an argument.
 
-The dictionary values can perform one of the operations in the sections below depending on the
+The dictionary values can perform the operations described in the sections below depending on the
 data type of the dictionary value.
 
 
 Setting a variable value
 ---------------------------------------------------------------------------------------------------
 
-A variable value must be set using a **basic data type** (i.e., ``int``, ``float``, ``str``,
-and ``bool``). For example, the key-value dictionary pair ``name: "John"`` sets the variable
-``name`` to the value ``John``.
+A variable value is set using a **basic data type** (i.e., ``int``, ``float``, ``str``, or
+``bool``). 
+
+The example below sets the variables ``word1`` and ``word2`` to the string values ``Hello``,
+``World!``:
+
+.. code-block:: python
+
+    blk = Block("<WORD1> <WORD2>")
+    blk.fill({"word1": "Hello", "word2": "world!"})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    Hello world!
 
 
 Setting the content of a single block
@@ -206,6 +220,9 @@ values ``24``, ``12`` in the first clone and to the ``25``, ``12`` in the second
 
 
 .. _tgt_auto_fill_basic_example:
+
+Example
+---------------------------------------------------------------------------------------------------
 
 The following filling script example shows all simple concepts described above, i.e., the template
 containing the :ref:`basic tags <tgt_primary_tags>` and also :ref:`automatic tags <tgt_auto_tags>`
@@ -272,7 +289,7 @@ Advanced automatic filling
 ===================================================================================================
 
 Similarly to the :ref:`basic operations <tgt_auto_fill_basic>`, the values in a data dictionary
-can also perform additional operations described in the following list:
+can also perform additional operations described in the following sections.
 
 
 Setting a block content as is
@@ -324,6 +341,9 @@ generated content.
 
 .. _tgt_auto_fill_advanced_example:
 
+Example
+---------------------------------------------------------------------------------------------------
+
 The filling script below expands the :ref:`basic automatic filling concepts <tgt_auto_fill_basic>`
 using the advanced operations described above. The template is defined directly by the
 ``template`` string and the data to fill the template with are defined by the ``data`` dictionary.
@@ -364,10 +384,13 @@ The script prints the following generated content:
 .. code-block:: text
 
                                 SHOPPING LIST
-    Items                                                           Quantity
+      Items                                                         Quantity
     ------------------------------------------------------------------------
     * apples                                                        1 kg
     * IMPORTANT! potatoes                                           2 kg
     * rice                                                          1 kg
     * orange juice                                                  1 l
     * MAYBE? cooking magazine
+
+
+    Short list: apples, potatoes, rice, orange juice, cooking magazine
