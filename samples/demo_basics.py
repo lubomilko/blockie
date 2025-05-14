@@ -18,34 +18,27 @@ def demo_hello_world() -> None:
     print(blk.content)
 
 
-def demo_hello_world_alt() -> None:
-    blk = Block("<WORD> ")
-    blk.fill({"word": ["Hello", "world!"]})
-    print(blk.content)
-
-
 def demo_sententce_hello_world() -> None:
     blk = Block("<SENTENCE><WORD> </SENTENCE>")
     blk.fill({"sentence": [{"word": "Hello"}, {"word": "world!"}]})
     print(blk.content)
 
 
-def demo_sententce_hello_world_alt1() -> None:
-    blk = Block("<SENTENCE><WORD> </SENTENCE>")
-    blk.fill({"sentence": {"word": ["Hello", "world!"]}})
+def demo_date_single() -> None:
+    blk = Block("<DATE><DAY> <MONTH></DATE>")
+    blk.fill({"date": {"day": 24, "month": "December"}})
     print(blk.content)
 
 
-def demo_sententce_hello_world_alt2() -> None:
-    blk = Block("<SENTENCE><WORD1> <WORD2></SENTENCE>")
-    blk.fill({"sentence": {"word1": "Hello", "word2": "world!"}})
+def demo_date_multi() -> None:
+    blk = Block("<DATE><DAY> <MONTH>\n</DATE>")
+    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 25, "month": 12}]})
     print(blk.content)
 
 
 if __name__ == "__main__":
     demo_hello()
     demo_hello_world()
-    demo_hello_world_alt()
     demo_sententce_hello_world()
-    demo_sententce_hello_world_alt1()
-    demo_sententce_hello_world_alt2()
+    demo_date_single()
+    demo_date_multi()
