@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(Path(__file__).parent.parent, "src").resolve()))
 
 # pylint: disable = wrong-import-position, import-error
-from blockie import Block   # noqa: E402
+from blockie import Block, BlockConfig      # noqa: E402
 
 
 def compare_files(gen_file: Path, exp_file: Path) -> bool:
@@ -91,7 +91,7 @@ def test_lowlevel() -> None:
         if (i + 1) % 10 == 0:
             blk_line.clone(set_children=True)
     # blk_val.set()   # Not necessary, because there is no remaining blk_val content to be set.
-    blk_line.set(all_children=True)
+    blk_line.set()
 
     blk_container = blk_file.get_subblock("CONTAINER")
     blk_line = blk_container.get_subblock("LINE4")
@@ -203,3 +203,96 @@ def test_dictfill() -> None:
     blk_file.save_content("data/fill_gen.txt")
 
     assert compare_files("data/fill_gen.txt", "data/fill_exp.txt")
+
+
+def test_shoplist() -> None:
+    template = """
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+<ITEMS>
+* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+
+
+Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
+"""
+
+    data = {
+        "items": [
+            {"flag": None, "item": "apples", "qty": "1", "unit": True},
+            {"flag": True, "item": "potatoes", "qty": "2", "unit": {"vari_idx": 0}},
+            {"flag": None, "item": "rice", "qty": "1", "unit": {"vari_idx": 0}},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": {"vari_idx": 1}},
+            {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
+        ]
+    }
+
+    blk = Block(template)
+    blk.fill(data)
+    assert blk.content == """
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+* apples                                                        1 kg
+* IMPORTANT! potatoes                                           2 kg
+* rice                                                          1 kg
+* orange juice                                                  1 l
+* MAYBE? cooking magazine                                       
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
+"""
+
+
+def test_shoplist_custom_cfg() -> None:
+    template = """
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+@items
+* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit
+@!items
+
+
+Short list: @items@item@_, @~_@!_@!items
+"""
+
+    data = {
+        "items": [
+            {"flag": None, "item": "apples", "qty": "1", "unit": True},
+            {"flag": True, "item": "potatoes", "qty": "2", "unit": {"vari_idx": 0}},
+            {"flag": None, "item": "rice", "qty": "1", "unit": {"vari_idx": 0}},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": {"vari_idx": 1}},
+            {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
+        ]
+    }
+
+    config = BlockConfig(
+        lambda name: f"@{name}",    # tag_gen_var
+        lambda name: f"@{name}",    # tag_gen_blk_start
+        lambda name: f"@!{name}",   # tag_gen_blk_end
+        lambda name: f"@~{name}",   # tag_gen_blk_vari
+        "*",                        # autotag_align
+        "_",                        # autotag_vari
+        8                           # tab_size
+    )
+
+    blk = Block(template, config=config)
+    blk.fill(data)
+    assert blk.content == """
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+* apples                                                        1 kg
+* IMPORTANT! potatoes                                           2 kg
+* rice                                                          1 kg
+* orange juice                                                  1 l
+* MAYBE? cooking magazine                                       
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
+"""
+
+if __name__ == "__main__":
+    test_shoplist_custom_cfg()
