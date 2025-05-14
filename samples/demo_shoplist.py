@@ -106,7 +106,7 @@ def demo_shoplist_custom_cfg() -> None:
   Items                                                         Quantity
 ------------------------------------------------------------------------
 @items
-* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                   @qty@unit kg@~unit l@!unit
+* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit
 @!items
 
 
