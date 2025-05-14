@@ -186,7 +186,7 @@ def test_dictfill() -> None:
     Path("data/fill_gen.txt").unlink(missing_ok=True)
     data = {
         "to_set": 1,
-        "to_clear": 0,
+        "to_clear": -1,
         "struct_name": "SOME_STRUCT_T",
         "members": (
             {"type": {"vari_idx": 0, "t": "UNSIGNED8"}, "name": "u8Var", "arr": None},
@@ -195,7 +195,7 @@ def test_dictfill() -> None:
             {"type": {"vari_idx": 3, "t": "SIGNED16"}, "name": "aps16Var", "arr": {"size": 20}},
             {"type": {"vari_idx": -1}, "name": "InvalidVar1", "arr": None},
             {"type": {"vari_idx": False}, "name": "InvalidVar2", "arr": None},
-            {"type": None, "name": "InvalidVar3", "arr": None},
+            {"type": "", "name": "InvalidVar3", "arr": None},
             {"type": {}, "name": "InvalidVar4", "arr": None})}
 
     blk_file = Block("data/fill_tmpl.txt")
@@ -224,7 +224,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
             {"flag": True, "item": "potatoes", "qty": "2", "unit": {"vari_idx": 0}},
             {"flag": None, "item": "rice", "qty": "1", "unit": {"vari_idx": 0}},
             {"flag": None, "item": "orange juice", "qty": "1", "unit": {"vari_idx": 1}},
-            {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
+            {"flag": 1, "item": "cooking magazine", "qty": None, "unit": None},
         ]
     }
 
@@ -261,9 +261,9 @@ Short list: @items@item@_, @~_@!_@!items
     data = {
         "items": [
             {"flag": None, "item": "apples", "qty": "1", "unit": True},
-            {"flag": True, "item": "potatoes", "qty": "2", "unit": {"vari_idx": 0}},
-            {"flag": None, "item": "rice", "qty": "1", "unit": {"vari_idx": 0}},
-            {"flag": None, "item": "orange juice", "qty": "1", "unit": {"vari_idx": 1}},
+            {"flag": True, "item": "potatoes", "qty": "2", "unit": 0},
+            {"flag": None, "item": "rice", "qty": "1", "unit": 0},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1},
             {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
         ]
     }

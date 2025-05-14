@@ -88,9 +88,9 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     data = {
         "items": [
             {"flag": None, "item": "apples", "qty": "1", "unit": True},
-            {"flag": True, "item": "potatoes", "qty": "2", "unit": {"vari_idx": 0}},
-            {"flag": None, "item": "rice", "qty": "1", "unit": {"vari_idx": 0}},
-            {"flag": None, "item": "orange juice", "qty": "1", "unit": {"vari_idx": 1}},
+            {"flag": True, "item": "potatoes", "qty": "2", "unit": 0},
+            {"flag": None, "item": "rice", "qty": "1", "unit": 0},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1},
             {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
         ]
     }
