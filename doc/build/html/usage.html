@@ -64,6 +64,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#setting-a-variable-value">Setting a variable value</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setting-the-content-of-a-single-block">Setting the content of a single block</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setting-the-content-of-block-clones">Setting the content of block clones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#advanced-automatic-filling">Advanced automatic filling</a><ul>
@@ -71,6 +72,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#setting-a-block-content-variation">Setting a block content variation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#removing-a-variable">Removing a variable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#removing-a-block">Removing a block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tgt-auto-fill-advanced-example">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -233,15 +235,25 @@ text or a text file in the <a class="reference internal" href="api.html#blockie.
 <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
 <section id="basic-automatic-filling">
 <span id="tgt-auto-fill-basic"></span><h3>Basic automatic filling<a class="headerlink" href="#basic-automatic-filling" title="Link to this heading"></a></h3>
-<p>The template can be filled by the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
-<strong>dictionary</strong> provided as an argument.</p>
-<p>The dictionary values can perform one of the operations in the sections below depending on the
+<p>A template can be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data provided
+in a Python <strong>dictionary</strong> as an argument.</p>
+<p>The dictionary values can perform the operations described in the sections below depending on the
 data type of the dictionary value.</p>
 <section id="setting-a-variable-value">
 <h4>Setting a variable value<a class="headerlink" href="#setting-a-variable-value" title="Link to this heading"></a></h4>
-<p>A variable value must be set using a <strong>basic data type</strong> (i.e., <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">bool</span></code>). For example, the key-value dictionary pair <code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">&quot;John&quot;</span></code> sets the variable
-<code class="docutils literal notranslate"><span class="pre">name</span></code> to the value <code class="docutils literal notranslate"><span class="pre">John</span></code>.</p>
+<p>A variable value is set using a <strong>basic data type</strong> (i.e., <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">bool</span></code>).</p>
+<p>The example below sets the variables <code class="docutils literal notranslate"><span class="pre">word1</span></code> and <code class="docutils literal notranslate"><span class="pre">word2</span></code> to the string values <code class="docutils literal notranslate"><span class="pre">Hello</span></code>,
+<code class="docutils literal notranslate"><span class="pre">World!</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;WORD1&gt; &lt;WORD2&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;word1&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot;word2&quot;</span><span class="p">:</span> <span class="s2">&quot;world!&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello world!
+</pre></div>
+</div>
 </section>
 <section id="setting-the-content-of-a-single-block">
 <h4>Setting the content of a single block<a class="headerlink" href="#setting-the-content-of-a-single-block" title="Link to this heading"></a></h4>
@@ -256,7 +268,10 @@ dictionary corresponding to one clone of a block content. As an example, the
 <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">[{day:</span> <span class="pre">24,</span> <span class="pre">month:</span> <span class="pre">12},</span> <span class="pre">{day:</span> <span class="pre">25,</span> <span class="pre">month:</span> <span class="pre">12}]</span></code> key-value pair creates and sets two clones
 of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block with the <code class="docutils literal notranslate"><span class="pre">day</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> variables in each block  clone set to the
 values <code class="docutils literal notranslate"><span class="pre">24</span></code>, <code class="docutils literal notranslate"><span class="pre">12</span></code> in the first clone and to the <code class="docutils literal notranslate"><span class="pre">25</span></code>, <code class="docutils literal notranslate"><span class="pre">12</span></code> in the second clone.</p>
-<p id="tgt-auto-fill-basic-example">The following filling script example shows all simple concepts described above, i.e., the template
+</section>
+<section id="example">
+<span id="tgt-auto-fill-basic-example"></span><h4>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h4>
+<p>The following filling script example shows all simple concepts described above, i.e., the template
 containing the <a class="reference internal" href="#tgt-primary-tags"><span class="std std-ref">basic tags</span></a> and also <a class="reference internal" href="#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>
 filled using the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic principles</span></a> of automatic filling. The template
 is defined directly by the <code class="docutils literal notranslate"><span class="pre">template</span></code> string and the data to fill the template with are defined
@@ -315,7 +330,7 @@ that both blocks are automatically filled by the same data, since they have the 
 <section id="advanced-automatic-filling">
 <span id="tgt-auto-fill-advanced"></span><h3>Advanced automatic filling<a class="headerlink" href="#advanced-automatic-filling" title="Link to this heading"></a></h3>
 <p>Similarly to the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic operations</span></a>, the values in a data dictionary
-can also perform additional operations described in the following list:</p>
+can also perform additional operations described in the following sections.</p>
 <section id="setting-a-block-content-as-is">
 <h4>Setting a block content as is<a class="headerlink" href="#setting-a-block-content-as-is" title="Link to this heading"></a></h4>
 <p>A single block can be set to the generated content as is, i.e., without setting any of its child
@@ -355,7 +370,10 @@ the block).</p></li>
 which can be an <em>empty dictionary, empty list, none, zero, or boolean false</em>, i.e., <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">{}</span></code>,
 <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">[]</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">False</span></code> all remove the <code class="docutils literal notranslate"><span class="pre">date</span></code> block from the
 generated content.</p>
-<p id="tgt-auto-fill-advanced-example">The filling script below expands the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic automatic filling concepts</span></a>
+</section>
+<section id="tgt-auto-fill-advanced-example">
+<span id="id1"></span><h4>Example<a class="headerlink" href="#tgt-auto-fill-advanced-example" title="Link to this heading"></a></h4>
+<p>The filling script below expands the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic automatic filling concepts</span></a>
 using the advanced operations described above. The template is defined directly by the
 <code class="docutils literal notranslate"><span class="pre">template</span></code> string and the data to fill the template with are defined by the <code class="docutils literal notranslate"><span class="pre">data</span></code> dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">blockie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Block</span>
@@ -390,13 +408,16 @@ using the advanced operations described above. The template is defined directly 
 </div>
 <p>The script prints the following generated content:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
-Items                                                           Quantity
+  Items                                                         Quantity
 ------------------------------------------------------------------------
 * apples                                                        1 kg
 * IMPORTANT! potatoes                                           2 kg
 * rice                                                          1 kg
 * orange juice                                                  1 l
 * MAYBE? cooking magazine
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
 </pre></div>
 </div>
 </section>
