@@ -166,16 +166,9 @@ class Block:
         # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
-                # Check if there is a first element having a simple data type.
-                if len(value) > 0 and isinstance(value[0], (str, int, float, bool)):
-                    # Use the list or tuple of simple types to fill variables.
-                    self.set_variables(**{attrib: value})
                 while True:
                     subblk = self.get_subblock(attrib)
                     if subblk is None:
-                        # If no block is found and value is empty, then try to clear the variables.
-                        if not value:
-                            self.clear_variables(attrib)
                         break
                     if value:
                         for (i, val) in enumerate(value):

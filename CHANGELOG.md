@@ -39,8 +39,6 @@ describe modifications since the last release 1.4.0 of *blocky*.
 
 ### Added
 
-- Add a possibility to the `fill()` method to set multiple variable values with automatically
-  cloned parent block using a list or tuple of variable values, e.g., `var: ["val1", "val2"]`.
 - Add Sphinx documentation.
 
 
