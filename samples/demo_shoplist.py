@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 sys.path.insert(0, f"{sys.path[0]}/../src")
 
-from blockie import Block, BlockConfig    # pylint: disable = wrong-import-position   # noqa E402
+import blockie      # pylint: disable = wrong-import-position   # noqa E402
 
 
 def demo_shoplist_basic() -> None:
@@ -30,7 +30,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
         ]
     }
 
-    blk = Block(template)
+    blk = blockie.Block(template)
     blk.fill(data)
     print(blk.content)
 
@@ -67,7 +67,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
         ]
     )
 
-    blk = Block(template)
+    blk = blockie.Block(template)
     blk.fill(data)
     print(blk.content)
 
@@ -95,7 +95,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
         ]
     }
 
-    blk = Block(template)
+    blk = blockie.Block(template)
     blk.fill(data)
     print(blk.content)
 
@@ -123,7 +123,7 @@ Short list: @items@item@_, @~_@!_@!items
         ]
     }
 
-    config = BlockConfig(
+    config = blockie.BlockConfig(
         lambda name: f"@{name}",    # tag_gen_var
         lambda name: f"@{name}",    # tag_gen_blk_start
         lambda name: f"@!{name}",   # tag_gen_blk_end
@@ -133,7 +133,7 @@ Short list: @items@item@_, @~_@!_@!items
         8                           # tab_size
     )
 
-    blk = Block(template, config=config)
+    blk = blockie.Block(template, config=config)
     blk.fill(data)
     print(blk.content)
 
