@@ -207,7 +207,9 @@ class Block:
                         subblk = self.get_subblock(attrib)
                         if subblk is None:
                             break
-                        if value:
+                        if isinstance(value, int):
+                            subblk.set(vari_idx=value, count=1)
+                        elif value:
                             subblk.set(count=1)
                         else:
                             subblk.clear(count=1)   # Value is "", 0 or False

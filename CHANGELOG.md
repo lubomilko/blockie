@@ -39,6 +39,8 @@ describe modifications since the last release 1.4.0 of *blocky*.
 
 ### Added
 
+- Add an option to directly set the block variation index as an integer value to the block key in
+  the dictionary provided as an argument to the `fill()` method.
 - Add Sphinx documentation.
 
 
