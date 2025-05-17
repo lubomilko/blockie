@@ -51,6 +51,19 @@ def demo_set_block_vari_2() -> None:
     print(blk.content)
 
 
+def demo_set_block_fill_hndl() -> None:
+    def format_month(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        if isinstance(data["month"], str):
+            data["month"] = data["month"].upper()
+            block.get_subblock("date").set(vari_idx=1)
+        else:
+            block.get_subblock("date").set(vari_idx=0)
+
+    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
+    blk.fill({"day": 24, "month": "December", "fill_hndl": format_month})
+    print(blk.content)
+
+
 def demo_remove_var() -> None:
     blk = blockie.Block("<NAME> <MIDNAME> <SURNAME>")
     blk.fill({"name": "Patrick", "midname": None, "surname": "Bateman"})
@@ -71,5 +84,6 @@ if __name__ == "__main__":
     demo_set_block_as_is()
     demo_set_block_vari_1()
     demo_set_block_vari_2()
+    demo_set_block_fill_hndl()
     demo_remove_var()
     demo_remove_block()

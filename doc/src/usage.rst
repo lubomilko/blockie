@@ -228,8 +228,6 @@ prints:
     24 December
 
 
-.. _tgt_auto_fill_basic_block_clones:
-
 Setting the content of block clones
 ---------------------------------------------------------------------------------------------------
 
@@ -403,6 +401,58 @@ prints:
     :ref:`block removal <tgt_auto_fill_remove_block>` is described later.
 
 
+Setting a handler for manual filling
+---------------------------------------------------------------------------------------------------
+
+.. note::
+    The manual filling process is only needed in very special use cases, so in vast majority of
+    common applications this section can be skipped.
+
+The automatic method of filling the block template can be partially suplemented by the
+:ref:`manual method <tgt_manual_fill>` using a **special** ``fill_hndl`` **key with a handler
+function value** defined in a *dictionary* corresponding to the block. The function assigned to
+the ``fill_hndl`` key defines a handler called when a block is being filled. The handler function
+can call the :py:class:`.Block` methods to perform special low-level operations if needed.
+
+The handler function must use the following declaration:
+
+.. code-block:: python
+
+    func(block: Block, data: dict | object, clone_subidx: int) -> None
+
+where:
+
+*   ``block``: A :py:class:`.Block` object corresponding to the template block for which the
+    handler has been called.
+*   ``data``: The dictionary (or optionally a custom object) used for filling the content of a
+    block.
+*   ``clone_subidx``: An index of a cloned content being filled. Only applicable if the block is
+    being cloned during the automatic filling process.
+
+The example below illustrates the use of a manual filling handler for making the ``MONTH``
+variable value using uppercase letters if it is a string and then setting the content variation
+of the ``DATE`` block using the :py:meth:`.Block.set` method:
+
+.. code-block:: python
+
+    def format_month(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        if isinstance(data["month"], str):
+            data["month"] = data["month"].upper()
+            block.get_subblock("date").set(vari_idx=1)
+        else:
+            block.get_subblock("date").set(vari_idx=0)
+
+    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
+    blk.fill({"day": 24, "month": "December", "fill_hndl": format_month})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 DECEMBER
+
+
 Removing a variable
 ---------------------------------------------------------------------------------------------------
 
@@ -536,6 +586,10 @@ in a template filling script:
 *   :py:meth:`.Block.clear_variables`: Removing variable from the generated content.
 *   :py:meth:`.Block.clear` and :py:meth:`.Block.clear_subblock`: Removing blocks from the
     generated content.
+
+
+Examples
+===================================================================================================
 
 The following examples briefly illustrate the manual template filling process:
 
