@@ -169,6 +169,9 @@ class Block:
                 while True:
                     subblk = self.get_subblock(attrib)
                     if subblk is None:
+                        # If no block is found and value is empty, then try to clear the variables.
+                        if not value:
+                            self.clear_variables(attrib)
                         break
                     if value:
                         for (i, val) in enumerate(value):
