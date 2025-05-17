@@ -19,7 +19,8 @@ template engine project.
 
 First release based on the [blocky](https://github.com/lubomilko/blocky) project that could not be
 published on PyPi due to a name conflict with another existing project. The sections below
-describe modifications since the last release 1.4.0 of *blocky*.
+describe modifications since the last
+[blocky 1.4.0](https://github.com/lubomilko/blocky/releases/tag/1.4.0) release.
 
 ### Changed
 
