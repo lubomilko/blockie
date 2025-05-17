@@ -246,7 +246,7 @@ class Block:
                     subblk.__parent = self      # pylint: disable=protected-access, unused-private-member
                     self.__children[subblock_name] = subblk
             ret_blk.append(subblk)
-        return None if not ret_blk else ret_blk[0] if len(ret_blk) == 1 else ret_blk
+        return ret_blk if len(ret_blk) > 1 else ret_blk[0]
 
     def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> None:
         """Sets values into the specified variables within this block content.
