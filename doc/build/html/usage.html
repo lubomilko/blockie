@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configuration" href="config.html" />
+    <link rel="next" title="Template format configuration" href="config.html" />
     <link rel="prev" title="Introduction" href="intro.html" /> 
 </head>
 
@@ -52,7 +52,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#block-tags">Block tags</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-tags">Automatic tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#secondary-automatic-tags">Secondary - automatic tags</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#alignment-autotag">Alignment autotag</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#variation-autotag">Variation autotag</a></li>
 </ul>
@@ -80,7 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#manual-template-filling">Manual template filling</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
 
@@ -171,10 +171,10 @@ content selectable by the filling script:</p>
 </div>
 </section>
 </section>
-<section id="automatic-tags">
-<span id="tgt-auto-tags"></span><h3>Automatic tags<a class="headerlink" href="#automatic-tags" title="Link to this heading"></a></h3>
-<p>The template can contain special tags that are filled automatically, i.e., without any values
-implicitly assigned by the filling script.</p>
+<section id="secondary-automatic-tags">
+<span id="tgt-auto-tags"></span><h3>Secondary - automatic tags<a class="headerlink" href="#secondary-automatic-tags" title="Link to this heading"></a></h3>
+<p>The special secondary tags are filled automatically, i.e., without any values implicitly assigned
+by the filling script.</p>
 <section id="alignment-autotag">
 <h4>Alignment autotag<a class="headerlink" href="#alignment-autotag" title="Link to this heading"></a></h4>
 <p>An <em>alignment autotag</em> <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code>: A special tag useful for the text alignment. It automatically
@@ -231,10 +231,10 @@ value <code class="docutils literal notranslate"><span class="pre">4</span></cod
 </section>
 <section id="automatic-template-filling">
 <span id="tgt-auto-fill"></span><h2>Automatic template filling<a class="headerlink" href="#automatic-template-filling" title="Link to this heading"></a></h2>
-<p>The automatic template filling is the simplest way to generate a templated content.</p>
-<p>To fill the template variables and blocks with data, it is first necessary to load the whole
-template into the primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. This can be done by setting a template string
-text or a text file in the <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a> constructor. Alternatively, the
+<p>The automatic template filling is the simplest way to generate a templated content. To fill the
+template variables and blocks with data, it is first necessary to load the whole template into
+the primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. This can be done by setting a template string text or a
+text file in the <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a> constructor. Alternatively, the
 <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
 <p>A template can then be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
 provided as an argument in a Python <strong>dictionary</strong>. The dictionary keys represent the template
@@ -526,7 +526,7 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="config.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="config.html" class="btn btn-neutral float-right" title="Template format configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

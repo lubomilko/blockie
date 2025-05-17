@@ -85,11 +85,11 @@ content selectable by the filling script:
 
 .. _tgt_auto_tags:
 
-Automatic tags
+Secondary - automatic tags
 ===================================================================================================
 
-The template can contain special tags that are filled automatically, i.e., without any values
-implicitly assigned by the filling script.
+The special secondary tags are filled automatically, i.e., without any values implicitly assigned
+by the filling script.
 
 
 Alignment autotag

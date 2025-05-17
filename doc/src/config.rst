@@ -4,9 +4,9 @@
 Template format configuration
 ###################################################################################################
 
-The format of :ref:`primary <tgt_primary_tags>` and :ref:`automatic <tgt_auto_tags>` tags in a
-template, together with other settings, can be configured by the configuration object of the
-:py:class:`.BlockConfig` class.
+The format of :ref:`primary <tgt_primary_tags>` and :ref:`automatic <tgt_auto_tags>` secondary
+tags in a template, together with other settings, can be configured by the configuration object of
+the :py:class:`.BlockConfig` class.
 
 The configuration object attributes define the format of :ref:`primary tags <tgt_primary_tags>`
 using functions defining how a template tag string is generated from a tag name. The most
@@ -21,8 +21,9 @@ The created :py:class:`.BlockConfig` object can be either assigned directly to t
 constructor :py:meth:`.Block.__init__`. All child blocks of a configured block will automatically
 use the same configuration.
 
-The following example equivalent to the :ref:`advanced example` shown before, uses a block
-configuration object with an *at* sign ``@`` used as a primary tag symbol:
+The following example equivalent to the :ref:`advanced example <tgt_auto_fill_advanced_example>`
+shown before, uses a block configuration object with an *at* sign ``@`` used as a primary tag
+symbol:
 
 .. code-block:: python
 

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuration &mdash; Blockie 1.0.0 documentation</title>
+  <title>Template format configuration &mdash; Blockie 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -46,7 +46,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Template format configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
 
@@ -64,7 +64,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Configuration</li>
+      <li class="breadcrumb-item active">Template format configuration</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,20 +74,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="configuration">
-<span id="tgt-config"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
-<p>The format of <a class="reference internal" href="usage.html#tgt-primary-tags"><span class="std std-ref">primary</span></a> and <a class="reference internal" href="usage.html#tgt-auto-tags"><span class="std std-ref">automatic</span></a> tags in a
-template, together with other settings, can be configured by the configuration object of the
-<a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> class.</p>
+  <section id="template-format-configuration">
+<span id="tgt-config"></span><h1>Template format configuration<a class="headerlink" href="#template-format-configuration" title="Link to this heading"></a></h1>
+<p>The format of <a class="reference internal" href="usage.html#tgt-primary-tags"><span class="std std-ref">primary</span></a> and <a class="reference internal" href="usage.html#tgt-auto-tags"><span class="std std-ref">automatic</span></a> secondary
+tags in a template, together with other settings, can be configured by the configuration object of
+the <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> class.</p>
 <p>The configuration object attributes define the format of <a class="reference internal" href="usage.html#tgt-primary-tags"><span class="std std-ref">primary tags</span></a>
 using functions defining how a template tag string is generated from a tag name. The most
 straightforward way to define these tag generators is to use the <em>lamba</em> functions.</p>
-<p>The configuration object contains also attributes defining the symbols used for the
+<p>The configuration object also contains the attributes defining the symbols used for the
 <a class="reference internal" href="usage.html#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>, and a tabulator size attribute used by the <em>alignment
 autotag</em> when tabulators are used for the alignment.</p>
-<p>The following example of a block configuration object uses the <em>at</em> sign <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> as a primary tag
+<p>The created <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> object can be either assigned directly to the
+<a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a> attribute or it can be provided to the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object
+constructor <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a>. All child blocks of a configured block will automatically
+use the same configuration.</p>
+<p>The following example equivalent to the <a class="reference internal" href="usage.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a>
+shown before, uses a block configuration object with an <em>at</em> sign <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> used as a primary tag
 symbol:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">BlockConfig</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                            SHOPPING LIST</span>
+<span class="s2">  Items                                                         Quantity</span>
+<span class="s2">------------------------------------------------------------------------</span>
+<span class="s2">@items</span>
+<span class="s2">* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit</span>
+<span class="s2">@!items</span>
+
+
+<span class="s2">Short list: @items@item@_, @~_@!_@!items</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">BlockConfig</span><span class="p">(</span>
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>    <span class="c1"># tag_gen_var</span>
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>    <span class="c1"># tag_gen_blk_start</span>
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@!</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>   <span class="c1"># tag_gen_blk_end</span>
@@ -96,25 +123,26 @@ symbol:</p>
     <span class="s2">&quot;_&quot;</span><span class="p">,</span>                        <span class="c1"># autotag_vari</span>
     <span class="mi">8</span>                           <span class="c1"># tab_size</span>
 <span class="p">)</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The template tags configured by the configuration object above have the following format:</p>
-<ul class="simple">
-<li><p>Variable: <code class="docutils literal notranslate"><span class="pre">&#64;name</span></code>.</p></li>
-<li><p>Block start: <code class="docutils literal notranslate"><span class="pre">&#64;name</span></code>.</p></li>
-<li><p>Block end: <code class="docutils literal notranslate"><span class="pre">&#64;!name</span></code>.</p></li>
-<li><p>Block variation separator: <code class="docutils literal notranslate"><span class="pre">&#64;~name</span></code>.</p></li>
-<li><p>Alignment autotag: <code class="docutils literal notranslate"><span class="pre">&#64;*</span></code>.</p></li>
-<li><p>Variation autotag: <code class="docutils literal notranslate"><span class="pre">&#64;_</span></code>.</p></li>
-</ul>
-<p>The configuration object <code class="docutils literal notranslate"><span class="pre">config</span></code> can then be assigned to the primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object
-in its constructor <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a> as illustrated below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<p>The script prints the following generated content:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+* apples                                                        1 kg
+* IMPORTANT! potatoes                                           2 kg
+* rice                                                          1 kg
+* orange juice                                                  1 l
+* MAYBE? cooking magazine
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
 </pre></div>
 </div>
-<p>Alternatively, the configuration object can be assigned directly to the <a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a>
-attribute.</p>
-<p>All child blocks of a configured block will automatically use the same configuration.</p>
 </section>
 
 
