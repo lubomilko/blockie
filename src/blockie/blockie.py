@@ -222,66 +222,6 @@ class Block:
 
         return ret_vari_idx
 
-    def reset(self, all_children: bool = True) -> None:
-        """Resets the block content to the initial template.
-
-        Args:
-            all_children: Enables a reset of all child blocks too.
-        """
-        self.content = self.__template
-        self.__clone_flag = False
-        if all_children:
-            for blk_obj in self.__children.values():
-                blk_obj.reset()
-
-    def clear(self, count: int = -1) -> None:
-        """Clears the block from its parent block, i.e., sets the block to an empty string.
-
-        Args:
-            count: The maximum number of blocks with the same name to be cleared, -1 = all.
-        """
-        self.content = ""
-        self.set(count=count)
-
-    def clone(self, copies: int = 1, force: bool = False, passive: bool = False, set_children: bool = False) -> None:
-        """Clones the block, i.e., virtually adds another copy of a block template after the
-        existing block content making the new template copy ready to be filled with other values.
-
-        The clone is created only if blocks and variables are set after cloning. The child blocks
-        are reset after cloning, unless the ``passive`` argument is set to ``True``.
-
-        Args:
-            copies: The number of template copies to be prepared. If > 1, then ``force`` and
-                ``passive`` arguments are automatically ``False``.
-            force: Forces the clone to be created even if no variable or block is then set.
-            passive: Enables cloning only if an active (non-passive) clone has been requested
-                previously and no further clone is created.
-            set_children: Enables setting of all child blocks to this parent block before cloning.
-        """
-        if set_children:
-            for child in self.__children.values():
-                child.set()
-
-        if copies > 1:
-            for _ in range(copies):
-                self.clone(1, False, False, False)
-        else:
-            # Check if cloning flag indicates that the cloning should be actually performed.
-            if force or self.__clone_flag:
-                if self.autotags:
-                    self.__set_autotag_vari(first=self.__autovari_first)
-                    self.__autovari_first = False
-                    self.__set_autotag_align()
-                # Perform cloning.
-                self.content = f"{self.content}{self.__template}"
-                self.__clone_flag = False
-            if not passive:
-                if not force:
-                    self.__clone_flag = True
-                # Reset all child blocks to make their content ready to be filled with new values.
-                for child in self.__children.values():
-                    child.reset(all_children=True)
-
     def get_subblock(self, *subblock_names: str) -> Union["Block", list["Block"], None]:
         """Returns the specified child block object from the current block content. Each child
         is also automatically added into the ``children`` attribute of the current block.
@@ -308,33 +248,41 @@ class Block:
             ret_blk.append(subblk)
         return None if not ret_blk else ret_blk[0] if len(ret_blk) == 1 else ret_blk
 
-    def clear_subblock(self, *subblocks: "Block | str") -> None:
-        """Clears the content of specified child blocks from a current block content.
+    def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> None:
+        """Sets values into the specified variables within this block content.
 
         Args:
-            subblocks: Subblock object(s) or their names to be cleared.
+            autoclone: Enables automatic clone of this block after setting all variables.
+            name_value_kwargs: Keyword arguments representing variable name-value pairs, e.g.,
+                ``name="Thomas", surname="Anderson", age=37``. Tuples or lists can be used as
+                variable values, making this block to be automatically cloned after setting each
+                element value.
         """
-        for subblk in subblocks:
-            if isinstance(subblk, str):
-                blk_sub = self.children.get(subblk, self.get_subblock(subblk))
-                if blk_sub:
-                    blk_sub.clear()
-            else:
-                subblk.clear()
-
-    def set_subblock(self, *subblocks: "Block | str") -> None:
-        """Sets the content of specified child blocks into the content of the current block.
-
-        Args:
-            subblocks: The subblock object(s) or their names to be set.
-        """
-        for subblk in subblocks:
-            if isinstance(subblk, str):
-                blk_sub = self.children.get(subblk, self.get_subblock(subblk))
-                if blk_sub:
-                    blk_sub.set()
-            else:
-                subblk.set()
+        iter_idx = 0
+        detected_iters_num = 1
+        while iter_idx < detected_iters_num:
+            # Clone block if the cloning flag is set to true to ensure that the variable tags can be
+            # found in the block content and the variable values can be set into them.
+            self.clone(passive=True)
+            # Loop through variable tags and replace them with the corresponding variable values.
+            for (tag, val) in [(self.config.tag_gen_var(f"{name}"), val) for (name, val) in name_value_kwargs.items()]:
+                if isinstance(val, str):
+                    var_value = val
+                else:
+                    # Check if the val is iterable and if so, then set its individual elements.
+                    try:
+                        _ = iter(val)
+                        detected_iters_num = max(detected_iters_num, len(val))
+                        if len(val) > iter_idx:
+                            var_value = val[iter_idx]
+                        else:
+                            var_value = val[-1]
+                    except TypeError:
+                        var_value = val
+                self.content = self.content.replace(tag, f"{var_value}")
+            iter_idx += 1
+            if iter_idx < detected_iters_num or autoclone:
+                self.clone()
 
     def set(self, vari_idx: int | bool = 0, all_children: bool = False, count: int = -1) -> None:
         """Sets the content of this block into its parent block content.
@@ -387,41 +335,58 @@ class Block:
             else:
                 break
 
-    def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> None:
-        """Sets values into the specified variables within this block content.
+    def set_subblock(self, *subblocks: "Block | str") -> None:
+        """Sets the content of specified child blocks into the content of the current block.
 
         Args:
-            autoclone: Enables automatic clone of this block after setting all variables.
-            name_value_kwargs: Keyword arguments representing variable name-value pairs, e.g.,
-                ``name="Thomas", surname="Anderson", age=37``. Tuples or lists can be used as
-                variable values, making this block to be automatically cloned after setting each
-                element value.
+            subblocks: The subblock object(s) or their names to be set.
         """
-        iter_idx = 0
-        detected_iters_num = 1
-        while iter_idx < detected_iters_num:
-            # Clone block if the cloning flag is set to true to ensure that the variable tags can be
-            # found in the block content and the variable values can be set into them.
-            self.clone(passive=True)
-            # Loop through variable tags and replace them with the corresponding variable values.
-            for (tag, val) in [(self.config.tag_gen_var(f"{name}"), val) for (name, val) in name_value_kwargs.items()]:
-                if isinstance(val, str):
-                    var_value = val
-                else:
-                    # Check if the val is iterable and if so, then set its individual elements.
-                    try:
-                        _ = iter(val)
-                        detected_iters_num = max(detected_iters_num, len(val))
-                        if len(val) > iter_idx:
-                            var_value = val[iter_idx]
-                        else:
-                            var_value = val[-1]
-                    except TypeError:
-                        var_value = val
-                self.content = self.content.replace(tag, f"{var_value}")
-            iter_idx += 1
-            if iter_idx < detected_iters_num or autoclone:
-                self.clone()
+        for subblk in subblocks:
+            if isinstance(subblk, str):
+                blk_sub = self.children.get(subblk, self.get_subblock(subblk))
+                if blk_sub:
+                    blk_sub.set()
+            else:
+                subblk.set()
+
+    def clone(self, copies: int = 1, force: bool = False, passive: bool = False, set_children: bool = False) -> None:
+        """Clones the block, i.e., virtually adds another copy of a block template after the
+        existing block content making the new template copy ready to be filled with other values.
+
+        The clone is created only if blocks and variables are set after cloning. The child blocks
+        are reset after cloning, unless the ``passive`` argument is set to ``True``.
+
+        Args:
+            copies: The number of template copies to be prepared. If > 1, then ``force`` and
+                ``passive`` arguments are automatically ``False``.
+            force: Forces the clone to be created even if no variable or block is then set.
+            passive: Enables cloning only if an active (non-passive) clone has been requested
+                previously and no further clone is created.
+            set_children: Enables setting of all child blocks to this parent block before cloning.
+        """
+        if set_children:
+            for child in self.__children.values():
+                child.set()
+
+        if copies > 1:
+            for _ in range(copies):
+                self.clone(1, False, False, False)
+        else:
+            # Check if cloning flag indicates that the cloning should be actually performed.
+            if force or self.__clone_flag:
+                if self.autotags:
+                    self.__set_autotag_vari(first=self.__autovari_first)
+                    self.__autovari_first = False
+                    self.__set_autotag_align()
+                # Perform cloning.
+                self.content = f"{self.content}{self.__template}"
+                self.__clone_flag = False
+            if not passive:
+                if not force:
+                    self.__clone_flag = True
+                # Reset all child blocks to make their content ready to be filled with new values.
+                for child in self.__children.values():
+                    child.reset(all_children=True)
 
     def clear_variables(self, *var_names: str) -> None:
         """Clears the specified variables from this block content. Has the same effect as setting
@@ -432,6 +397,41 @@ class Block:
         """
         for var_name in var_names:
             self.content = self.content.replace(self.config.tag_gen_var(var_name), "")
+
+    def clear(self, count: int = -1) -> None:
+        """Clears the block from its parent block, i.e., sets the block to an empty string.
+
+        Args:
+            count: The maximum number of blocks with the same name to be cleared, -1 = all.
+        """
+        self.content = ""
+        self.set(count=count)
+
+    def clear_subblock(self, *subblocks: "Block | str") -> None:
+        """Clears the content of specified child blocks from a current block content.
+
+        Args:
+            subblocks: Subblock object(s) or their names to be cleared.
+        """
+        for subblk in subblocks:
+            if isinstance(subblk, str):
+                blk_sub = self.children.get(subblk, self.get_subblock(subblk))
+                if blk_sub:
+                    blk_sub.clear()
+            else:
+                subblk.clear()
+
+    def reset(self, all_children: bool = True) -> None:
+        """Resets the block content to the initial template.
+
+        Args:
+            all_children: Enables a reset of all child blocks too.
+        """
+        self.content = self.__template
+        self.__clone_flag = False
+        if all_children:
+            for blk_obj in self.__children.values():
+                blk_obj.reset()
 
     def __get_block_pos(self, block_name: str, include_tags: bool = False) -> tuple[int, int]:
         """Returns the position of the specified block within the content of this block.
