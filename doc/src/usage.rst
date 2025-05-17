@@ -2,29 +2,21 @@
 Usage
 ###################################################################################################
 
-The following chapters describe the essential concepts needed for the creation of templates
-and for filling them with data to generate an output content.
+The following chapters describe the essential concepts needed for the creation of blockie
+templates and for filling them with data to generate an output content.
 
-However, it is also possible to jump to the :ref:`basic <tgt_auto_fill_basic_example>` or the
-:ref:`advanced <tgt_auto_fill_advanced_example>` example to get a quick overview of all the
-principles used in the :ref:`automatic template filling <tgt_auto_fill>`.
+However, if you are familiar with the basics of template engines and feel confident, then it is
+also possible to jump to the :ref:`basic example <tgt_auto_fill_basic_example>` or straight to the
+more :ref:`advanced example <tgt_auto_fill_advanced_example>` showing almost all features of
+the :ref:`automatic template filling <tgt_auto_fill>` in a very simple way.
 
 
 ***************************************************************************************************
 Template tags
 ***************************************************************************************************
 
-Blockie uses templates containing *tags* to indicate variable parts of the template as illustrated
-on a simple template string below containing the so-called *block* named ``PEOPLE`` that can
-be filled with name, surname and age values of each person assigned to the *variables* ``NAME``,
-``SURNAME``, and ``AGE``.
-
-.. code-block:: text
-
-    A list of people:
-    <PEOPLE>
-    - <NAME> <SURNAME>, <AGE>
-    </PEOPLE>
+Blockie uses templates containing *tags* to indicate variable parts of the template intended to
+be filled with specific values by the Python script.
 
 .. important::
     
@@ -32,11 +24,11 @@ be filled with name, surname and age values of each person assigned to the *vari
     ``<TAG_NAME>`` is a tag named ``TAG_NAME``.
 
     The tag names in a Python filling script are automatically converted to the uppercase format
-    by default, i.e., it is possible to refer to the ``<TAG_NAME>`` tag using the lowercase name
+    by default, i.e., it is possible to refer to the ``<TAG_NAME>`` tag using a lowercase name
     ``tag_name`` in the script.
 
     This tag format and automatic uppercase conversion is used in almost all examples within this
-    document. However, the tag format is :ref:`configurable <tgt_config>`, as will be described
+    document. However, the :ref:`tag format is configurable <tgt_config>`, as will be described
     later.
 
 
@@ -44,13 +36,6 @@ be filled with name, surname and age values of each person assigned to the *vari
 
 Primary tags
 ===================================================================================================
-
-The templates used by the blockie need to use the tags described in the following sections to
-represent the essential parts of variable content.
-
-.. seealso::
-    :ref:`Tag format configuration <tgt_config>`.
-
 
 Variable tag
 ---------------------------------------------------------------------------------------------------
@@ -62,20 +47,40 @@ A *variable* consists of a single tag, e.g., ``<VARIABLE>`` representing a varia
 Block tags
 ---------------------------------------------------------------------------------------------------
 
-A *block* consists of a start-end tag pair, e.g., ``<BLOCK>content</BLOCK>`` representing a block
-named ``BLOCK`` having an internal content consisting of a simple string ``content``. Apart from
-string constants, a block can also contain *variables* and other child *blocks*.
-
-A block can also have multiple predefined **content variations** with each variation separated by
-a special tag, which by default has a ``<^BLOCK>`` format. For example, the
-``<BLOCK>content 1<^BLOCK>content 2<^BLOCK>content 3</BLOCK>`` defines a block with three
-variations of a content selectable by the filling script.
+A *block* consists of a start-end tag pair defining a portion - "block" of text within a template.
+For example, ``<BLOCK>content</BLOCK>`` represents a block  named ``BLOCK`` having an internal
+content consisting of a simple string ``content``. Apart from a constant text, a block can also
+contain *variables* and other child *blocks*.
 
 The standard (non-variation) block content can be **cloned**, i.e., duplicated as many times as
-needed, and variables in each clone can be filled with different values.
+needed, and variables in each clone can be filled with different values as illustrated below on
+a simple template string with the block named ``PEOPLE`` defining a list of people with each
+item containing *variables* for name, surname and age.
 
-The whole template is considered to be a primary *block* and its content is not marked by any
-start-end tag pair, i.e., the primary template block does not have a name.
+.. code-block:: text
+
+    A list of people:
+    <PEOPLE>
+    - <NAME> <SURNAME>, <AGE>
+    </PEOPLE>
+
+.. seealso::
+    The description of filling the template with values is
+    :ref:`described later <tgt_auto_fill_basic>` after the description of all types of tags.
+
+The whole template itself is considered to be a primary block and its content is not marked by
+any start-end tag pair, i.e., the primary template block does not have a name.
+
+A block can also have multiple predefined **content variations** with each variation separated by
+a special tag, which by default has a ``<^BLOCK>`` format. The script filling the template with
+data can then select a required variation of the predefined content.
+
+The example below illustrates a template with a ``BLOCK`` block having three variations of its
+content selectable by the filling script:
+
+.. code-block:: text
+
+    <BLOCK>content 1<^BLOCK>content 2<^BLOCK>content 3</BLOCK>
 
 
 .. _tgt_auto_tags:
@@ -83,9 +88,8 @@ start-end tag pair, i.e., the primary template block does not have a name.
 Automatic tags
 ===================================================================================================
 
-The template can contain special tags that are filled automatically (i.e., without any values
-implicitly assigned by the filling script). These special *autotags* are described in a sections
-below.
+The template can contain special tags that are filled automatically, i.e., without any values
+implicitly assigned by the filling script.
 
 
 Alignment autotag
@@ -166,7 +170,14 @@ text or a text file in the :py:meth:`.Block.__init__` constructor. Alternatively
 
 A template can then be filled using the :py:meth:`.Block.fill` method with the required data
 provided as an argument in a Python **dictionary**. The dictionary keys represent the template
-:ref:`variable and block tags <tgt_primary_tags>`.
+:ref:`variable and block tags <tgt_primary_tags>`. The data dictionary needs to 
+
+.. note::
+    In reality, the automatic template filling process is, of course, not fully automatic. It is
+    necessary to provide the data to fill the template in a correct format matching the template
+    structure. However, the filling process is then all done by the :py:meth:`.Block.fill` method,
+    unlike with a :ref:`manual approach <tgt_manual_fill>` where the filling script needs to call
+    multiple individual :py:class:`.Block` methods to generate the required content.
 
 
 .. _tgt_auto_fill_basic:
@@ -219,6 +230,8 @@ prints:
 
     24 December
 
+
+.. _tgt_auto_fill_basic_block_clones:
 
 Setting the content of block clones
 ---------------------------------------------------------------------------------------------------
@@ -319,46 +332,125 @@ Setting a block content as is
 
 A single block can be set to the generated content as is, i.e., without setting any of its child
 elements, by setting the block value to a simple **non-empty value**, which can be a *non-empty
-string, non-zero numeric value or a boolean true*. As an example, the key-value pairs
-``date: "anything"``, ``date: 1``, ``date: True`` all set the content of a block named ``date``
-into the final generated output without explicitly setting any of its internal values or other
-subblocks (it is expected that the block is either constant, i.e., without variables, or the
-variables have been already set).
+string, zero or positive number or a boolean true*. It is expected that the block content is
+either constant, or the variables inside have been already set. The example below shows setting
+a ``date`` block having a constant content into the final generated output just by setting it to
+boolean true:
+
+.. code-block:: python
+
+    blk = blockie.Block("<DATE>24 December</DATE>")
+    blk.fill({"date": True})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 December
 
 
 Setting a block content variation
 ---------------------------------------------------------------------------------------------------
 
 A specific content from a block with multiple content variations can be selected using a
-**special** ``vari_idx`` **key** defined in a *dictionary* corresponding to the block.
-The ``vari_idx`` key can be set to a *numeric or  boolean* value with the following meaning:
+**special** ``vari_idx`` **key with a numeric value** defined in a *dictionary* corresponding to
+the block. The value of a number assigned to the ``vari_idx`` key defines one of the operations
+below:
 
--   A numeric value zero or higher sets the variation of a content corresponding to the specified
-    index, e.g.
-    ``date: {"vari_idx": 1}`` sets the second content variation of a ``date`` block (value 0
-    corresponds to the first variation).
--   A numeric value below zero removes the block, e.g. ``date: {"vari_idx": -1}`` removes the
-    ``date`` block from the generated content.
--   A boolean ``True`` has the same effect as the value zero (i.e., sets the first content
-    variation) and boolean ``False`` has the same effect as any negative value (i.e., removes
-    the block).
+-   A value equal to zero or higher (*>=0*) selects the block content variation with an index
+    corresponding to the provided value.
+-   A negative value (*<0*) removes the entire block from the generated content.
+-   A boolean value can be used, where ``True`` has the same effect as the value zero and
+    ``False`` has the same effect as a negative value.
+
+Alternatively, if a block has a constant content, it is possible to select one of its constant
+content variations by directly setting a numeric value representing the content index to its key
+in a data dictionary, as shown in the second example below:
+
+.. code-block:: python
+
+    date_dict = {"day": 24, "month": "December"}
+    date_dict["vari_idx"] = 0 if isinstance(date_dict["month"], int) else 1
+
+    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
+    blk.fill({"date": date_dict})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 December
+
+.. code-block:: python
+
+    blk = blockie.Block("<DATE>24.12.<^DATE>24 December</DATE>")
+    blk.fill({"date": 1})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24 December
+
+.. important::
+    As illustrated on the first example, the block variations can be used for a conditional
+    content selection. However, the logic of selecting the right content must be defined within
+    the filling script, since the blockie templates themselves are logicless.
+
+.. note::
+    Note that removing a block using a ``vari_idx`` key set to a negative value is only the
+    secondary purpose of the ``vari_idx`` key. The primary method of a
+    :ref:`block removal <tgt_auto_fill_remove_block>` is described later.
 
 
 Removing a variable
 ---------------------------------------------------------------------------------------------------
 
 A variable can be removed from the generated content by setting its dictionary value to an
-**empty string or to none**, i.e., ``name: ""`` or ``name: None`` key-value pairs both remove the
-``name`` variable from the generated content.
+**empty string or to none** as shown on the example below removing the variable for a middle name.
 
+.. code-block:: python
+
+    blk = blockie.Block("<NAME> <MIDNAME> <SURNAME>")
+    blk.fill({"name": "Patrick", "midname": None, "surname": "Bateman"})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    Patrick  Bateman
+
+
+.. _tgt_auto_fill_remove_block:
 
 Removing a block
 ---------------------------------------------------------------------------------------------------
 
-A block can be removed from the content by setting its dictionary value to an **empty value**,
-which can be an *empty dictionary, empty list, none, zero, or boolean false*, i.e., ``date: {}``,
-``date: []``, ``date: None``, ``date: 0``, ``date: False`` all remove the ``date`` block from the
-generated content.
+A block can be removed from the content by setting it to an **empty value**, which can be an
+*empty dictionary, empty list or tuple, none, negative number, or boolean false*. The following
+example uses a ``None`` object to remove the wrapper block ``MIDNAME_WRAP`` defining a content
+with the variable for a middle name inside:
+
+.. code-block:: python
+
+    blk = blockie.Block("<NAME> <MIDNAME_WRAP><MIDNAME> </MIDNAME_WRAP><SURNAME>")
+    blk.fill({"name": "Patrick", "surname": "Bateman", "midname_wrap": None})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    Patrick Bateman
+
+.. note::
+    Notice how using a wrapper block allows a better control over the parts removed from the
+    generated content. In the example above, it it allows to remove the variable for a middle
+    name and also the space character that would otherwise remain in the generated content.
 
 
 .. _tgt_auto_fill_advanced_example:
@@ -416,3 +508,10 @@ The script prints the following generated content:
 
 
     Short list: apples, potatoes, rice, orange juice, cooking magazine
+
+
+.. _tgt_manual_fill:
+
+***************************************************************************************************
+Manual template filling
+***************************************************************************************************
