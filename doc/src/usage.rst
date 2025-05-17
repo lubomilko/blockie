@@ -161,11 +161,10 @@ value ``4`` is not followed by a comma):
 Automatic template filling
 ***************************************************************************************************
 
-The automatic template filling is the simplest way to generate a templated content.
-
-To fill the template variables and blocks with data, it is first necessary to load the whole
-template into the primary :py:class:`.Block` object. This can be done by setting a template string
-text or a text file in the :py:meth:`.Block.__init__` constructor. Alternatively, the
+The automatic template filling is the simplest way to generate a templated content. To fill the
+template variables and blocks with data, it is first necessary to load the whole template into
+the primary :py:class:`.Block` object. This can be done by setting a template string text or a
+text file in the :py:meth:`.Block.__init__` constructor. Alternatively, the
 :py:attr:`.Block.template` attribute, or the :py:meth:`.Block.load_template` method can be used.
 
 A template can then be filled using the :py:meth:`.Block.fill` method with the required data
