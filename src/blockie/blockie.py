@@ -163,6 +163,11 @@ class Block:
         # Get the block data in form of a dictionary even if it is defined as an object.
         data_dict = data if isinstance(data, dict) else data.__dict__
 
+        # If an external fill handle is defined within the block data, then call it first.
+        fill_hndl = data_dict.get("fill_hndl")
+        if fill_hndl:
+            fill_hndl(self, data, __clone_idx)
+
         # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
@@ -217,11 +222,6 @@ class Block:
                         else:
                             subblk.clear(count=1)   # Value is "", 0 or False
                     self.set_variables(**{attrib: value})
-
-        # 4. If an external fill handle is defined within the block data, then call it.
-        fill_hndl = data_dict.get("fill_hndl")
-        if fill_hndl:
-            fill_hndl(self, data, __clone_idx)
 
         return ret_vari_idx
 

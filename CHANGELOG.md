@@ -28,6 +28,8 @@ describe modifications since the last release 1.4.0 of *blocky*.
 - Change the standard `subclass` attribute to a `children` property attribute.
 - Global refactoring to decrease the amount of code and increase efficiency and clarity.
 - Simplify and update all docstrings relying more on the type hints and code itself.
+- Execute the external fill handler `fill_hndl` by the `fill()` method before filling the content
+  of a block, instead of after.
 
 ### Removed
 
