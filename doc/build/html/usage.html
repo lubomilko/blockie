@@ -77,6 +77,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-template-filling">Manual template filling</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -109,42 +110,29 @@
              
   <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
-<p>The following chapters describe the essential concepts needed for the creation of templates
-and for filling them with data to generate an output content.</p>
-<p>However, it is also possible to jump to the <a class="reference internal" href="#tgt-auto-fill-basic-example"><span class="std std-ref">basic</span></a> or the
-<a class="reference internal" href="#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced</span></a> example to get a quick overview of all the
-principles used in the <a class="reference internal" href="#tgt-auto-fill"><span class="std std-ref">automatic template filling</span></a>.</p>
+<p>The following chapters describe the essential concepts needed for the creation of blockie
+templates and for filling them with data to generate an output content.</p>
+<p>However, if you are familiar with the basics of template engines and feel confident, then it is
+also possible to jump to the <a class="reference internal" href="#tgt-auto-fill-basic-example"><span class="std std-ref">basic example</span></a> or straight to the
+more <a class="reference internal" href="#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a> showing almost all features of
+the <a class="reference internal" href="#tgt-auto-fill"><span class="std std-ref">automatic template filling</span></a> in a very simple way.</p>
 <section id="template-tags">
 <h2>Template tags<a class="headerlink" href="#template-tags" title="Link to this heading"></a></h2>
-<p>Blockie uses templates containing <em>tags</em> to indicate variable parts of the template as illustrated
-on a simple template string below containing the so-called <em>block</em> named <code class="docutils literal notranslate"><span class="pre">PEOPLE</span></code> that can
-be filled with name, surname and age values of each person assigned to the <em>variables</em> <code class="docutils literal notranslate"><span class="pre">NAME</span></code>,
-<code class="docutils literal notranslate"><span class="pre">SURNAME</span></code>, and <code class="docutils literal notranslate"><span class="pre">AGE</span></code>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A list of people:
-&lt;PEOPLE&gt;
-- &lt;NAME&gt; &lt;SURNAME&gt;, &lt;AGE&gt;
-&lt;/PEOPLE&gt;
-</pre></div>
-</div>
+<p>Blockie uses templates containing <em>tags</em> to indicate variable parts of the template intended to
+be filled with specific values by the Python script.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>By default, the tags have an XML-like form using the uppercase letters for names, e.g.,
 <code class="docutils literal notranslate"><span class="pre">&lt;TAG_NAME&gt;</span></code> is a tag named <code class="docutils literal notranslate"><span class="pre">TAG_NAME</span></code>.</p>
 <p>The tag names in a Python filling script are automatically converted to the uppercase format
-by default, i.e., it is possible to refer to the <code class="docutils literal notranslate"><span class="pre">&lt;TAG_NAME&gt;</span></code> tag using the lowercase name
+by default, i.e., it is possible to refer to the <code class="docutils literal notranslate"><span class="pre">&lt;TAG_NAME&gt;</span></code> tag using a lowercase name
 <code class="docutils literal notranslate"><span class="pre">tag_name</span></code> in the script.</p>
 <p>This tag format and automatic uppercase conversion is used in almost all examples within this
-document. However, the tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a>, as will be described
+document. However, the <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">tag format is configurable</span></a>, as will be described
 later.</p>
 </div>
 <section id="primary-tags">
 <span id="tgt-primary-tags"></span><h3>Primary tags<a class="headerlink" href="#primary-tags" title="Link to this heading"></a></h3>
-<p>The templates used by the blockie need to use the tags described in the following sections to
-represent the essential parts of variable content.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">Tag format configuration</span></a>.</p>
-</div>
 <section id="variable-tag">
 <h4>Variable tag<a class="headerlink" href="#variable-tag" title="Link to this heading"></a></h4>
 <p>A <em>variable</em> consists of a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;VARIABLE&gt;</span></code> representing a variable named
@@ -152,24 +140,41 @@ represent the essential parts of variable content.</p>
 </section>
 <section id="block-tags">
 <h4>Block tags<a class="headerlink" href="#block-tags" title="Link to this heading"></a></h4>
-<p>A <em>block</em> consists of a start-end tag pair, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;BLOCK&gt;content&lt;/BLOCK&gt;</span></code> representing a block
-named <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> having an internal content consisting of a simple string <code class="docutils literal notranslate"><span class="pre">content</span></code>. Apart from
-string constants, a block can also contain <em>variables</em> and other child <em>blocks</em>.</p>
-<p>A block can also have multiple predefined <strong>content variations</strong> with each variation separated by
-a special tag, which by default has a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK&gt;</span></code> format. For example, the
-<code class="docutils literal notranslate"><span class="pre">&lt;BLOCK&gt;content</span> <span class="pre">1&lt;^BLOCK&gt;content</span> <span class="pre">2&lt;^BLOCK&gt;content</span> <span class="pre">3&lt;/BLOCK&gt;</span></code> defines a block with three
-variations of a content selectable by the filling script.</p>
+<p>A <em>block</em> consists of a start-end tag pair defining a portion - “block” of text within a template.
+For example, <code class="docutils literal notranslate"><span class="pre">&lt;BLOCK&gt;content&lt;/BLOCK&gt;</span></code> represents a block  named <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> having an internal
+content consisting of a simple string <code class="docutils literal notranslate"><span class="pre">content</span></code>. Apart from a constant text, a block can also
+contain <em>variables</em> and other child <em>blocks</em>.</p>
 <p>The standard (non-variation) block content can be <strong>cloned</strong>, i.e., duplicated as many times as
-needed, and variables in each clone can be filled with different values.</p>
-<p>The whole template is considered to be a primary <em>block</em> and its content is not marked by any
-start-end tag pair, i.e., the primary template block does not have a name.</p>
+needed, and variables in each clone can be filled with different values as illustrated below on
+a simple template string with the block named <code class="docutils literal notranslate"><span class="pre">PEOPLE</span></code> defining a list of people with each
+item containing <em>variables</em> for name, surname and age.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A list of people:
+&lt;PEOPLE&gt;
+- &lt;NAME&gt; &lt;SURNAME&gt;, &lt;AGE&gt;
+&lt;/PEOPLE&gt;
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The description of filling the template with values is
+<a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">described later</span></a> after the description of all types of tags.</p>
+</div>
+<p>The whole template itself is considered to be a primary block and its content is not marked by
+any start-end tag pair, i.e., the primary template block does not have a name.</p>
+<p>A block can also have multiple predefined <strong>content variations</strong> with each variation separated by
+a special tag, which by default has a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK&gt;</span></code> format. The script filling the template with
+data can then select a required variation of the predefined content.</p>
+<p>The example below illustrates a template with a <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> block having three variations of its
+content selectable by the filling script:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;BLOCK&gt;content 1&lt;^BLOCK&gt;content 2&lt;^BLOCK&gt;content 3&lt;/BLOCK&gt;
+</pre></div>
+</div>
 </section>
 </section>
 <section id="automatic-tags">
 <span id="tgt-auto-tags"></span><h3>Automatic tags<a class="headerlink" href="#automatic-tags" title="Link to this heading"></a></h3>
-<p>The template can contain special tags that are filled automatically (i.e., without any values
-implicitly assigned by the filling script). These special <em>autotags</em> are described in a sections
-below.</p>
+<p>The template can contain special tags that are filled automatically, i.e., without any values
+implicitly assigned by the filling script.</p>
 <section id="alignment-autotag">
 <h4>Alignment autotag<a class="headerlink" href="#alignment-autotag" title="Link to this heading"></a></h4>
 <p>An <em>alignment autotag</em> <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code>: A special tag useful for the text alignment. It automatically
@@ -233,7 +238,15 @@ text or a text file in the <a class="reference internal" href="api.html#blockie.
 <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
 <p>A template can then be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
 provided as an argument in a Python <strong>dictionary</strong>. The dictionary keys represent the template
-<a class="reference internal" href="#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>.</p>
+<a class="reference internal" href="#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>. The data dictionary needs to</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In reality, the automatic template filling process is, of course, not fully automatic. It is
+necessary to provide the data to fill the template in a correct format matching the template
+structure. However, the filling process is then all done by the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method,
+unlike with a <a class="reference internal" href="#tgt-manual-fill"><span class="std std-ref">manual approach</span></a> where the filling script needs to call
+multiple individual <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to generate the required content.</p>
+</div>
 <section id="basic-automatic-filling">
 <span id="tgt-auto-fill-basic"></span><h3>Basic automatic filling<a class="headerlink" href="#basic-automatic-filling" title="Link to this heading"></a></h3>
 <p>The values assigned to the data dictionary keys representing template tags can perform various
@@ -270,7 +283,7 @@ variable values:</p>
 </div>
 </section>
 <section id="setting-the-content-of-block-clones">
-<h4>Setting the content of block clones<a class="headerlink" href="#setting-the-content-of-block-clones" title="Link to this heading"></a></h4>
+<span id="tgt-auto-fill-basic-block-clones"></span><h4>Setting the content of block clones<a class="headerlink" href="#setting-the-content-of-block-clones" title="Link to this heading"></a></h4>
 <p>A block can be cloned, i.e., duplicated, using a <strong>list or a tuple of dictionaries</strong> with each
 dictionary corresponding to one clone of a block content. The example below shows setting of
 two dates in two clones of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block:</p>
@@ -351,41 +364,105 @@ can also perform additional operations described in the following sections.</p>
 <h4>Setting a block content as is<a class="headerlink" href="#setting-a-block-content-as-is" title="Link to this heading"></a></h4>
 <p>A single block can be set to the generated content as is, i.e., without setting any of its child
 elements, by setting the block value to a simple <strong>non-empty value</strong>, which can be a <em>non-empty
-string, non-zero numeric value or a boolean true</em>. As an example, the key-value pairs
-<code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">&quot;anything&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">True</span></code> all set the content of a block named <code class="docutils literal notranslate"><span class="pre">date</span></code>
-into the final generated output without explicitly setting any of its internal values or other
-subblocks (it is expected that the block is either constant, i.e., without variables, or the
-variables have been already set).</p>
+string, zero or positive number or a boolean true</em>. It is expected that the block content is
+either constant, or the variables inside have been already set. The example below shows setting
+a <code class="docutils literal notranslate"><span class="pre">date</span></code> block having a constant content into the final generated output just by setting it to
+boolean true:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;24 December&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
 </section>
 <section id="setting-a-block-content-variation">
 <h4>Setting a block content variation<a class="headerlink" href="#setting-a-block-content-variation" title="Link to this heading"></a></h4>
 <p>A specific content from a block with multiple content variations can be selected using a
-<strong>special</strong> <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> <strong>key</strong> defined in a <em>dictionary</em> corresponding to the block.
-The <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key can be set to a <em>numeric or  boolean</em> value with the following meaning:</p>
+<strong>special</strong> <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> <strong>key with a numeric value</strong> defined in a <em>dictionary</em> corresponding to
+the block. The value of a number assigned to the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key defines one of the operations
+below:</p>
 <ul class="simple">
-<li><p>A numeric value zero or higher sets the variation of a content corresponding to the specified
-index, e.g.
-<code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">{&quot;vari_idx&quot;:</span> <span class="pre">1}</span></code> sets the second content variation of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block (value 0
-corresponds to the first variation).</p></li>
-<li><p>A numeric value below zero removes the block, e.g. <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">{&quot;vari_idx&quot;:</span> <span class="pre">-1}</span></code> removes the
-<code class="docutils literal notranslate"><span class="pre">date</span></code> block from the generated content.</p></li>
-<li><p>A boolean <code class="docutils literal notranslate"><span class="pre">True</span></code> has the same effect as the value zero (i.e., sets the first content
-variation) and boolean <code class="docutils literal notranslate"><span class="pre">False</span></code> has the same effect as any negative value (i.e., removes
-the block).</p></li>
+<li><p>A value equal to zero or higher (<em>&gt;=0</em>) selects the block content variation with an index
+corresponding to the provided value.</p></li>
+<li><p>A negative value (<em>&lt;0</em>) removes the entire block from the generated content.</p></li>
+<li><p>A boolean value can be used, where <code class="docutils literal notranslate"><span class="pre">True</span></code> has the same effect as the value zero and
+<code class="docutils literal notranslate"><span class="pre">False</span></code> has the same effect as a negative value.</p></li>
 </ul>
+<p>Alternatively, if a block has a constant content, it is possible to select one of its constant
+content variations by directly setting a numeric value representing the content index to its key
+in a data dictionary, as shown in the second example below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">date_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}</span>
+<span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date_dict</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;24.12.&lt;^DATE&gt;24 December&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As illustrated on the first example, the block variations can be used for a conditional
+content selection. However, the logic of selecting the right content must be defined within
+the filling script, since the blockie templates themselves are logicless.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that removing a block using a <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key set to a negative value is only the
+secondary purpose of the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key. The primary method of a
+<a class="reference internal" href="#tgt-auto-fill-remove-block"><span class="std std-ref">block removal</span></a> is described later.</p>
+</div>
 </section>
 <section id="removing-a-variable">
 <h4>Removing a variable<a class="headerlink" href="#removing-a-variable" title="Link to this heading"></a></h4>
 <p>A variable can be removed from the generated content by setting its dictionary value to an
-<strong>empty string or to none</strong>, i.e., <code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">&quot;&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">None</span></code> key-value pairs both remove the
-<code class="docutils literal notranslate"><span class="pre">name</span></code> variable from the generated content.</p>
+<strong>empty string or to none</strong> as shown on the example below removing the variable for a middle name.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;NAME&gt; &lt;MIDNAME&gt; &lt;SURNAME&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Patrick&quot;</span><span class="p">,</span> <span class="s2">&quot;midname&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bateman&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Patrick  Bateman
+</pre></div>
+</div>
 </section>
 <section id="removing-a-block">
-<h4>Removing a block<a class="headerlink" href="#removing-a-block" title="Link to this heading"></a></h4>
-<p>A block can be removed from the content by setting its dictionary value to an <strong>empty value</strong>,
-which can be an <em>empty dictionary, empty list, none, zero, or boolean false</em>, i.e., <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">{}</span></code>,
-<code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">[]</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">date:</span> <span class="pre">False</span></code> all remove the <code class="docutils literal notranslate"><span class="pre">date</span></code> block from the
-generated content.</p>
+<span id="tgt-auto-fill-remove-block"></span><h4>Removing a block<a class="headerlink" href="#removing-a-block" title="Link to this heading"></a></h4>
+<p>A block can be removed from the content by setting it to an <strong>empty value</strong>, which can be an
+<em>empty dictionary, empty list or tuple, none, negative number, or boolean false</em>. The following
+example uses a <code class="docutils literal notranslate"><span class="pre">None</span></code> object to remove the wrapper block <code class="docutils literal notranslate"><span class="pre">MIDNAME_WRAP</span></code> defining a content
+with the variable for a middle name inside:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;NAME&gt; &lt;MIDNAME_WRAP&gt;&lt;MIDNAME&gt; &lt;/MIDNAME_WRAP&gt;&lt;SURNAME&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Patrick&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bateman&quot;</span><span class="p">,</span> <span class="s2">&quot;midname_wrap&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Patrick Bateman
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice how using a wrapper block allows a better control over the parts removed from the
+generated content. In the example above, it it allows to remove the variable for a middle
+name and also the space character that would otherwise remain in the generated content.</p>
+</div>
 </section>
 <section id="advanced-example">
 <span id="tgt-auto-fill-advanced-example"></span><h4>Advanced example<a class="headerlink" href="#advanced-example" title="Link to this heading"></a></h4>
@@ -438,6 +515,9 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
 </div>
 </section>
 </section>
+</section>
+<section id="manual-template-filling">
+<span id="tgt-manual-fill"></span><h2>Manual template filling<a class="headerlink" href="#manual-template-filling" title="Link to this heading"></a></h2>
 </section>
 </section>
 
