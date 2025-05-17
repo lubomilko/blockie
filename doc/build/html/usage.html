@@ -70,6 +70,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#advanced-automatic-filling">Advanced automatic filling</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#setting-a-block-content-as-is">Setting a block content as is</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setting-a-block-content-variation">Setting a block content variation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-a-handler-for-manual-filling">Setting a handler for manual filling</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#removing-a-variable">Removing a variable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#removing-a-block">Removing a block</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#advanced-example">Advanced example</a></li>
@@ -77,7 +78,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#manual-template-filling">Manual template filling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-template-filling">Manual template filling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
@@ -280,7 +284,7 @@ variable values:</p>
 </div>
 </section>
 <section id="setting-the-content-of-block-clones">
-<span id="tgt-auto-fill-basic-block-clones"></span><h4>Setting the content of block clones<a class="headerlink" href="#setting-the-content-of-block-clones" title="Link to this heading"></a></h4>
+<h4>Setting the content of block clones<a class="headerlink" href="#setting-the-content-of-block-clones" title="Link to this heading"></a></h4>
 <p>A block can be cloned, i.e., duplicated, using a <strong>list or a tuple of dictionaries</strong> with each
 dictionary corresponding to one clone of a block content. The example below shows setting of
 two dates in two clones of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block:</p>
@@ -425,6 +429,51 @@ secondary purpose of the <code class="docutils literal notranslate"><span class=
 <a class="reference internal" href="#tgt-auto-fill-remove-block"><span class="std std-ref">block removal</span></a> is described later.</p>
 </div>
 </section>
+<section id="setting-a-handler-for-manual-filling">
+<h4>Setting a handler for manual filling<a class="headerlink" href="#setting-a-handler-for-manual-filling" title="Link to this heading"></a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The manual filling process is only needed in very special use cases, so in vast majority of
+common applications this section can be skipped.</p>
+</div>
+<p>The automatic method of filling the block template can be partially suplemented by the
+<a class="reference internal" href="#tgt-manual-fill"><span class="std std-ref">manual method</span></a> using a <strong>special</strong> <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> <strong>key with a handler
+function value</strong> defined in a <em>dictionary</em> corresponding to the block. The function assigned to
+the <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key defines a handler called when a block is being filled. The handler function
+can call the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to perform special low-level operations if needed.</p>
+<p>The handler function must use the following declaration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">func</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">object</span><span class="p">,</span> <span class="n">clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">block</span></code>: A <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object corresponding to the template block for which the
+handler has been called.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The dictionary (or optionally a custom object) used for filling the content of a
+block.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clone_subidx</span></code>: An index of a cloned content being filled. Only applicable if the block is
+being cloned during the automatic filling process.</p></li>
+</ul>
+<p>The example below illustrates the use of a manual filling handler for making the <code class="docutils literal notranslate"><span class="pre">MONTH</span></code>
+variable value using uppercase letters if it is a string and then setting the content variation
+of the <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block using the <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_month</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_month</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 DECEMBER
+</pre></div>
+</div>
+</section>
 <section id="removing-a-variable">
 <h4>Removing a variable<a class="headerlink" href="#removing-a-variable" title="Link to this heading"></a></h4>
 <p>A variable can be removed from the generated content by setting its dictionary value to an
@@ -539,6 +588,8 @@ the generated content.</p></li>
 <li><p><a class="reference internal" href="api.html#blockie.Block.clear" title="blockie.Block.clear"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.clear_subblock" title="blockie.Block.clear_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear_subblock()</span></code></a>: Removing blocks from the
 generated content.</p></li>
 </ul>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
 <p>The following examples briefly illustrate the manual template filling process:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">                            SHOPPING LIST</span>
@@ -651,6 +702,7 @@ generated content.</p></li>
 * cooking magazine
 </pre></div>
 </div>
+</section>
 </section>
 </section>
 
