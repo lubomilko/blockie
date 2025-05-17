@@ -146,9 +146,6 @@ value ``4`` is not followed by a comma):
     1, 2, 3, 4
 
 .. seealso::
-    .
-
-.. seealso::
     See the :ref:`code example <tgt_auto_fill_basic_example>` using both of the automatic tags.
 
     The symbols used for the automatic tags can also be configured by the
