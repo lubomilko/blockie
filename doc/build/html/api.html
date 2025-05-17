@@ -59,15 +59,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.load_template"><code class="docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.save_content"><code class="docutils literal notranslate"><span class="pre">Block.save_content()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.fill"><code class="docutils literal notranslate"><span class="pre">Block.fill()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.reset"><code class="docutils literal notranslate"><span class="pre">Block.reset()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clear"><code class="docutils literal notranslate"><span class="pre">Block.clear()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clone"><code class="docutils literal notranslate"><span class="pre">Block.clone()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.get_subblock"><code class="docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clear_subblock"><code class="docutils literal notranslate"><span class="pre">Block.clear_subblock()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.set_subblock"><code class="docutils literal notranslate"><span class="pre">Block.set_subblock()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.set"><code class="docutils literal notranslate"><span class="pre">Block.set()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.set_variables"><code class="docutils literal notranslate"><span class="pre">Block.set_variables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.set"><code class="docutils literal notranslate"><span class="pre">Block.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.set_subblock"><code class="docutils literal notranslate"><span class="pre">Block.set_subblock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clone"><code class="docutils literal notranslate"><span class="pre">Block.clone()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clear_variables"><code class="docutils literal notranslate"><span class="pre">Block.clear_variables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clear"><code class="docutils literal notranslate"><span class="pre">Block.clear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.clear_subblock"><code class="docutils literal notranslate"><span class="pre">Block.clear_subblock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blockie.Block.reset"><code class="docutils literal notranslate"><span class="pre">Block.reset()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blockie.BlockConfig"><code class="docutils literal notranslate"><span class="pre">BlockConfig</span></code></a><ul>
@@ -109,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="api">
-<h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<span id="tgt-api"></span><h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="blockie.Block">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blockie.</span></span><span class="sig-name descname"><span class="pre">Block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~pathlib.Path</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config:</span> <span class="pre">~blockie.blockie.BlockConfig</span> <span class="pre">=</span> <span class="pre">BlockConfig(tag_gen_var=&lt;function</span> <span class="pre">BlockConfig.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag_gen_blk_start=&lt;function</span> <span class="pre">BlockConfig.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag_gen_blk_end=&lt;function</span> <span class="pre">BlockConfig.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag_gen_blk_vari=&lt;function</span> <span class="pre">BlockConfig.&lt;lambda&gt;&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autotag_align='+'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autotag_vari='.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_size=4)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blockie/blockie.html#Block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block" title="Link to this definition"></a></dt>
@@ -242,23 +242,62 @@ and a data being filled usable for special low-level operations.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.reset" title="Link to this definition"></a></dt>
-<dd><p>Resets the block content to the initial template.</p>
+<dt class="sig sig-object py" id="blockie.Block.get_subblock">
+<span class="sig-name descname"><span class="pre">get_subblock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subblock_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.get_subblock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.get_subblock" title="Link to this definition"></a></dt>
+<dd><p>Returns the specified child block object from the current block content. Each child
+is also automatically added into the <code class="docutils literal notranslate"><span class="pre">children</span></code> attribute of the current block.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>all_children</strong> – Enables a reset of all child blocks too.</p>
+<dd class="field-odd"><p><strong>subblock_names</strong> – The tag names of blocks to be extracted from a current block content.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object or a list of blocks if multiple subblock names are specified.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> is returned if the specified block tags are not found.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.clear" title="Link to this definition"></a></dt>
-<dd><p>Clears the block from its parent block, i.e., sets the block to an empty string.</p>
+<dt class="sig sig-object py" id="blockie.Block.set_variables">
+<span class="sig-name descname"><span class="pre">set_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoclone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">name_value_kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set_variables" title="Link to this definition"></a></dt>
+<dd><p>Sets values into the specified variables within this block content.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>count</strong> – The maximum number of blocks with the same name to be cleared, -1 = all.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>autoclone</strong> – Enables automatic clone of this block after setting all variables.</p></li>
+<li><p><strong>name_value_kwargs</strong> – Keyword arguments representing variable name-value pairs, e.g.,
+<code class="docutils literal notranslate"><span class="pre">name=&quot;Thomas&quot;,</span> <span class="pre">surname=&quot;Anderson&quot;,</span> <span class="pre">age=37</span></code>. Tuples or lists can be used as
+variable values, making this block to be automatically cloned after setting each
+element value.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blockie.Block.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vari_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set" title="Link to this definition"></a></dt>
+<dd><p>Sets the content of this block into its parent block content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vari_idx</strong> – An index of a variation block content (if any) to be set starting from 0.
+A negative index or boolean false causes the block to be cleared. A boolean true
+is the same as index 0.</p></li>
+<li><p><strong>all_children</strong> – Enables setting of all child blocks of this block before setting it.</p></li>
+<li><p><strong>count</strong> – The maximum number of blocks with the same name to be set (-1 = no limit).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blockie.Block.set_subblock">
+<span class="sig-name descname"><span class="pre">set_subblock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subblocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set_subblock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set_subblock" title="Link to this definition"></a></dt>
+<dd><p>Sets the content of specified child blocks into the content of the current block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subblocks</strong> – The subblock object(s) or their names to be set.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,17 +324,24 @@ previously and no further clone is created.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.get_subblock">
-<span class="sig-name descname"><span class="pre">get_subblock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subblock_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.get_subblock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.get_subblock" title="Link to this definition"></a></dt>
-<dd><p>Returns the specified child block object from the current block content. Each child
-is also automatically added into the <code class="docutils literal notranslate"><span class="pre">children</span></code> attribute of the current block.</p>
+<dt class="sig sig-object py" id="blockie.Block.clear_variables">
+<span class="sig-name descname"><span class="pre">clear_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">var_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.clear_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.clear_variables" title="Link to this definition"></a></dt>
+<dd><p>Clears the specified variables from this block content. Has the same effect as setting
+the variables to an empty string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>subblock_names</strong> – The tag names of blocks to be extracted from a current block content.</p>
+<dd class="field-odd"><p><strong>var_names</strong> – Names of the variables to be cleared.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a class="reference internal" href="#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object or a list of blocks if multiple subblock names are specified.
-<code class="docutils literal notranslate"><span class="pre">None</span></code> is returned if the specified block tags are not found.</p>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blockie.Block.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.clear" title="Link to this definition"></a></dt>
+<dd><p>Clears the block from its parent block, i.e., sets the block to an empty string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>count</strong> – The maximum number of blocks with the same name to be cleared, -1 = all.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -312,58 +358,12 @@ is also automatically added into the <code class="docutils literal notranslate">
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.set_subblock">
-<span class="sig-name descname"><span class="pre">set_subblock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subblocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#blockie.Block" title="blockie.blockie.Block"><span class="pre">Block</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set_subblock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set_subblock" title="Link to this definition"></a></dt>
-<dd><p>Sets the content of specified child blocks into the content of the current block.</p>
+<dt class="sig sig-object py" id="blockie.Block.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.reset" title="Link to this definition"></a></dt>
+<dd><p>Resets the block content to the initial template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>subblocks</strong> – The subblock object(s) or their names to be set.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vari_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set" title="Link to this definition"></a></dt>
-<dd><p>Sets the content of this block into its parent block content.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vari_idx</strong> – An index of a variation block content (if any) to be set starting from 0.
-A negative index or boolean false causes the block to be cleared. A boolean true
-is the same as index 0.</p></li>
-<li><p><strong>all_children</strong> – Enables setting of all child blocks of this block before setting it.</p></li>
-<li><p><strong>count</strong> – The maximum number of blocks with the same name to be set (-1 = no limit).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.set_variables">
-<span class="sig-name descname"><span class="pre">set_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoclone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">name_value_kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.set_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.set_variables" title="Link to this definition"></a></dt>
-<dd><p>Sets values into the specified variables within this block content.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>autoclone</strong> – Enables automatic clone of this block after setting all variables.</p></li>
-<li><p><strong>name_value_kwargs</strong> – Keyword arguments representing variable name-value pairs, e.g.,
-<code class="docutils literal notranslate"><span class="pre">name=&quot;Thomas&quot;,</span> <span class="pre">surname=&quot;Anderson&quot;,</span> <span class="pre">age=37</span></code>. Tuples or lists can be used as
-variable values, making this block to be automatically cloned after setting each
-element value.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="blockie.Block.clear_variables">
-<span class="sig-name descname"><span class="pre">clear_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">var_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/blockie/blockie.html#Block.clear_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block.clear_variables" title="Link to this definition"></a></dt>
-<dd><p>Clears the specified variables from this block content. Has the same effect as setting
-the variables to an empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>var_names</strong> – Names of the variables to be cleared.</p>
+<dd class="field-odd"><p><strong>all_children</strong> – Enables a reset of all child blocks too.</p>
 </dd>
 </dl>
 </dd></dl>

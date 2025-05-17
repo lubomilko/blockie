@@ -313,75 +313,6 @@
         <span class="k">return</span> <span class="n">ret_vari_idx</span></div>
 
 
-<div class="viewcode-block" id="Block.reset">
-<a class="viewcode-back" href="../../api.html#blockie.Block.reset">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_children</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the block content to the initial template.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            all_children: Enables a reset of all child blocks too.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__template</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">all_children</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">blk_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">blk_obj</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Block.clear">
-<a class="viewcode-back" href="../../api.html#blockie.Block.clear">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the block from its parent block, i.e., sets the block to an empty string.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            count: The maximum number of blocks with the same name to be cleared, -1 = all.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Block.clone">
-<a class="viewcode-back" href="../../api.html#blockie.Block.clone">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copies</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">passive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">set_children</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clones the block, i.e., virtually adds another copy of a block template after the</span>
-<span class="sd">        existing block content making the new template copy ready to be filled with other values.</span>
-
-<span class="sd">        The clone is created only if blocks and variables are set after cloning. The child blocks</span>
-<span class="sd">        are reset after cloning, unless the ``passive`` argument is set to ``True``.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            copies: The number of template copies to be prepared. If &gt; 1, then ``force`` and</span>
-<span class="sd">                ``passive`` arguments are automatically ``False``.</span>
-<span class="sd">            force: Forces the clone to be created even if no variable or block is then set.</span>
-<span class="sd">            passive: Enables cloning only if an active (non-passive) clone has been requested</span>
-<span class="sd">                previously and no further clone is created.</span>
-<span class="sd">            set_children: Enables setting of all child blocks to this parent block before cloning.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">set_children</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">child</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">copies</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">copies</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Check if cloning flag indicates that the cloning should be actually performed.</span>
-            <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autotags</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__set_autotag_vari</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__autovari_first</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__autovari_first</span> <span class="o">=</span> <span class="kc">False</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__set_autotag_align</span><span class="p">()</span>
-                <span class="c1"># Perform cloning.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">__template</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">passive</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="c1"># Reset all child blocks to make their content ready to be filled with new values.</span>
-                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                    <span class="n">child</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">all_children</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="Block.get_subblock">
 <a class="viewcode-back" href="../../api.html#blockie.Block.get_subblock">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_subblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">subblock_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;Block&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;Block&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
@@ -408,41 +339,46 @@
                     <span class="n">subblk</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="bp">self</span>      <span class="c1"># pylint: disable=protected-access, unused-private-member</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="p">[</span><span class="n">subblock_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">subblk</span>
             <span class="n">ret_blk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subblk</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">ret_blk</span> <span class="k">else</span> <span class="n">ret_blk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret_blk</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ret_blk</span></div>
+        <span class="k">return</span> <span class="n">ret_blk</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret_blk</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ret_blk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Block.clear_subblock">
-<a class="viewcode-back" href="../../api.html#blockie.Block.clear_subblock">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">clear_subblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">subblocks</span><span class="p">:</span> <span class="s2">&quot;Block | str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the content of specified child blocks from a current block content.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            subblocks: Subblock object(s) or their names to be cleared.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">subblk</span> <span class="ow">in</span> <span class="n">subblocks</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">blk_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">subblk</span><span class="p">))</span>
-                <span class="k">if</span> <span class="n">blk_sub</span><span class="p">:</span>
-                    <span class="n">blk_sub</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">subblk</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Block.set_subblock">
-<a class="viewcode-back" href="../../api.html#blockie.Block.set_subblock">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_subblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">subblocks</span><span class="p">:</span> <span class="s2">&quot;Block | str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the content of specified child blocks into the content of the current block.</span>
+<div class="viewcode-block" id="Block.set_variables">
+<a class="viewcode-back" href="../../api.html#blockie.Block.set_variables">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">autoclone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">name_value_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets values into the specified variables within this block content.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            subblocks: The subblock object(s) or their names to be set.</span>
+<span class="sd">            autoclone: Enables automatic clone of this block after setting all variables.</span>
+<span class="sd">            name_value_kwargs: Keyword arguments representing variable name-value pairs, e.g.,</span>
+<span class="sd">                ``name=&quot;Thomas&quot;, surname=&quot;Anderson&quot;, age=37``. Tuples or lists can be used as</span>
+<span class="sd">                variable values, making this block to be automatically cloned after setting each</span>
+<span class="sd">                element value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">subblk</span> <span class="ow">in</span> <span class="n">subblocks</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">blk_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">subblk</span><span class="p">))</span>
-                <span class="k">if</span> <span class="n">blk_sub</span><span class="p">:</span>
-                    <span class="n">blk_sub</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">subblk</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+        <span class="n">iter_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">detected_iters_num</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">iter_idx</span> <span class="o">&lt;</span> <span class="n">detected_iters_num</span><span class="p">:</span>
+            <span class="c1"># Clone block if the cloning flag is set to true to ensure that the variable tags can be</span>
+            <span class="c1"># found in the block content and the variable values can be set into them.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">passive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Loop through variable tags and replace them with the corresponding variable values.</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag_gen_var</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">name_value_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()]:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Check if the val is iterable and if so, then set its individual elements.</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">_</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                        <span class="n">detected_iters_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">detected_iters_num</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">iter_idx</span><span class="p">:</span>
+                            <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">iter_idx</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                        <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">var_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">iter_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">iter_idx</span> <span class="o">&lt;</span> <span class="n">detected_iters_num</span> <span class="ow">or</span> <span class="n">autoclone</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Block.set">
@@ -499,43 +435,63 @@
                 <span class="k">break</span></div>
 
 
-<div class="viewcode-block" id="Block.set_variables">
-<a class="viewcode-back" href="../../api.html#blockie.Block.set_variables">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">autoclone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">name_value_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets values into the specified variables within this block content.</span>
+<div class="viewcode-block" id="Block.set_subblock">
+<a class="viewcode-back" href="../../api.html#blockie.Block.set_subblock">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_subblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">subblocks</span><span class="p">:</span> <span class="s2">&quot;Block | str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the content of specified child blocks into the content of the current block.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            autoclone: Enables automatic clone of this block after setting all variables.</span>
-<span class="sd">            name_value_kwargs: Keyword arguments representing variable name-value pairs, e.g.,</span>
-<span class="sd">                ``name=&quot;Thomas&quot;, surname=&quot;Anderson&quot;, age=37``. Tuples or lists can be used as</span>
-<span class="sd">                variable values, making this block to be automatically cloned after setting each</span>
-<span class="sd">                element value.</span>
+<span class="sd">            subblocks: The subblock object(s) or their names to be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">iter_idx</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">detected_iters_num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">iter_idx</span> <span class="o">&lt;</span> <span class="n">detected_iters_num</span><span class="p">:</span>
-            <span class="c1"># Clone block if the cloning flag is set to true to ensure that the variable tags can be</span>
-            <span class="c1"># found in the block content and the variable values can be set into them.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">passive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="c1"># Loop through variable tags and replace them with the corresponding variable values.</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag_gen_var</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">name_value_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()]:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Check if the val is iterable and if so, then set its individual elements.</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">_</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-                        <span class="n">detected_iters_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">detected_iters_num</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
-                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">iter_idx</span><span class="p">:</span>
-                            <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">iter_idx</span><span class="p">]</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-                        <span class="n">var_value</span> <span class="o">=</span> <span class="n">val</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">var_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">iter_idx</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">iter_idx</span> <span class="o">&lt;</span> <span class="n">detected_iters_num</span> <span class="ow">or</span> <span class="n">autoclone</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
+        <span class="k">for</span> <span class="n">subblk</span> <span class="ow">in</span> <span class="n">subblocks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">blk_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">subblk</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">blk_sub</span><span class="p">:</span>
+                    <span class="n">blk_sub</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subblk</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Block.clone">
+<a class="viewcode-back" href="../../api.html#blockie.Block.clone">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copies</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">passive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">set_children</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clones the block, i.e., virtually adds another copy of a block template after the</span>
+<span class="sd">        existing block content making the new template copy ready to be filled with other values.</span>
+
+<span class="sd">        The clone is created only if blocks and variables are set after cloning. The child blocks</span>
+<span class="sd">        are reset after cloning, unless the ``passive`` argument is set to ``True``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            copies: The number of template copies to be prepared. If &gt; 1, then ``force`` and</span>
+<span class="sd">                ``passive`` arguments are automatically ``False``.</span>
+<span class="sd">            force: Forces the clone to be created even if no variable or block is then set.</span>
+<span class="sd">            passive: Enables cloning only if an active (non-passive) clone has been requested</span>
+<span class="sd">                previously and no further clone is created.</span>
+<span class="sd">            set_children: Enables setting of all child blocks to this parent block before cloning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">set_children</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">copies</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">copies</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Check if cloning flag indicates that the cloning should be actually performed.</span>
+            <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autotags</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__set_autotag_vari</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__autovari_first</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__autovari_first</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__set_autotag_align</span><span class="p">()</span>
+                <span class="c1"># Perform cloning.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">__template</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">passive</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># Reset all child blocks to make their content ready to be filled with new values.</span>
+                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">child</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">all_children</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Block.clear_variables">
@@ -549,6 +505,50 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag_gen_var</span><span class="p">(</span><span class="n">var_name</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Block.clear">
+<a class="viewcode-back" href="../../api.html#blockie.Block.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the block from its parent block, i.e., sets the block to an empty string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count: The maximum number of blocks with the same name to be cleared, -1 = all.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Block.clear_subblock">
+<a class="viewcode-back" href="../../api.html#blockie.Block.clear_subblock">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_subblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">subblocks</span><span class="p">:</span> <span class="s2">&quot;Block | str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the content of specified child blocks from a current block content.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subblocks: Subblock object(s) or their names to be cleared.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">subblk</span> <span class="ow">in</span> <span class="n">subblocks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">blk_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subblk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">subblk</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">blk_sub</span><span class="p">:</span>
+                    <span class="n">blk_sub</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subblk</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Block.reset">
+<a class="viewcode-back" href="../../api.html#blockie.Block.reset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_children</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the block content to the initial template.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_children: Enables a reset of all child blocks too.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__template</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__clone_flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">all_children</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">blk_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">blk_obj</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__get_block_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_tags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
