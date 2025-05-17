@@ -12,11 +12,6 @@ template engine project.
 
 ## [unreleased] - 202y-mm-dd
 
-
-
-
-## [1.0.0] - 2024-01-05
-
 First release based on the [blocky](https://github.com/lubomilko/blocky) project that could not be
 published on PyPi due to a name conflict with another existing project. The sections below
 describe modifications since the last
