@@ -1,4 +1,10 @@
-# pylint: disable = missing-module-docstring, missing-class-docstring, missing-function-docstring
+"""
+NOTE: The tests are currently in a very rough shape and they come from old dirty scripts made only
+to quickly verify if new features work as expected. Proper tests are planned to be added in future
+releases.
+"""
+
+# pylint: disable = missing-class-docstring, missing-function-docstring
 
 import sys
 from pathlib import Path
@@ -293,6 +299,7 @@ Short list: @items@item@_, @~_@!_@!items
 
 Short list: apples, potatoes, rice, orange juice, cooking magazine
 """
+
 
 if __name__ == "__main__":
     test_shoplist_custom_cfg()
