@@ -21,6 +21,10 @@ The created :py:class:`.BlockConfig` object can be either assigned directly to t
 constructor :py:meth:`.Block.__init__`. All child blocks of a configured block will automatically
 use the same configuration.
 
+
+Example
+===================================================================================================
+
 The following example equivalent to the :ref:`advanced example <tgt_auto_fill_advanced_example>`
 shown before, uses a block configuration object with an *at* sign ``@`` used as a primary tag
 symbol:
