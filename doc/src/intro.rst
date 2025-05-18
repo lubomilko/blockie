@@ -9,9 +9,10 @@ text, source code, data files or markup language content like HTML, XML or markd
 Blockie is a minimalistic answer to the existing popular template engines that are usually bulky
 and difficult to use, requiring users to learn a template language and other complex principles,
 with templates often approaching the form of a source code. Many template-based projects do not
-need such complexity, and Blockie offers a much simpler approach with only a few easy-to-learn
-principles and clean, logic-less templates. The logic of filling the templates with data is defined
-by a user-defined Python script using Blockie to make the process reasonably easy.
+need such complexity, and Blockie offers a much simpler approach with only a few simple but
+extremely multipurpose principles and clean, logicless templates. If a more advanced
+template-filling logic is needed, then it is expected to be defined directly within the
+user-defined Python script, which avoids the need for a custom template language.
 
 .. note::
     The reasoning behind using a standard Python script to control certain parts of the template

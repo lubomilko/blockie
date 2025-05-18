@@ -392,11 +392,11 @@ The input data file *shoplist_data.json*:
 
     {
         "items": [
-            {"flag": null, "item": "apples", "qty": "1", "unit": 0},
-            {"flag": 0, "item": "potatoes", "qty": "2", "unit": 0},
-            {"flag": null, "item": "rice", "qty": "1", "unit": 0},
-            {"flag": null, "item": "orange juice", "qty": "1", "unit": 1},
-            {"flag": 1, "item": "cooking magazine", "qty": null, "unit": null}
+            {"item": "apples", "qty": "1", "unit": 0},
+            {"item": "potatoes", "qty": "2", "unit": 0},
+            {"item": "rice", "qty": "1", "unit": 0},
+            {"item": "orange juice", "qty": "1", "unit": 1},
+            {"item": "cooking magazine", "qty": null, "unit": null}
         ]
     }
 
@@ -407,13 +407,26 @@ The script code:
     import json
     from blockie import Block
 
-        with open("shoplist_data.json", encoding="utf-8") as file:
-            data = json.load(file)
+    important_items = ("potatoes", "rice")
+    maybe_items = ("cooking magazine",)
 
-            blk = Block()
-            blk.load_template("shoplist_tmpl.txt")
-            blk.fill(data)
-            blk.save_content("shoplist_gen.txt")
+    with open("samples/shoplist_data.json", encoding="utf-8") as file:
+        data = json.load(file)
+
+        for item in data["items"]:
+            item["flag"] = 0 if item["item"] in important_items else \
+                1 if item["item"] in maybe_items else None
+
+        blk = blockie.Block()
+        blk.load_template("samples/shoplist_tmpl.txt")
+        blk.fill(data)
+        blk.save_content("samples/shoplist_gen.txt")
+
+.. note::
+    Notice that the value of the ``FLAG`` variable in the template is defined by the script
+    setting the ``flag`` key value into the input dictionary data. This is done to illustrate
+    how to     control the template filling logic within the script, since the Blockie templates
+    are logicless.
 
 The generated output file *shoplist_gen.txt*:
 
@@ -424,9 +437,9 @@ The generated output file *shoplist_gen.txt*:
     ------------------------------------------------------------------------
     * apples                                                        1 kg
     * IMPORTANT! potatoes                                           2 kg
-    * rice                                                          1 kg
+    * IMPORTANT! rice                                               1 kg
     * orange juice                                                  1 l
     * MAYBE? cooking magazine                                       
-    
-    
+
+
     Short list: apples, potatoes, rice, orange juice, cooking magazine
