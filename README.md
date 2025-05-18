@@ -1,4 +1,4 @@
-# Blockie template engine
+# Blockie Python template engine
 
 [Blockie](https://github.com/lubomilko/blockie) is an extremely lightweight and simple universal
 Python-based template engine. It can generate various types of text-based content, e.g., standard
@@ -33,7 +33,16 @@ template using values defined in the input data:
 Please read the full [documentation here](https://lubomilko.github.io/blockie).
 
 
-# Quick start
+## Installation
+
+The Blockie package can be installed in a standard way using the following *pip* console command:
+
+```console
+pip install blockie
+```
+
+
+## Quick start
 
 The following Python script serves as a simple illustration of all basic principles. The template
 is loaded from the `template` string and filled using the `data` dictionary with the `FLAG`
