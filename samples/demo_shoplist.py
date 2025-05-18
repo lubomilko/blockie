@@ -74,8 +74,14 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 
 
 def demo_shoplist() -> None:
+    important_items = ("potatoes", "rice")
+    maybe_items = ("cooking magazine")
+
     with open("samples/shoplist_data.json", encoding="utf-8") as file:
         data = json.load(file)
+
+        for item in data["items"]:
+            item["flag"] = 0 if item["item"] in important_items else 1 if item["item"] in maybe_items else None
 
         blk = blockie.Block()
         blk.load_template("samples/shoplist_tmpl.txt")
