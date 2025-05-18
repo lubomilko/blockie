@@ -35,12 +35,19 @@ Please read the full [documentation here](https://lubomilko.github.io/blockie).
 
 ## Installation
 
-The Blockie package can be installed in a standard way using the following *pip* console command:
+The Blockie package can be installed from the [Python Package Index](https://pypi.org/) using the
+following *pip* console command:
 
 ```console
 pip install blockie
 ```
 
+Alternatively, it is also possible to install the Blockie package from a *\*.tar.gz* source
+distribution that can be downloaded from the *dist* directory:
+
+```console
+pip install blockie-<version>.tar.gz
+```
 
 ## Quick start
 
