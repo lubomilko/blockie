@@ -1,5 +1,6 @@
 # pylint: disable = missing-module-docstring, missing-class-docstring, missing-function-docstring
 import sys
+import json
 from dataclasses import dataclass
 
 sys.path.insert(0, f"{sys.path[0]}/../src")
@@ -73,31 +74,13 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 
 
 def demo_shoplist() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-<ITEMS>
-* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
-</ITEMS>
+    with open("samples/shoplist_data.json", encoding="utf-8") as file:
+        data = json.load(file)
 
-
-Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
-"""
-
-    data = {
-        "items": [
-            {"flag": None, "item": "apples", "qty": "1", "unit": True},
-            {"flag": True, "item": "potatoes", "qty": "2", "unit": 0},
-            {"flag": None, "item": "rice", "qty": "1", "unit": 0},
-            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1},
-            {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
-        ]
-    }
-
-    blk = blockie.Block(template)
-    blk.fill(data)
-    print(blk.content)
+        blk = blockie.Block()
+        blk.load_template("samples/shoplist_tmpl.txt")
+        blk.fill(data)
+        blk.save_content("samples/shoplist_gen.txt")
 
 
 def demo_shoplist_custom_cfg() -> None:

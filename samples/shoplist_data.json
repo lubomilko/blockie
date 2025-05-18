@@ -1,0 +1,9 @@
+{
+    "items": [
+        {"flag": null, "item": "apples", "qty": "1", "unit": 0},
+        {"flag": 0, "item": "potatoes", "qty": "2", "unit": 0},
+        {"flag": null, "item": "rice", "qty": "1", "unit": 0},
+        {"flag": null, "item": "orange juice", "qty": "1", "unit": 1},
+        {"flag": 1, "item": "cooking magazine", "qty": null, "unit": null}
+    ]
+}

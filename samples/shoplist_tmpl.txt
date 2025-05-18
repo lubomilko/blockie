@@ -1,0 +1,9 @@
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+<ITEMS>
+* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+
+
+Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
