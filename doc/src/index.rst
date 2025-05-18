@@ -7,6 +7,8 @@ Blockie
 	:caption: Contents
 
 	intro
-	usage
+	tags
+	autofill
+	manfill
 	config
 	api

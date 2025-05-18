@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatic template filling &mdash; Blockie 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Manual template filling" href="manfill.html" />
+    <link rel="prev" title="Template tags" href="tags.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Blockie
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Automatic template filling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-automatic-filling">Basic automatic filling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-variable-value">Setting a variable value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content">Setting a block content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cloning-a-block-and-setting-its-content">Cloning a block and setting its content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-automatic-filling">Advanced automatic filling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content-as-is">Setting a block content as is</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content-variation">Setting a block content variation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-handler-for-manual-filling">Setting a handler for manual filling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removing-a-variable">Removing a variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removing-a-block">Removing a block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tgt-auto-fill-advanced-example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Blockie</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Automatic template filling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/autofill.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="automatic-template-filling">
+<span id="tgt-auto-fill"></span><h1>Automatic template filling<a class="headerlink" href="#automatic-template-filling" title="Link to this heading"></a></h1>
+<p>The automatic template filling is the simplest way to generate a templated content. To fill the
+template variables and blocks with data, it is first necessary to load the whole template into
+the primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. This can be done by setting a template string text or a
+text file in the <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a> constructor. Alternatively, the
+<a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
+<p>A template can then be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
+provided as an argument in a Python <strong>dictionary</strong>. The dictionary keys represent the template
+<a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>. The data dictionary needs to</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In reality, the automatic template filling process is, of course, not fully automatic. It is
+necessary to provide the data to fill the template in a correct format matching the template
+structure. However, the filling process is then all done by the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method,
+unlike with a <a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">manual approach</span></a>, where the filling script needs to call
+the individual <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to generate the required content.</p>
+</div>
+<section id="basic-automatic-filling">
+<span id="tgt-auto-fill-basic"></span><h2>Basic automatic filling<a class="headerlink" href="#basic-automatic-filling" title="Link to this heading"></a></h2>
+<p>The values assigned to the data dictionary keys representing template tags can perform various
+operations described in the sections below depending on the data type of the dictionary value.</p>
+<section id="setting-a-variable-value">
+<h3>Setting a variable value<a class="headerlink" href="#setting-a-variable-value" title="Link to this heading"></a></h3>
+<p>A variable value is set using a <strong>basic data type</strong> (i.e., <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">bool</span></code>).</p>
+<p>The example below sets the variables <code class="docutils literal notranslate"><span class="pre">word1</span></code> and <code class="docutils literal notranslate"><span class="pre">word2</span></code> to the string values <code class="docutils literal notranslate"><span class="pre">Hello</span></code>,
+<code class="docutils literal notranslate"><span class="pre">World!</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;WORD1&gt; &lt;WORD2&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;word1&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot;word2&quot;</span><span class="p">:</span> <span class="s2">&quot;world!&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello world!
+</pre></div>
+</div>
+</section>
+<section id="setting-a-block-content">
+<h3>Setting a block content<a class="headerlink" href="#setting-a-block-content" title="Link to this heading"></a></h3>
+<p>The content of a block needs to be set by a <strong>dictionary</strong>, as shown in the following example
+setting the content of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block, specifically setting its child <code class="docutils literal notranslate"><span class="pre">day</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code>
+variable values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+</section>
+<section id="cloning-a-block-and-setting-its-content">
+<h3>Cloning a block and setting its content<a class="headerlink" href="#cloning-a-block-and-setting-its-content" title="Link to this heading"></a></h3>
+<p>A block can be cloned, i.e., duplicated, using a <strong>list or a tuple of dictionaries</strong> with each
+dictionary corresponding to one clone of a block content. The example below shows setting of
+two dates in two clones of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;</span><span class="se">\n</span><span class="s2">&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 12
+25 12
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The blocks having multiple <a class="reference internal" href="tags.html#tgt-primary-tags-content-vari"><span class="std std-ref">content variations</span></a> cannot
+be cloned directly. They can, however, be cloned indirectly by “wrapping” them in a standard
+parent block that can be cloned, e.g.,
+<code class="docutils literal notranslate"><span class="pre">&lt;DATE_WRAP&gt;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt;</span> <span class="pre">&lt;MONTH&gt;&lt;/DATE&gt;&lt;DATE_WRAP&gt;</span></code>, where the
+<code class="docutils literal notranslate"><span class="pre">DATE_WRAP</span></code> block content can be cloned and each clone would contain a new <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block
+having two content variations.</p>
+<p>Note that the process of
+<a class="reference internal" href="#tgt-auto-fill-advanced-set-block-vari"><span class="std std-ref">setting the selected block content variation</span></a>
+is described later.</p>
+</div>
+</section>
+<section id="example">
+<span id="tgt-auto-fill-basic-example"></span><h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>The following filling script example shows all simple concepts described above, i.e., the template
+containing the <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">basic tags</span></a> and also <a class="reference internal" href="tags.html#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>
+filled using the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic principles</span></a> of automatic filling. The template
+is defined directly by the <code class="docutils literal notranslate"><span class="pre">template</span></code> string and the data to fill the template with are defined
+by the <code class="docutils literal notranslate"><span class="pre">data</span></code> dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">blockie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Block</span>
+
+
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                            SHOPPING LIST</span>
+<span class="s2">  Items                                                         Quantity</span>
+<span class="s2">------------------------------------------------------------------------</span>
+<span class="s2">&lt;ITEMS&gt;</span>
+<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                                                     &lt;QTY&gt;</span>
+<span class="s2">&lt;/ITEMS&gt;</span>
+
+
+<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 kg&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2 kg&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 kg&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 l&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The script prints the following generated content:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+* apples                                                        1 kg
+* potatoes                                                      2 kg
+* rice                                                          1 kg
+* orange juice                                                  1 l
+* cooking magazine                                              1
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice that the template contains two <code class="docutils literal notranslate"><span class="pre">ITEMS</span></code> blocks containing the variable <code class="docutils literal notranslate"><span class="pre">ITEM</span></code> and
+that both blocks are automatically filled by the same data, since they have the same name.</p>
+</div>
+</section>
+</section>
+<section id="advanced-automatic-filling">
+<span id="tgt-auto-fill-advanced"></span><h2>Advanced automatic filling<a class="headerlink" href="#advanced-automatic-filling" title="Link to this heading"></a></h2>
+<p>Similarly to the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic operations</span></a>, the values in a data dictionary
+can also perform additional operations described in the following sections.</p>
+<section id="setting-a-block-content-as-is">
+<h3>Setting a block content as is<a class="headerlink" href="#setting-a-block-content-as-is" title="Link to this heading"></a></h3>
+<p>A single block can be set to the generated content as is, i.e., without setting any of its child
+elements, by setting the block value to a simple <strong>non-empty value</strong>, which can be a <em>non-empty
+string, zero or positive number or a boolean true</em>. It is expected that the block content is
+either constant, or the variables inside have been already set. The example below shows setting
+a <code class="docutils literal notranslate"><span class="pre">date</span></code> block having a constant content into the final generated output just by setting it to
+boolean true:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;24 December&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+</section>
+<section id="setting-a-block-content-variation">
+<span id="tgt-auto-fill-advanced-set-block-vari"></span><h3>Setting a block content variation<a class="headerlink" href="#setting-a-block-content-variation" title="Link to this heading"></a></h3>
+<p>A specific content from a block with multiple content variations can be selected using a
+<strong>special</strong> <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> <strong>key with a numeric value</strong> defined in a <em>dictionary</em> corresponding to
+the block. The value of a number assigned to the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key defines one of the operations
+below:</p>
+<ul class="simple">
+<li><p>A value equal to zero or higher (<em>&gt;=0</em>) selects the block content variation with an index
+corresponding to the provided value.</p></li>
+<li><p>A negative value (<em>&lt;0</em>) removes the entire block from the generated content.</p></li>
+<li><p>A boolean value can be used, where <code class="docutils literal notranslate"><span class="pre">True</span></code> has the same effect as the value zero and
+<code class="docutils literal notranslate"><span class="pre">False</span></code> has the same effect as a negative value.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that removing a block using a <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key set to a negative value is only the
+secondary purpose of the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key. The primary method of a
+<a class="reference internal" href="#tgt-auto-fill-remove-block"><span class="std std-ref">block removal</span></a> is described later.</p>
+</div>
+<p>Alternatively, if a block has a constant content, it is possible to select one of its constant
+content variations by directly setting a numeric value representing the content index to its key
+in a data dictionary, as shown in the second example below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">date_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}</span>
+<span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date_dict</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;24.12.&lt;^DATE&gt;24 December&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As illustrated on the first example, the block variations can be used for a conditional
+content selection. However, the logic of selecting the right content must be defined within
+the filling script, since the blockie templates are logicless.</p>
+</div>
+</section>
+<section id="setting-a-handler-for-manual-filling">
+<h3>Setting a handler for manual filling<a class="headerlink" href="#setting-a-handler-for-manual-filling" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The manual filling process is only needed in very special use cases, so in vast majority of
+common applications this section can be skipped.</p>
+</div>
+<p>The automatic method of filling the block template can be partially suplemented by the
+<a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">manual method</span></a> using a <strong>special</strong> <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> <strong>key with a handler
+function value</strong> defined in a <em>dictionary</em> corresponding to the block. The function assigned to
+the <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key defines a handler called when a block is being filled. The handler function
+can call the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to perform special low-level operations if needed.</p>
+<p>The handler function must use the following declaration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">func</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">object</span><span class="p">,</span> <span class="n">clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">block</span></code>: A <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object corresponding to the template block for which the
+handler has been called.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The dictionary (or optionally a custom object) used for filling the content of a
+block.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clone_subidx</span></code>: An index of a cloned content being filled. Only applicable if the block is
+being cloned during the automatic filling process.</p></li>
+</ul>
+<p>The example below illustrates the use of a manual filling handler for making the <code class="docutils literal notranslate"><span class="pre">MONTH</span></code>
+variable value using uppercase letters if it is a string and then setting the content variation
+of the <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block using the <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_month</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_month</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 DECEMBER
+</pre></div>
+</div>
+</section>
+<section id="removing-a-variable">
+<h3>Removing a variable<a class="headerlink" href="#removing-a-variable" title="Link to this heading"></a></h3>
+<p>A variable can be removed from the generated content by setting its dictionary value to an
+<strong>empty string or to none</strong> as shown on the example below removing the variable for a middle name.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;NAME&gt; &lt;MIDNAME&gt; &lt;SURNAME&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Patrick&quot;</span><span class="p">,</span> <span class="s2">&quot;midname&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bateman&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Patrick  Bateman
+</pre></div>
+</div>
+</section>
+<section id="removing-a-block">
+<span id="tgt-auto-fill-remove-block"></span><h3>Removing a block<a class="headerlink" href="#removing-a-block" title="Link to this heading"></a></h3>
+<p>A block can be removed from the content by setting it to an <strong>empty value</strong>, which can be an
+<em>empty dictionary, empty list or tuple, none, negative number, or boolean false</em>. The following
+example uses a <code class="docutils literal notranslate"><span class="pre">None</span></code> object to remove the wrapper block <code class="docutils literal notranslate"><span class="pre">MIDNAME_WRAP</span></code> defining a content
+with the variable for a middle name inside:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;NAME&gt; &lt;MIDNAME_WRAP&gt;&lt;MIDNAME&gt; &lt;/MIDNAME_WRAP&gt;&lt;SURNAME&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Patrick&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bateman&quot;</span><span class="p">,</span> <span class="s2">&quot;midname_wrap&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Patrick Bateman
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice how using a wrapper block allows a better control over the parts removed from the
+generated content. In the example above, it it allows to remove the variable for a middle
+name and also the space character that would otherwise remain in the generated content.</p>
+</div>
+</section>
+<section id="tgt-auto-fill-advanced-example">
+<span id="id1"></span><h3>Example<a class="headerlink" href="#tgt-auto-fill-advanced-example" title="Link to this heading"></a></h3>
+<p>The filling script below expands the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic automatic filling concepts</span></a>
+using the advanced operations described above. The script uses a template loaded from a text file
+and data to fill it are loaded from a JSON file. The generated content is then saved into the
+output text file.</p>
+<p>The template input file <em>shoplist_tmpl.txt</em>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+&lt;ITEMS&gt;
+* &lt;FLAG&gt;IMPORTANT! &lt;^FLAG&gt;MAYBE? &lt;/FLAG&gt;&lt;ITEM&gt;&lt;+&gt;               &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;/UNIT&gt;
+&lt;/ITEMS&gt;
+
+
+Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;
+</pre></div>
+</div>
+<p>The input data file <em>shoplist_data.json</em>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;flag&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;apples&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;qty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;flag&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;potatoes&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;qty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;flag&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;qty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;flag&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orange juice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;qty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;flag&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;item&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;qty&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The script code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">blockie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Block</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;shoplist_data.json&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="n">blk</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">load_template</span><span class="p">(</span><span class="s2">&quot;shoplist_tmpl.txt&quot;</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">save_content</span><span class="p">(</span><span class="s2">&quot;shoplist_gen.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The generated output file <em>shoplist_gen.txt</em>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+* apples                                                        1 kg
+* IMPORTANT! potatoes                                           2 kg
+* rice                                                          1 kg
+* orange juice                                                  1 l
+* MAYBE? cooking magazine
+
+
+Short list: apples, potatoes, rice, orange juice, cooking magazine
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tags.html" class="btn btn-neutral float-left" title="Template tags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manfill.html" class="btn btn-neutral float-right" title="Manual template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Lubomir Milko.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

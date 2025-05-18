@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API" href="api.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="prev" title="Manual template filling" href="manfill.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +45,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Template format configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
@@ -79,14 +81,14 @@
              
   <section id="template-format-configuration">
 <span id="tgt-config"></span><h1>Template format configuration<a class="headerlink" href="#template-format-configuration" title="Link to this heading"></a></h1>
-<p>The format of <a class="reference internal" href="usage.html#tgt-primary-tags"><span class="std std-ref">primary</span></a> and <a class="reference internal" href="usage.html#tgt-auto-tags"><span class="std std-ref">automatic</span></a> secondary
+<p>The format of <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">primary</span></a> and <a class="reference internal" href="tags.html#tgt-auto-tags"><span class="std std-ref">automatic</span></a> secondary
 tags in a template, together with other settings, can be configured by the configuration object of
 the <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> class.</p>
-<p>The configuration object attributes define the format of <a class="reference internal" href="usage.html#tgt-primary-tags"><span class="std std-ref">primary tags</span></a>
+<p>The configuration object attributes define the format of <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">primary tags</span></a>
 using functions defining how a template tag string is generated from a tag name. The most
 straightforward way to define these tag generators is to use the <em>lamba</em> functions.</p>
 <p>The configuration object also contains the attributes defining the symbols used for the
-<a class="reference internal" href="usage.html#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>, and a tabulator size attribute used by the <em>alignment
+<a class="reference internal" href="tags.html#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>, and a tabulator size attribute used by the <em>alignment
 autotag</em> when tabulators are used for the alignment.</p>
 <p>The created <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> object can be either assigned directly to the
 <a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a> attribute or it can be provided to the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object
@@ -94,9 +96,9 @@ constructor <a class="reference internal" href="api.html#blockie.Block.__init__"
 use the same configuration.</p>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
-<p>The following example equivalent to the <a class="reference internal" href="usage.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a>
-shown before, uses a block configuration object with an <em>at</em> sign <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> used as a primary tag
-symbol:</p>
+<p>The following example generally equivalent to the
+<a class="reference internal" href="autofill.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a> shown before, uses a block configuration
+object with an <em>at</em> sign <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> used as a primary tag symbol:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">                            SHOPPING LIST</span>
 <span class="s2">  Items                                                         Quantity</span>
@@ -155,7 +157,7 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manfill.html" class="btn btn-neutral float-left" title="Manual template filling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

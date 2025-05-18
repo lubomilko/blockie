@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template tags &mdash; Blockie 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Automatic template filling" href="autofill.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Blockie
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Template tags</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#primary-tags">Primary tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#variable-tag">Variable tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-tag">Block tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-variation-tag">Block variation tag</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#secondary-automatic-tags">Secondary - automatic tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#alignment-autotag">Alignment autotag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variation-autotag">Variation autotag</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Blockie</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Template tags</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tags.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-tags">
+<h1>Template tags<a class="headerlink" href="#template-tags" title="Link to this heading"></a></h1>
+<p>Blockie uses templates containing <em>tags</em> to indicate variable parts of the template intended to
+be filled with specific values by the Python script.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>By default, the tags have an XML-like form using the uppercase letters for names, e.g.,
+<code class="docutils literal notranslate"><span class="pre">&lt;TAG_NAME&gt;</span></code> is a tag named <code class="docutils literal notranslate"><span class="pre">TAG_NAME</span></code>.</p>
+<p>The tag names in a Python filling script are automatically converted to the uppercase format
+by default, i.e., it is possible to refer to the <code class="docutils literal notranslate"><span class="pre">&lt;TAG_NAME&gt;</span></code> tag using a lowercase name
+<code class="docutils literal notranslate"><span class="pre">tag_name</span></code> in the script.</p>
+<p>This tag format and automatic uppercase conversion is used in almost all examples within this
+document. However, the <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">tag format is configurable</span></a>, as will be described
+later.</p>
+</div>
+<section id="primary-tags">
+<span id="tgt-primary-tags"></span><h2>Primary tags<a class="headerlink" href="#primary-tags" title="Link to this heading"></a></h2>
+<section id="variable-tag">
+<h3>Variable tag<a class="headerlink" href="#variable-tag" title="Link to this heading"></a></h3>
+<p>A <em>variable</em> consists of a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;VARIABLE&gt;</span></code> representing a variable named
+<code class="docutils literal notranslate"><span class="pre">VARIABLE</span></code> that can be set to the required value using a simple string replacement.</p>
+</section>
+<section id="block-tag">
+<h3>Block tag<a class="headerlink" href="#block-tag" title="Link to this heading"></a></h3>
+<p>A <em>block</em> consists of a start-end tag pair defining a portion, i.e., block, of text within a
+template. For example, <code class="docutils literal notranslate"><span class="pre">&lt;BLOCK&gt;content&lt;/BLOCK&gt;</span></code> represents a block  named <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> having an
+internal content consisting of a simple string <code class="docutils literal notranslate"><span class="pre">content</span></code>. Apart from a constant text, a block
+can also contain <em>variables</em> and other child <em>blocks</em>.</p>
+<p>The whole template itself is considered to be a <em>primary block</em>. However, it is not marked by any
+start-end tag pair, i.e., the primary template block does not have a name.</p>
+<p>The block content can be <strong>cloned</strong>, i.e., duplicated as many times as needed, with variables in
+each clone filled with different values. For example, the simple template string below contains
+a block named <code class="docutils literal notranslate"><span class="pre">PEOPLE</span></code> that can be used to define a list with each row containing information
+about a different person:</p>
+<p>Template:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A list of people:
+&lt;PEOPLE&gt;
+- &lt;NAME&gt; &lt;SURNAME&gt;, &lt;AGE&gt;
+&lt;/PEOPLE&gt;
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The description of filling the template with values is
+<a class="reference internal" href="autofill.html#tgt-auto-fill-basic"><span class="std std-ref">described later</span></a> after the description of all types of tags.</p>
+</div>
+</section>
+<section id="block-variation-tag">
+<span id="tgt-primary-tags-content-vari"></span><h3>Block variation tag<a class="headerlink" href="#block-variation-tag" title="Link to this heading"></a></h3>
+<p>A block can have multiple predefined <strong>content variations</strong>, with each variation separated by
+a special tag, which by default has a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK&gt;</span></code> format, where the <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> is a block name.
+The script filling the template with data can then select a required variation of the predefined
+content.</p>
+<p>The example below illustrates a template with a <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> block having three variations of its
+content selectable by the filling script:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;BLOCK&gt;content 1&lt;^BLOCK&gt;content 2&lt;^BLOCK&gt;content 3&lt;/BLOCK&gt;
+</pre></div>
+</div>
+</section>
+</section>
+<section id="secondary-automatic-tags">
+<span id="tgt-auto-tags"></span><h2>Secondary - automatic tags<a class="headerlink" href="#secondary-automatic-tags" title="Link to this heading"></a></h2>
+<p>The special secondary <em>autotags</em> are filled automatically, i.e., without any values explicitly
+assigned by the filling script.</p>
+<section id="alignment-autotag">
+<h3>Alignment autotag<a class="headerlink" href="#alignment-autotag" title="Link to this heading"></a></h3>
+<p>An <em>alignment autotag</em> <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> is special tag useful for the text alignment. It automatically
+repeats the first character located right after this tag in the template until a different
+character is found. The column position of the different character is kept according to the
+template regardless of the length of a generated content located before the alignment autotag.</p>
+<p>Example of a template using the alignment autotag:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;NAME&gt;&lt;+&gt;               &lt;SURNAME&gt;
+</pre></div>
+</div>
+<p>repeats the space character located after the <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> tag right until the beginning of a surname
+(since the character “&lt;” at the beginning of the <code class="docutils literal notranslate"><span class="pre">&lt;SURNAME&gt;</span></code> tag is different from the repeated
+space character). The surname start column will remain the same, regardless of the length of the
+<code class="docutils literal notranslate"><span class="pre">NAME</span></code> variable value. So, for example, filling the template using the name-surname pairs
+<code class="docutils literal notranslate"><span class="pre">John</span></code>, <code class="docutils literal notranslate"><span class="pre">Connor</span></code> and <code class="docutils literal notranslate"><span class="pre">Thomas</span></code>, <code class="docutils literal notranslate"><span class="pre">Anderson</span></code> results in both surnames aligned to the same
+column:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>John                    Connor
+Thomas                  Anderson
+</pre></div>
+</div>
+</section>
+<section id="variation-autotag">
+<h3>Variation autotag<a class="headerlink" href="#variation-autotag" title="Link to this heading"></a></h3>
+<p>A <em>variation autotag</em> has a form of a <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;</span></code> (dot) block with two, or optionally three
+<a class="reference internal" href="#tgt-primary-tags"><span class="std std-ref">content variations</span></a>: <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard&lt;^.&gt;last&lt;/.&gt;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard&lt;^.&gt;last&lt;^.&gt;first&lt;/.&gt;</span></code>. This autotag is intended to be placed inside another
+block that is cloned during the <a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">template filling</span></a>. Then the first
+clone is (optionally) set to the <code class="docutils literal notranslate"><span class="pre">first</span></code> content of the variation autotag, the last clone is
+automatically set to the <code class="docutils literal notranslate"><span class="pre">last</span></code> content, and the rest of the clones in between are set to
+the <code class="docutils literal notranslate"><span class="pre">standard</span></code> content.</p>
+<p>This autoblock can be useful, for example, for the comma-separation of variables within a
+cloned block as illustrated below where the <em>standard</em> content is set to a comma <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">``</span>
+<span class="pre">and</span> <span class="pre">the</span> <span class="pre">*last*</span> <span class="pre">content</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">to</span> <span class="pre">an</span> <span class="pre">empty</span> <span class="pre">string</span> <span class="pre">``</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;NUM_LIST&gt;&lt;NUM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/NUM_LIST&gt;
+</pre></div>
+</div>
+<p>Cloning the <code class="docutils literal notranslate"><span class="pre">NUM_LIST</span></code> block with values <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">4</span></code> set to the <code class="docutils literal notranslate"><span class="pre">NUM</span></code>
+variable in each cloned content will result in a following string (notice that the last
+value <code class="docutils literal notranslate"><span class="pre">4</span></code> is not followed by a comma):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1, 2, 3, 4
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See the <a class="reference internal" href="autofill.html#tgt-auto-fill-basic-example"><span class="std std-ref">code example</span></a> using both of the automatic tags.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autofill.html" class="btn btn-neutral float-right" title="Automatic template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Lubomir Milko.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

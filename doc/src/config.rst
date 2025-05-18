@@ -25,9 +25,9 @@ use the same configuration.
 Example
 ===================================================================================================
 
-The following example equivalent to the :ref:`advanced example <tgt_auto_fill_advanced_example>`
-shown before, uses a block configuration object with an *at* sign ``@`` used as a primary tag
-symbol:
+The following example generally equivalent to the
+:ref:`advanced example <tgt_auto_fill_advanced_example>` shown before, uses a block configuration
+object with an *at* sign ``@`` used as a primary tag symbol:
 
 .. code-block:: python
 
