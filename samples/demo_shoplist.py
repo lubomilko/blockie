@@ -75,7 +75,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 
 def demo_shoplist() -> None:
     important_items = ("potatoes", "rice")
-    maybe_items = ("cooking magazine")
+    maybe_items = ("cooking magazine",)
 
     with open("samples/shoplist_data.json", encoding="utf-8") as file:
         data = json.load(file)
@@ -87,6 +87,40 @@ def demo_shoplist() -> None:
         blk.load_template("samples/shoplist_tmpl.txt")
         blk.fill(data)
         blk.save_content("samples/shoplist_gen.txt")
+
+
+def demo_shoplist_1() -> None:
+    template = """
+                            SHOPPING LIST
+  Items                                                         Quantity
+------------------------------------------------------------------------
+<ITEMS>
+* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+
+
+Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
+"""
+
+    important_items = ("potatoes", "rice")
+    maybe_items = ("cooking magazine",)
+
+    data = {
+        "items": [
+            {"item": "apples", "qty": "1", "unit": 0},
+            {"item": "potatoes", "qty": "2", "unit": 0},
+            {"item": "rice", "qty": "1", "unit": 0},
+            {"item": "orange juice", "qty": "1", "unit": 1},
+            {"item": "cooking magazine", "qty": None, "unit": None}
+        ]
+    }
+
+    for item in data["items"]:
+        item["flag"] = 0 if item["item"] in important_items else 1 if item["item"] in maybe_items else None
+
+    blk = blockie.Block(template)
+    blk.fill(data)
+    print(blk.content)
 
 
 def demo_shoplist_custom_cfg() -> None:
@@ -212,6 +246,7 @@ if __name__ == "__main__":
     demo_shoplist_basic()
     demo_shoplist_basic_obj()
     demo_shoplist()
+    demo_shoplist_1()
     demo_shoplist_custom_cfg()
     demo_shoplist_manual_1()
     demo_shoplist_manual_2()
