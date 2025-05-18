@@ -26,3 +26,6 @@ Issues = "https://github.com/lubomilko/blockie/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.distutils.egg_info]
+egg_base = ".build"
