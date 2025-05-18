@@ -410,7 +410,7 @@ The script code:
     important_items = ("potatoes", "rice")
     maybe_items = ("cooking magazine",)
 
-    with open("samples/shoplist_data.json", encoding="utf-8") as file:
+    with open("shoplist_data.json", encoding="utf-8") as file:
         data = json.load(file)
 
         for item in data["items"]:
@@ -418,9 +418,9 @@ The script code:
                 1 if item["item"] in maybe_items else None
 
         blk = blockie.Block()
-        blk.load_template("samples/shoplist_tmpl.txt")
+        blk.load_template("shoplist_tmpl.txt")
         blk.fill(data)
-        blk.save_content("samples/shoplist_gen.txt")
+        blk.save_content("shoplist_gen.txt")
 
 .. note::
     Notice that the value of the ``FLAG`` variable in the template is defined by the script

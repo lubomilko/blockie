@@ -423,7 +423,7 @@ Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&g
 <span class="n">important_items</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;rice&quot;</span><span class="p">)</span>
 <span class="n">maybe_items</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;cooking magazine&quot;</span><span class="p">,)</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;samples/shoplist_data.json&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;shoplist_data.json&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]:</span>
@@ -431,9 +431,9 @@ Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&g
             <span class="mi">1</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">maybe_items</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">()</span>
-    <span class="n">blk</span><span class="o">.</span><span class="n">load_template</span><span class="p">(</span><span class="s2">&quot;samples/shoplist_tmpl.txt&quot;</span><span class="p">)</span>
+    <span class="n">blk</span><span class="o">.</span><span class="n">load_template</span><span class="p">(</span><span class="s2">&quot;shoplist_tmpl.txt&quot;</span><span class="p">)</span>
     <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">blk</span><span class="o">.</span><span class="n">save_content</span><span class="p">(</span><span class="s2">&quot;samples/shoplist_gen.txt&quot;</span><span class="p">)</span>
+    <span class="n">blk</span><span class="o">.</span><span class="n">save_content</span><span class="p">(</span><span class="s2">&quot;shoplist_gen.txt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
