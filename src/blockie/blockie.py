@@ -49,6 +49,7 @@ class BlockConfig:
             string ``<^NAME>``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
+        autotag_implct: The *implicit* automatic tag symbol. Defaults to ``*``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
     """
@@ -58,6 +59,7 @@ class BlockConfig:
     tag_gen_blk_vari: Callable[[str], str] = lambda name: f"<^{name.upper()}>"
     autotag_align: str = "+"
     autotag_vari: str = "."
+    autotag_implct: str = "*"
     tab_size: int = 4
 
 
@@ -148,7 +150,7 @@ class Block:
             (see the ``vari_idx`` attribute of the :meth:``set`` method).
 
         Args:
-            data: A dictionary or object with to be used for filling a block template.
+            data: A dictionary or object to be used for filling a block template.
             __clone_idx: An internal index of a block clone being filled.
 
         Returns:
@@ -174,13 +176,16 @@ class Block:
                 while True:
                     subblk = self.get_subblock(attrib)
                     if subblk is None:
-                        # If no block is found and value is empty, then try to clear the variables.
+                        # If no block is found and value is empty, then try to clear variables.
                         if not value:
                             self.clear_variables(attrib)
                         break
                     if value:
-                        for (i, val) in enumerate(value):
-                            subblk.fill(val, i)
+                        for (i, elem) in enumerate(value):
+                            if isinstance(elem, (list, tuple, str, int, float, bool)):
+                                # If an element is not an obj / dict, then make it a dict setting an implicit autotag.
+                                elem = {self.config.autotag_implct: elem}
+                            subblk.fill(elem, i)
                             subblk.clone()
                         subblk.set(count=1)
                     else:
