@@ -202,7 +202,9 @@ def test_dictfill() -> None:
             {"type": {"vari_idx": -1}, "name": "InvalidVar1", "arr": None},
             {"type": {"vari_idx": False}, "name": "InvalidVar2", "arr": None},
             {"type": "", "name": "InvalidVar3", "arr": None},
-            {"type": {}, "name": "InvalidVar4", "arr": None})}
+            {"type": {}, "name": "InvalidVar4", "arr": None}),
+        "text": ["line one", "line two", "line three"]
+    }
 
     blk_file = Block("data/fill_tmpl.txt")
     blk_file.fill(data)
@@ -244,7 +246,7 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 * IMPORTANT! potatoes                                           2 kg
 * rice                                                          1 kg
 * orange juice                                                  1 l
-* MAYBE? cooking magazine                                       
+* MAYBE? cooking magazine
 
 
 Short list: apples, potatoes, rice, orange juice, cooking magazine
@@ -269,8 +271,8 @@ Short list: @items@item@_, @~_@!_@!items
             {"flag": None, "item": "apples", "qty": "1", "unit": True},
             {"flag": True, "item": "potatoes", "qty": "2", "unit": 0},
             {"flag": None, "item": "rice", "qty": "1", "unit": 0},
-            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1},
             {"flag": {"vari_idx": 1}, "item": "cooking magazine", "qty": None, "unit": None},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1}
         ]
     }
 
@@ -293,11 +295,11 @@ Short list: @items@item@_, @~_@!_@!items
 * apples                                                        1 kg
 * IMPORTANT! potatoes                                           2 kg
 * rice                                                          1 kg
+* MAYBE? cooking magazine
 * orange juice                                                  1 l
-* MAYBE? cooking magazine                                       
 
 
-Short list: apples, potatoes, rice, orange juice, cooking magazine
+Short list: apples, potatoes, rice, cooking magazine, orange juice
 """
 
 
