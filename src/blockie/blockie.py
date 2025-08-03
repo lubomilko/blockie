@@ -49,7 +49,7 @@ class BlockConfig:
             string ``<^NAME>``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
-        autotag_implct: The *implicit* automatic tag symbol. Defaults to ``*``.
+        tag_implct: The *implicit* variable tag symbol. Defaults to ``*``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
     """
@@ -59,7 +59,7 @@ class BlockConfig:
     tag_gen_blk_vari: Callable[[str], str] = lambda name: f"<^{name.upper()}>"
     autotag_align: str = "+"
     autotag_vari: str = "."
-    autotag_implct: str = "*"
+    tag_implct: str = "*"
     tab_size: int = 4
 
 
@@ -183,8 +183,8 @@ class Block:
                     if value:
                         for (i, elem) in enumerate(value):
                             if isinstance(elem, (list, tuple, str, int, float, bool)):
-                                # If an element is not an obj / dict, then make it a dict setting an implicit autotag.
-                                elem = {self.config.autotag_implct: elem}
+                                # If an element is not an obj / dict, then make it a dict setting an implicit variable.
+                                elem = {self.config.tag_implct: elem}
                             subblk.fill(elem, i)
                             subblk.clone()
                         subblk.set(count=1)
@@ -495,19 +495,23 @@ class Block:
             if cont_start >= 0:
                 (templ_start, templ_end, orig_col, _) = self.__get_autotag_align_att(self.__template, True, last_pos)
                 orig_len = templ_end - templ_start
-                # Calculate the new length of the repeated characters in the filled content.
-                new_len = orig_len + (orig_col - new_col)
-                if repeat_char == "\t":
-                    temp_len = new_len
-                    new_len //= self.config.tab_size
-                    if new_len * self.config.tab_size < temp_len:
-                        new_len += 1
-                if new_len <= 0:
-                    new_len = 1
+                # Calculate the new length of the repeated characters in the filled content, unless
+                # the repeated character is a whitespace ending with newline, then just use newline.
+                if self.content[cont_end] == "\n" and repeat_char.isspace():
+                    new_len = 0
+                else:
+                    new_len = orig_len + (orig_col - new_col)
+                    if repeat_char == "\t":
+                        temp_len = new_len
+                        new_len //= self.config.tab_size
+                        if new_len * self.config.tab_size < temp_len:
+                            new_len += 1
+                    if new_len <= 0:
+                        new_len = 1
                 # Set the repeated characters into the block content instead of the "alignment" tag.
                 self.content = f"{self.content[0: cont_start]}{new_len * repeat_char}{self.content[cont_end:]}"
-                # Remember the last "alignment" tag position in the template, because if there are more of these tags,
-                # then we need to start searching only after the previous tag position, not again from the start.
+                # Remember the last "alignment" tag position in the template, because if there are more of these
+                # tags, then we need to start searching only after the previous tag position, not from the start.
                 last_pos = templ_end
             else:
                 break
@@ -530,7 +534,7 @@ class Block:
             text = text.expandtabs(self.config.tab_size)
         end_pos = -1
         tag_col_pos = -1
-        repeat_char = None
+        repeat_char = ""
         charrep_tag = self.config.tag_gen_var(self.config.autotag_align)
         # Get starting position of repeated characters.
         st_pos = text.find(charrep_tag, start_pos)
