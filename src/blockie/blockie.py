@@ -96,10 +96,10 @@ class Block:
         if Path(template).is_file():
             self.load_template(template)
         else:
-            self.template = template
+            self.template = str(template)
 
     @property
-    def parent(self) -> "Block":
+    def parent(self) -> Union["Block", None]:
         """A parent block."""
         return self.__parent
 
@@ -129,7 +129,7 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object, __clone_idx: int = 0) -> int | bool:
+    def fill(self, data: dict | object, clone_idx: int = 0) -> int | bool:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -151,7 +151,7 @@ class Block:
 
         Args:
             data: A dictionary or object to be used for filling a block template.
-            __clone_idx: An internal index of a block clone being filled.
+            clone_idx: An internal index of a block clone being filled.
 
         Returns:
             int | bool: Internally used variation index for variation blocks being filled.
@@ -168,14 +168,14 @@ class Block:
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
         if fill_hndl:
-            fill_hndl(self, data, __clone_idx)
+            fill_hndl(self, data, clone_idx)
 
         # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
                 while True:
                     subblk = self.get_subblock(attrib)
-                    if subblk is None:
+                    if not isinstance(subblk, Block):
                         # If no block is found and value is empty, then try to clear variables.
                         if not value:
                             self.clear_variables(attrib)
@@ -196,7 +196,7 @@ class Block:
             if not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
                 while True:
                     subblk = self.get_subblock(attrib)
-                    if subblk is None:
+                    if not isinstance(subblk, Block):
                         # If no block is found and value is empty, then try to clear the variables.
                         if not value:
                             self.clear_variables(attrib)
@@ -214,11 +214,11 @@ class Block:
                 if attrib == "vari_idx":
                     # If the attribute is vari_idx, then return its value to be used as a variation idx
                     # argument of the set method setting the parent block containing this attribute.
-                    ret_vari_idx = value
+                    ret_vari_idx = value if isinstance(value, (int, bool)) else int(value)
                 else:
                     while True:
                         subblk = self.get_subblock(attrib)
-                        if subblk is None:
+                        if not isinstance(subblk, Block):
                             break
                         if isinstance(value, int):
                             subblk.set(vari_idx=value, count=1)
@@ -226,7 +226,7 @@ class Block:
                             subblk.set(count=1)
                         else:
                             subblk.clear(count=1)   # Value is "", 0 or False
-                    self.set_variables(**{attrib: value})
+                    self.set_variables(autoclone=False, **{attrib: value})
 
         return ret_vari_idx
 
@@ -331,7 +331,7 @@ class Block:
             # rationale: Private method __get_block_pos is called from non-self object only here and
             # it is easier and simpler to keep it that way instead of rewriting the method to be static and sending
             # parent object data into it for processing.
-            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)
+            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)     # type: ignore
             if 0 <= subblk_start < subblk_end:
                 blk_content = self.__get_variation(self.content, self.name, vari_idx)
                 # If subblock tags are found, then set the current block content into all corresponding subblock tags
@@ -352,7 +352,7 @@ class Block:
         for subblk in subblocks:
             if isinstance(subblk, str):
                 blk_sub = self.children.get(subblk, self.get_subblock(subblk))
-                if blk_sub:
+                if isinstance(blk_sub, Block):
                     blk_sub.set()
             else:
                 subblk.set()
