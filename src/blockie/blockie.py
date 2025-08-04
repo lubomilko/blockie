@@ -47,9 +47,9 @@ class BlockConfig:
             tag.
             Defaults to a lamba function converting a tag name ``name`` to a block variation tag
             string ``<^NAME>``.
+        tag_implct_iter: The *implicit iterator* tag symbol. Defaults to ``*``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
-        tag_implct: The *implicit* variable tag symbol. Defaults to ``*``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
     """
@@ -57,9 +57,9 @@ class BlockConfig:
     tag_gen_blk_start: Callable[[str], str] = lambda name: f"<{name.upper()}>"
     tag_gen_blk_end: Callable[[str], str] = lambda name: f"</{name.upper()}>"
     tag_gen_blk_vari: Callable[[str], str] = lambda name: f"<^{name.upper()}>"
+    tag_implct_iter: str = "*"
     autotag_align: str = "+"
     autotag_vari: str = "."
-    tag_implct: str = "*"
     tab_size: int = 4
 
 
@@ -184,7 +184,7 @@ class Block:
                         for (i, elem) in enumerate(value):
                             if isinstance(elem, (list, tuple, str, int, float, bool)):
                                 # If an element is not an obj / dict, then make it a dict setting an implicit variable.
-                                elem = {self.config.tag_implct: elem}
+                                elem = {self.config.tag_implct_iter: elem}
                             subblk.fill(elem, i)
                             subblk.clone()
                         subblk.set(count=1)
@@ -225,7 +225,7 @@ class Block:
                         elif value:
                             subblk.set(count=1)
                         else:
-                            subblk.clear(count=1)   # Value is "", 0 or False
+                            subblk.clear(count=1)   # Value is "" or False
                     self.set_variables(autoclone=False, **{attrib: value})
 
         return ret_vari_idx
