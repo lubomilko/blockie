@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath('../../src'))
 project = 'Blockie'
 copyright = '2025 Lubomir Milko'
 author = 'Lubomir Milko'
-release = '1.0.0'
+release = '1.1.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
