@@ -183,7 +183,7 @@ class Block:
                     if value:
                         for (i, elem) in enumerate(value):
                             if isinstance(elem, (list, tuple, str, int, float, bool)):
-                                # If an element is not an obj / dict, then make it a dict setting an implicit variable.
+                                # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
                                 elem = {self.config.tag_implct_iter: elem}
                             subblk.fill(elem, i)
                             subblk.clone()
