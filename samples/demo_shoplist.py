@@ -129,7 +129,7 @@ def demo_shoplist_custom_cfg() -> None:
   Items                                                         Quantity
 ------------------------------------------------------------------------
 @items
-* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit
+* @flagIMPORTANT! @~flagMAYBE? @!flag@item@>>                   @qty@unit kg@~unit l@!unit
 @!items
 
 
@@ -151,7 +151,8 @@ Short list: @items@item@_, @~_@!_@!items
         lambda name: f"@{name}",    # tag_gen_blk_start
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
-        "*",                        # autotag_align
+        "---",                      # tag_implct_iter
+        ">>",                       # autotag_align
         "_",                        # autotag_vari
         8                           # tab_size
     )

@@ -26,7 +26,13 @@ def demo_set_block() -> None:
 
 def demo_set_block_clones() -> None:
     blk = blockie.Block("<DATE><DAY> <MONTH>\n</DATE>")
-    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 25, "month": 12}]})
+    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 31, "month": 12}, {"day": 1, "month": "January"}]})
+    print(blk.content)
+
+
+def demo_set_implct_iter() -> None:
+    blk = blockie.Block("<LIST>- <*>\n</LIST>")
+    blk.fill({"list": ["gloves", "plastic bags", "duct tape", "shovel"]})
     print(blk.content)
 
 
@@ -37,6 +43,12 @@ def demo_set_block_as_is() -> None:
 
 
 def demo_set_block_vari_1() -> None:
+    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
+    blk.fill({"date": {"vari_idx": 0, "day": 24, "month": 12}})
+    print(blk.content)
+
+
+def demo_set_block_vari_2() -> None:
     date_dict = {"day": 24, "month": "December"}
     date_dict["vari_idx"] = 0 if isinstance(date_dict["month"], int) else 1
 
@@ -45,7 +57,7 @@ def demo_set_block_vari_1() -> None:
     print(blk.content)
 
 
-def demo_set_block_vari_2() -> None:
+def demo_set_block_vari_3() -> None:
     blk = blockie.Block("<DATE>24.12.<^DATE>24 December</DATE>")
     blk.fill({"date": 1})
     print(blk.content)
@@ -81,9 +93,11 @@ if __name__ == "__main__":
     demo_set_var()
     demo_set_block()
     demo_set_block_clones()
+    demo_set_implct_iter()
     demo_set_block_as_is()
     demo_set_block_vari_1()
     demo_set_block_vari_2()
+    demo_set_block_vari_3()
     demo_set_block_fill_hndl()
     demo_remove_var()
     demo_remove_block()
