@@ -213,8 +213,8 @@ prints:
 Setting an implicit iterator value
 ===================================================================================================
 
-If a block contains just one variable, then cloning of such block and setting the single variable
-inside can be simplified using an :ref:`implicit iterator tag <tgt_primary_tags_implicit_iter>`
+If a block contains just one variable, then cloning such a block and setting its single variable
+can be simplified using an :ref:`implicit iterator tag <tgt_primary_tags_implicit_iter>`
 inside the block and then filling the block by setting its value to a **list or tuple of iterator
 values** as illustrated below:
 
