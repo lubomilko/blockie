@@ -74,7 +74,9 @@ prints:
     24 December
 
 
-Cloning a block and setting its content
+.. _tgt_cloning_a_block:
+
+Cloning a block
 ===================================================================================================
 
 A block can be cloned, i.e., duplicated, using a **list or a tuple of dictionaries** with each
@@ -84,7 +86,7 @@ two dates in two clones of a ``date`` block:
 .. code-block:: python
 
     blk = blockie.Block("<DATE><DAY> <MONTH>\n</DATE>")
-    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 25, "month": 12}]})
+    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 31, "month": 12}, {"day": 1, "month": "January"}]})
     print(blk.content)
 
 prints:
@@ -92,8 +94,10 @@ prints:
 .. code-block:: text
 
     24 12
-    25 12
+    31 12
+    1 January
 
+.. _tgt_cloning_content_variations:
 
 .. important::
     The blocks having multiple :ref:`content variations <tgt_primary_tags_content_vari>` cannot
@@ -103,9 +107,8 @@ prints:
     ``DATE_WRAP`` block content can be cloned and each clone would contain a new ``DATE`` block
     having two content variations.
 
-    Note that the process of
-    :ref:`setting the selected block content variation <tgt_auto_fill_advanced_set_block_vari>`
-    is described later.
+    Note that the process of :ref:`setting the selected block content variation
+    <tgt_auto_fill_advanced_set_block_vari>` is described later.
 
 
 .. _tgt_auto_fill_basic_example:
@@ -205,6 +208,32 @@ prints:
     24 December
 
 
+.. _tgt_setting_implicit_iter:
+
+Setting an implicit iterator value
+===================================================================================================
+
+If a block contains just one variable, then cloning of such block and setting the single variable
+inside can be simplified using an :ref:`implicit iterator tag <tgt_primary_tags_implicit_iter>`
+inside the block and then filling the block by setting its value to a **list or tuple of iterator
+values** as illustrated below:
+
+.. code-block:: python
+
+    blk = blockie.Block("<LIST>- <*>\n</LIST>")
+        blk.fill({"list": ["gloves", "plastic bags", "duct tape", "shovel"]})
+        print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    - gloves
+    - plastic bags
+    - duct tape
+    - shovel
+
+
 .. _tgt_auto_fill_advanced_set_block_vari:
 
 Setting a block content variation
@@ -226,9 +255,22 @@ below:
     secondary purpose of the ``vari_idx`` key. The primary method of a
     :ref:`block removal <tgt_auto_fill_remove_block>` is described later.
 
-Alternatively, if a block has a constant content, it is possible to select one of its constant
-content variations by directly setting a numeric value representing the content index to its key
-in a data dictionary, as shown in the second example below:
+The example below uses the special ``vari_idx`` key to set the first (index = 0) content variation:
+
+.. code-block:: python
+
+    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
+    blk.fill({"date": {"vari_idx": 0, "day": 24, "month": 12}})
+    print(blk.content)
+
+prints:
+
+.. code-block:: text
+
+    24.12.
+
+A slightly more advanced example illustrates adding and setting the ``vari_idx`` key based on the
+data type used for setting the ``month`` key value:
 
 .. code-block:: python
 
@@ -245,6 +287,10 @@ prints:
 
     24 December
 
+Alternatively, if a block has a constant content, it is possible to select one of its constant
+content variations by directly setting a numeric value representing the content index to its key
+in a data dictionary, as shown in the second example below:
+
 .. code-block:: python
 
     blk = blockie.Block("<DATE>24.12.<^DATE>24 December</DATE>")
@@ -257,10 +303,10 @@ prints:
 
     24 December
 
-.. important::
-    As illustrated on the first example, the block variations can be used for a conditional
-    content selection. However, the logic of selecting the right content must be defined within
-    the filling script, since the blockie templates are logicless.
+
+.. seealso::
+    See the note about :ref:`cloning blocks with multiple content variations
+    <tgt_cloning_content_variations>` in the :ref:`Block cloning <tgt_cloning_a_block>` section.
 
 
 Setting a handler for manual filling
@@ -291,9 +337,9 @@ where:
 *   ``clone_subidx``: An index of a cloned content being filled. Only applicable if the block is
     being cloned during the automatic filling process.
 
-The example below illustrates the use of a manual filling handler for making the ``MONTH``
-variable value using uppercase letters if it is a string and then setting the content variation
-of the ``DATE`` block using the :py:meth:`.Block.set` method:
+The example below illustrates the use of a manual filling handler function ``format_month`` to
+make the ``MONTH`` variable value using uppercase letters if it is a string and then setting
+the content variation of the ``DATE`` block using the :py:meth:`.Block.set` method:
 
 .. code-block:: python
 
