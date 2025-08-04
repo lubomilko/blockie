@@ -103,7 +103,7 @@ Prints the following generated content:
 * IMPORTANT! potatoes                                           2 kg
 * IMPORTANT! rice                                               1 kg
 * orange juice                                                  1 l
-* MAYBE? cooking magazine                                       
+* MAYBE? cooking magazine
 
 
 Short list: apples, potatoes, rice, orange juice, cooking magazine

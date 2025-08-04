@@ -58,8 +58,8 @@ Template:
     </PEOPLE>
 
 .. seealso::
-    The description of filling the template with values is
-    :ref:`described later <tgt_auto_fill_basic>` after the description of all types of tags.
+    The description of filling the template with values is :ref:`described later
+    <tgt_auto_fill_basic>` after the description of all types of tags.
 
 
 .. _tgt_primary_tags_content_vari:
@@ -78,6 +78,27 @@ content selectable by the filling script:
 .. code-block:: text
 
     <BLOCK>content 1<^BLOCK>content 2<^BLOCK>content 3</BLOCK>
+
+
+.. _tgt_primary_tags_implicit_iter:
+
+Implicit iterator tag
+===================================================================================================
+
+If a block contains just a single variable, then such variable can be defined as an **implicit
+iterator** using a ``<*>`` format by default. A parent block containing the implicit iterator
+can be cloned automatically with the implicit iterator having a new value in each cloned content.
+
+The example below shows a template with a ``BLOCK`` block having an implicit iterator inside for
+creating a simple list:
+
+<BLOCK>
+- <*>
+</BLOCK>
+
+.. seealso::
+    See the details of :ref:`setting an implicit iterator value <tgt_setting_implicit_iter>`
+    described later.
 
 
 .. _tgt_auto_tags:

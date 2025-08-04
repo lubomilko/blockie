@@ -47,6 +47,7 @@ class BlockConfig:
             tag.
             Defaults to a lamba function converting a tag name ``name`` to a block variation tag
             string ``<^NAME>``.
+        tag_implct_iter: The *implicit iterator* tag symbol. Defaults to ``*``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
@@ -56,6 +57,7 @@ class BlockConfig:
     tag_gen_blk_start: Callable[[str], str] = lambda name: f"<{name.upper()}>"
     tag_gen_blk_end: Callable[[str], str] = lambda name: f"</{name.upper()}>"
     tag_gen_blk_vari: Callable[[str], str] = lambda name: f"<^{name.upper()}>"
+    tag_implct_iter: str = "*"
     autotag_align: str = "+"
     autotag_vari: str = "."
     tab_size: int = 4
@@ -94,10 +96,10 @@ class Block:
         if Path(template).is_file():
             self.load_template(template)
         else:
-            self.template = template
+            self.template = str(template)
 
     @property
-    def parent(self) -> "Block":
+    def parent(self) -> Union["Block", None]:
         """A parent block."""
         return self.__parent
 
@@ -127,7 +129,7 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object, __clone_idx: int = 0) -> int | bool:
+    def fill(self, data: dict | object, clone_idx: int = 0) -> int | bool:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -148,8 +150,8 @@ class Block:
             (see the ``vari_idx`` attribute of the :meth:``set`` method).
 
         Args:
-            data: A dictionary or object with to be used for filling a block template.
-            __clone_idx: An internal index of a block clone being filled.
+            data: A dictionary or object to be used for filling a block template.
+            clone_idx: An internal index of a block clone being filled.
 
         Returns:
             int | bool: Internally used variation index for variation blocks being filled.
@@ -166,21 +168,24 @@ class Block:
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
         if fill_hndl:
-            fill_hndl(self, data, __clone_idx)
+            fill_hndl(self, data, clone_idx)
 
         # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
                 while True:
                     subblk = self.get_subblock(attrib)
-                    if subblk is None:
-                        # If no block is found and value is empty, then try to clear the variables.
+                    if not isinstance(subblk, Block):
+                        # If no block is found and value is empty, then try to clear variables.
                         if not value:
                             self.clear_variables(attrib)
                         break
                     if value:
-                        for (i, val) in enumerate(value):
-                            subblk.fill(val, i)
+                        for (i, elem) in enumerate(value):
+                            if isinstance(elem, (list, tuple, str, int, float, bool)):
+                                # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
+                                elem = {self.config.tag_implct_iter: elem}
+                            subblk.fill(elem, i)
                             subblk.clone()
                         subblk.set(count=1)
                     else:
@@ -191,7 +196,7 @@ class Block:
             if not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
                 while True:
                     subblk = self.get_subblock(attrib)
-                    if subblk is None:
+                    if not isinstance(subblk, Block):
                         # If no block is found and value is empty, then try to clear the variables.
                         if not value:
                             self.clear_variables(attrib)
@@ -209,19 +214,19 @@ class Block:
                 if attrib == "vari_idx":
                     # If the attribute is vari_idx, then return its value to be used as a variation idx
                     # argument of the set method setting the parent block containing this attribute.
-                    ret_vari_idx = value
+                    ret_vari_idx = value if isinstance(value, (int, bool)) else int(value)
                 else:
                     while True:
                         subblk = self.get_subblock(attrib)
-                        if subblk is None:
+                        if not isinstance(subblk, Block):
                             break
                         if isinstance(value, int):
                             subblk.set(vari_idx=value, count=1)
                         elif value:
                             subblk.set(count=1)
                         else:
-                            subblk.clear(count=1)   # Value is "", 0 or False
-                    self.set_variables(**{attrib: value})
+                            subblk.clear(count=1)   # Value is "" or False
+                    self.set_variables(autoclone=False, **{attrib: value})
 
         return ret_vari_idx
 
@@ -326,7 +331,7 @@ class Block:
             # rationale: Private method __get_block_pos is called from non-self object only here and
             # it is easier and simpler to keep it that way instead of rewriting the method to be static and sending
             # parent object data into it for processing.
-            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)
+            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)     # type: ignore
             if 0 <= subblk_start < subblk_end:
                 blk_content = self.__get_variation(self.content, self.name, vari_idx)
                 # If subblock tags are found, then set the current block content into all corresponding subblock tags
@@ -347,7 +352,7 @@ class Block:
         for subblk in subblocks:
             if isinstance(subblk, str):
                 blk_sub = self.children.get(subblk, self.get_subblock(subblk))
-                if blk_sub:
+                if isinstance(blk_sub, Block):
                     blk_sub.set()
             else:
                 subblk.set()
@@ -490,19 +495,23 @@ class Block:
             if cont_start >= 0:
                 (templ_start, templ_end, orig_col, _) = self.__get_autotag_align_att(self.__template, True, last_pos)
                 orig_len = templ_end - templ_start
-                # Calculate the new length of the repeated characters in the filled content.
-                new_len = orig_len + (orig_col - new_col)
-                if repeat_char == "\t":
-                    temp_len = new_len
-                    new_len //= self.config.tab_size
-                    if new_len * self.config.tab_size < temp_len:
-                        new_len += 1
-                if new_len <= 0:
-                    new_len = 1
+                # Calculate the new length of the repeated characters in the filled content, unless
+                # the repeated character is a whitespace ending with newline, then just use newline.
+                if self.content[cont_end] == "\n" and repeat_char.isspace():
+                    new_len = 0
+                else:
+                    new_len = orig_len + (orig_col - new_col)
+                    if repeat_char == "\t":
+                        temp_len = new_len
+                        new_len //= self.config.tab_size
+                        if new_len * self.config.tab_size < temp_len:
+                            new_len += 1
+                    if new_len <= 0:
+                        new_len = 1
                 # Set the repeated characters into the block content instead of the "alignment" tag.
                 self.content = f"{self.content[0: cont_start]}{new_len * repeat_char}{self.content[cont_end:]}"
-                # Remember the last "alignment" tag position in the template, because if there are more of these tags,
-                # then we need to start searching only after the previous tag position, not again from the start.
+                # Remember the last "alignment" tag position in the template, because if there are more of these
+                # tags, then we need to start searching only after the previous tag position, not from the start.
                 last_pos = templ_end
             else:
                 break
@@ -525,7 +534,7 @@ class Block:
             text = text.expandtabs(self.config.tab_size)
         end_pos = -1
         tag_col_pos = -1
-        repeat_char = None
+        repeat_char = ""
         charrep_tag = self.config.tag_gen_var(self.config.autotag_align)
         # Get starting position of repeated characters.
         st_pos = text.find(charrep_tag, start_pos)

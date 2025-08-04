@@ -36,7 +36,7 @@ object with an *at* sign ``@`` used as a primary tag symbol:
       Items                                                         Quantity
     ------------------------------------------------------------------------
     @items
-    * @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit
+    * @flagIMPORTANT! @~flagMAYBE? @!flag@item@>>                   @qty@unit kg@~unit l@!unit
     @!items
 
 
@@ -58,7 +58,8 @@ object with an *at* sign ``@`` used as a primary tag symbol:
         lambda name: f"@{name}",    # tag_gen_blk_start
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
-        "*",                        # autotag_align
+        "---",                      # tag_implct_iter
+        ">>",                       # autotag_align
         "_",                        # autotag_vari
         8                           # tab_size
     )

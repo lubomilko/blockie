@@ -104,7 +104,7 @@ object with an <em>at</em> sign <code class="docutils literal notranslate"><span
 <span class="s2">  Items                                                         Quantity</span>
 <span class="s2">------------------------------------------------------------------------</span>
 <span class="s2">@items</span>
-<span class="s2">* @flagIMPORTANT! @~flagMAYBE? @!flag@item@*                    @qty@unit kg@~unit l@!unit</span>
+<span class="s2">* @flagIMPORTANT! @~flagMAYBE? @!flag@item@&gt;&gt;                   @qty@unit kg@~unit l@!unit</span>
 <span class="s2">@!items</span>
 
 
@@ -126,7 +126,8 @@ object with an <em>at</em> sign <code class="docutils literal notranslate"><span
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>    <span class="c1"># tag_gen_blk_start</span>
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@!</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>   <span class="c1"># tag_gen_blk_end</span>
     <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;@~</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>   <span class="c1"># tag_gen_blk_vari</span>
-    <span class="s2">&quot;*&quot;</span><span class="p">,</span>                        <span class="c1"># autotag_align</span>
+    <span class="s2">&quot;---&quot;</span><span class="p">,</span>                      <span class="c1"># tag_implct_iter</span>
+    <span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">,</span>                       <span class="c1"># autotag_align</span>
     <span class="s2">&quot;_&quot;</span><span class="p">,</span>                        <span class="c1"># autotag_vari</span>
     <span class="mi">8</span>                           <span class="c1"># tab_size</span>
 <span class="p">)</span>

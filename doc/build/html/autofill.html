@@ -50,12 +50,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#basic-automatic-filling">Basic automatic filling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-variable-value">Setting a variable value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content">Setting a block content</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cloning-a-block-and-setting-its-content">Cloning a block and setting its content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cloning-a-block">Cloning a block</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#advanced-automatic-filling">Advanced automatic filling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content-as-is">Setting a block content as is</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-an-implicit-iterator-value">Setting an implicit iterator value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content-variation">Setting a block content variation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-handler-for-manual-filling">Setting a handler for manual filling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removing-a-variable">Removing a variable</a></li>
@@ -147,22 +148,23 @@ variable values:</p>
 </pre></div>
 </div>
 </section>
-<section id="cloning-a-block-and-setting-its-content">
-<h3>Cloning a block and setting its content<a class="headerlink" href="#cloning-a-block-and-setting-its-content" title="Link to this heading"></a></h3>
+<section id="cloning-a-block">
+<span id="tgt-cloning-a-block"></span><h3>Cloning a block<a class="headerlink" href="#cloning-a-block" title="Link to this heading"></a></h3>
 <p>A block can be cloned, i.e., duplicated, using a <strong>list or a tuple of dictionaries</strong> with each
 dictionary corresponding to one clone of a block content. The example below shows setting of
 two dates in two clones of a <code class="docutils literal notranslate"><span class="pre">date</span></code> block:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;</span><span class="se">\n</span><span class="s2">&lt;/DATE&gt;&quot;</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}]})</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;January&quot;</span><span class="p">}]})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>prints:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 12
-25 12
+31 12
+1 January
 </pre></div>
 </div>
-<div class="admonition important">
+<div class="admonition important" id="tgt-cloning-content-variations">
 <p class="admonition-title">Important</p>
 <p>The blocks having multiple <a class="reference internal" href="tags.html#tgt-primary-tags-content-vari"><span class="std std-ref">content variations</span></a> cannot
 be cloned directly. They can, however, be cloned indirectly by “wrapping” them in a standard
@@ -170,9 +172,7 @@ parent block that can be cloned, e.g.,
 <code class="docutils literal notranslate"><span class="pre">&lt;DATE_WRAP&gt;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt;</span> <span class="pre">&lt;MONTH&gt;&lt;/DATE&gt;&lt;DATE_WRAP&gt;</span></code>, where the
 <code class="docutils literal notranslate"><span class="pre">DATE_WRAP</span></code> block content can be cloned and each clone would contain a new <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block
 having two content variations.</p>
-<p>Note that the process of
-<a class="reference internal" href="#tgt-auto-fill-advanced-set-block-vari"><span class="std std-ref">setting the selected block content variation</span></a>
-is described later.</p>
+<p>Note that the process of <a class="reference internal" href="#tgt-auto-fill-advanced-set-block-vari"><span class="std std-ref">setting the selected block content variation</span></a> is described later.</p>
 </div>
 </section>
 <section id="example">
@@ -255,6 +255,25 @@ boolean true:</p>
 </pre></div>
 </div>
 </section>
+<section id="setting-an-implicit-iterator-value">
+<span id="tgt-setting-implicit-iter"></span><h3>Setting an implicit iterator value<a class="headerlink" href="#setting-an-implicit-iterator-value" title="Link to this heading"></a></h3>
+<p>If a block contains just one variable, then cloning such a block and setting its single variable
+can be simplified using an <a class="reference internal" href="tags.html#tgt-primary-tags-implicit-iter"><span class="std std-ref">implicit iterator tag</span></a>
+inside the block and then filling the block by setting its value to a <strong>list or tuple of iterator
+values</strong> as illustrated below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;LIST&gt;- &lt;*&gt;</span><span class="se">\n</span><span class="s2">&lt;/LIST&gt;&quot;</span><span class="p">)</span>
+    <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gloves&quot;</span><span class="p">,</span> <span class="s2">&quot;plastic bags&quot;</span><span class="p">,</span> <span class="s2">&quot;duct tape&quot;</span><span class="p">,</span> <span class="s2">&quot;shovel&quot;</span><span class="p">]})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- gloves
+- plastic bags
+- duct tape
+- shovel
+</pre></div>
+</div>
+</section>
 <section id="setting-a-block-content-variation">
 <span id="tgt-auto-fill-advanced-set-block-vari"></span><h3>Setting a block content variation<a class="headerlink" href="#setting-a-block-content-variation" title="Link to this heading"></a></h3>
 <p>A specific content from a block with multiple content variations can be selected using a
@@ -274,9 +293,18 @@ corresponding to the provided value.</p></li>
 secondary purpose of the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key. The primary method of a
 <a class="reference internal" href="#tgt-auto-fill-remove-block"><span class="std std-ref">block removal</span></a> is described later.</p>
 </div>
-<p>Alternatively, if a block has a constant content, it is possible to select one of its constant
-content variations by directly setting a numeric value representing the content index to its key
-in a data dictionary, as shown in the second example below:</p>
+<p>The example below uses the special <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key to set the first (index = 0) content variation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt; &lt;MONTH&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>prints:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24.12.
+</pre></div>
+</div>
+<p>A slightly more advanced example illustrates adding and setting the <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key based on the
+data type used for setting the <code class="docutils literal notranslate"><span class="pre">month</span></code> key value:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">date_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}</span>
 <span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;vari_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_dict</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
 
@@ -289,6 +317,9 @@ in a data dictionary, as shown in the second example below:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
 </pre></div>
 </div>
+<p>Alternatively, if a block has a constant content, it is possible to select one of its constant
+content variations by directly setting a numeric value representing the content index to its key
+in a data dictionary, as shown in the second example below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;24.12.&lt;^DATE&gt;24 December&lt;/DATE&gt;&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
@@ -298,11 +329,9 @@ in a data dictionary, as shown in the second example below:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>24 December
 </pre></div>
 </div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>As illustrated on the first example, the block variations can be used for a conditional
-content selection. However, the logic of selecting the right content must be defined within
-the filling script, since the blockie templates are logicless.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See the note about <a class="reference internal" href="#tgt-cloning-content-variations"><span class="std std-ref">cloning blocks with multiple content variations</span></a> in the <a class="reference internal" href="#tgt-cloning-a-block"><span class="std std-ref">Block cloning</span></a> section.</p>
 </div>
 </section>
 <section id="setting-a-handler-for-manual-filling">
@@ -330,9 +359,9 @@ block.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">clone_subidx</span></code>: An index of a cloned content being filled. Only applicable if the block is
 being cloned during the automatic filling process.</p></li>
 </ul>
-<p>The example below illustrates the use of a manual filling handler for making the <code class="docutils literal notranslate"><span class="pre">MONTH</span></code>
-variable value using uppercase letters if it is a string and then setting the content variation
-of the <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block using the <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> method:</p>
+<p>The example below illustrates the use of a manual filling handler function <code class="docutils literal notranslate"><span class="pre">format_month</span></code> to
+make the <code class="docutils literal notranslate"><span class="pre">MONTH</span></code> variable value using uppercase letters if it is a string and then setting
+the content variation of the <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block using the <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_month</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>

@@ -16,3 +16,7 @@ typedef struct
 
 <TO_SET>another set content</TO_SET>
 <TO_CLEAR>another cleared content</TO_CLEAR>
+
+<TEXT>
+<*><.>,<^.></.>
+</TEXT>

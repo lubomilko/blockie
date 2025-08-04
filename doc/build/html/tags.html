@@ -50,6 +50,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#variable-tag">Variable tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#block-tag">Block tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#block-variation-tag">Block variation tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implicit-iterator-tag">Implicit iterator tag</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#secondary-automatic-tags">Secondary - automatic tags</a><ul>
@@ -132,8 +133,7 @@ about a different person:</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>The description of filling the template with values is
-<a class="reference internal" href="autofill.html#tgt-auto-fill-basic"><span class="std std-ref">described later</span></a> after the description of all types of tags.</p>
+<p>The description of filling the template with values is <a class="reference internal" href="autofill.html#tgt-auto-fill-basic"><span class="std std-ref">described later</span></a> after the description of all types of tags.</p>
 </div>
 </section>
 <section id="block-variation-tag">
@@ -146,6 +146,22 @@ content.</p>
 content selectable by the filling script:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;BLOCK&gt;content 1&lt;^BLOCK&gt;content 2&lt;^BLOCK&gt;content 3&lt;/BLOCK&gt;
 </pre></div>
+</div>
+</section>
+<section id="implicit-iterator-tag">
+<span id="tgt-primary-tags-implicit-iter"></span><h3>Implicit iterator tag<a class="headerlink" href="#implicit-iterator-tag" title="Link to this heading"></a></h3>
+<p>If a block contains just a single variable, then such variable can be defined as an <strong>implicit
+iterator</strong> using a <code class="docutils literal notranslate"><span class="pre">&lt;*&gt;</span></code> format by default. A parent block containing the implicit iterator
+can be cloned automatically with the implicit iterator having a new value in each cloned content.</p>
+<p>The example below shows a template with a <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> block having an implicit iterator inside for
+creating a simple list:</p>
+<p>&lt;BLOCK&gt;
+- &lt;*&gt;
+&lt;/BLOCK&gt;</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See the details of <a class="reference internal" href="autofill.html#tgt-setting-implicit-iter"><span class="std std-ref">setting an implicit iterator value</span></a>
+described later.</p>
 </div>
 </section>
 </section>

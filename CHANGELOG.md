@@ -9,6 +9,24 @@ template engine project.
 
 ---
 
+## [1.1.0] - 2025-08-04
+
+### Changed
+
+- Do not generate whitespace alignment characters if there is no other non-whitespace character
+  until the line end.
+
+### Added
+
+- Add implicit iterator tag `*` used by the `fill()` method when a block is filled with just a
+  list/tuple of simple data types without an explicit variable name, e.g.,
+  `fill({"list": ["a", "b", "c"]})` for filling a `<LIST><*>, </LIST>` template.
+
+### Fixed
+
+- Fix all violations in `blockie.py` related to the newly enabled *basic* type checking, i.e., the
+  `"python.analysis.typeCheckingMode": "basic"` setting.
+
 
 ## [1.0.0] - 2025-05-18
 
@@ -46,4 +64,5 @@ below describe modifications since the last
 
 
 [unreleased]: https://github.com/lubomilko/blockie
+[1.1.0]: https://github.com/lubomilko/blockie/releases/tag/1.1.0
 [1.0.0]: https://github.com/lubomilko/blockie/releases/tag/1.0.0
