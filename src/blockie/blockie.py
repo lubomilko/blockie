@@ -25,7 +25,7 @@ from typing import Union
 
 __author__ = "Lubomir Milko"
 __copyright__ = "Copyright (C) 2025 Lubomir Milko"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __license__ = "GPLv3"
 
 
