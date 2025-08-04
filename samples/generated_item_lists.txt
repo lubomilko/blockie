@@ -17,9 +17,9 @@ List of items with proper comma separators:
 List of items with added number of items in a row:
 * red apples, green apples                              2 kg each
 * oranges                                               5
-* carrots, peppers, tomatoes                            
+* carrots, peppers, tomatoes
 * eggs                                                  10
-* pen, pencil                                           
+* pen, pencil
 
 
 List of items with horizontal separators:
@@ -29,9 +29,9 @@ List of items with horizontal separators:
  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 * oranges                                               5
  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-* carrots, peppers, tomatoes                            
+* carrots, peppers, tomatoes
  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 * eggs                                                  10
  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-* pen, pencil                                           
+* pen, pencil
 ________________________________________________________________
