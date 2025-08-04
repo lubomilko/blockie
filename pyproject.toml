@@ -28,4 +28,4 @@ Issues = "https://github.com/lubomilko/blockie/issues"
 where = ["src"]
 
 [tool.distutils.egg_info]
-egg_base = ".build"
+egg_base = "build"
