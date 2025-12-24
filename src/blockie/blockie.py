@@ -169,6 +169,18 @@ class Block:
         self.__fill_dict_obj(data_dict, _args)
         self.__fill_simple(data_dict, _args)
 
+    @staticmethod
+    def __add_obj_refs(data: dict[str, Any]) -> None:
+        def gen_refs(data: dict[str, Any], var_name: str = "") -> Generator[
+                tuple[str, dict | tuple | list | str | int | float | bool]]:
+            for (k, v) in data.items():
+                if isinstance(v, dict):
+                    yield (f"{var_name}.{k}" if var_name else k, v)
+                    yield from gen_refs(v, f"{var_name}.{k}" if var_name else k)
+                if var_name and isinstance(v, (tuple, list, str, int, float, bool)):
+                    yield (f"{var_name}.{k}", v)
+        data.update(dict(gen_refs(data)))
+
     def __fill_iter(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of tuple or list type."""
         for (attrib, value) in data_dict.items():
