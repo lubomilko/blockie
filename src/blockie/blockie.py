@@ -21,11 +21,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from pathlib import Path
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Union
+from typing import Any, Generator, Union
 
 __author__ = "Lubomir Milko"
 __copyright__ = "Copyright (C) 2025 Lubomir Milko"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __license__ = "GPLv3"
 
 
@@ -129,7 +129,7 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object, clone_idx: int = 0) -> int | bool:
+    def fill(self, data: dict | object, _clone_idx: int = 0, _args: list[Any] | None = None) -> None:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -151,26 +151,26 @@ class Block:
 
         Args:
             data: A dictionary or object to be used for filling a block template.
-            clone_idx: An internal index of a block clone being filled.
-
-        Returns:
-            int | bool: Internally used variation index for variation blocks being filled.
+            _clone_idx: A private internal index of a block clone being filled sent to the
+                ``fill_hndl`` function if it is defined. Do not set.
+            _args: Private internal arguments used by the recursive calls of this method.
+                Do not set.
         """
         if data is None or isinstance(data, (list, tuple, str, int, float, bool)):
-            return 0    # Do nothing if data is not a dictionary or an object.
-
-        # Returned variation index for a block filled with data having the special vari_idx attribute.
-        ret_vari_idx = 0
-
+            return  # Do nothing if data is not a dictionary or an object.
         # Get the block data in form of a dictionary even if it is defined as an object.
         data_dict = data if isinstance(data, dict) else data.__dict__
-
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
         if fill_hndl:
-            fill_hndl(self, data, clone_idx)
+            fill_hndl(self, data, _clone_idx)
+        # Fill iterable data, then dicts/objs, and then simple data types (str, int, float, bool).
+        self.__fill_iter(data_dict, _args)
+        self.__fill_dict_obj(data_dict, _args)
+        self.__fill_simple(data_dict, _args)
 
-        # 1. Loop through list or tuple elements of block data and fill the cloned blocks.
+    def __fill_iter(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+        """Internal method to fill the template with data of tuple or list type."""
         for (attrib, value) in data_dict.items():
             if isinstance(value, (list, tuple)):
                 while True:
@@ -185,13 +185,14 @@ class Block:
                             if isinstance(elem, (list, tuple, str, int, float, bool)):
                                 # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
                                 elem = {self.config.tag_implct_iter: elem}
-                            subblk.fill(elem, i)
+                            subblk.fill(elem, _clone_idx=i)
                             subblk.clone()
                         subblk.set(count=1)
                     else:
-                        subblk.clear(count=1)   # Value is an empty list, i.e., [].
+                        subblk.clear()   # Value is an empty list, i.e., [].
 
-        # 2. Loop through object or dict elements of block data and fill the single instance (non-cloned) blocks.
+    def __fill_dict_obj(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+        """Internal method to fill the template with data of dict or object type."""
         for (attrib, value) in data_dict.items():
             if not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
                 while True:
@@ -202,21 +203,24 @@ class Block:
                             self.clear_variables(attrib)
                         break
                     if value:
+                        v_idx = [0]
                         # Get the variation index from the internal elements if they contain a vari_idx attribute.
-                        vari_idx = subblk.fill(value)
-                        subblk.set(vari_idx=vari_idx, count=1)
+                        subblk.fill(value, _args=v_idx)
+                        subblk.set(vari_idx=v_idx[0], count=1)
                     else:
-                        subblk.clear(count=1)   # Clear block if empty data are provided.
+                        subblk.clear()   # Clear block if empty data are provided.
 
-        # 3. Loop through simple data type items of block data and fill the template tags.
+    def __fill_simple(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+        """Internal method to fill the template with data of simple type (str, int, float or bool)."""
         for (attrib, value) in data_dict.items():
             if isinstance(value, (str, int, float, bool)):
-                if attrib == "vari_idx":
+                if attrib == "vari_idx" and _args is not None:
                     # If the attribute is vari_idx, then return its value to be used as a variation idx
                     # argument of the set method setting the parent block containing this attribute.
-                    ret_vari_idx = value if isinstance(value, (int, bool)) else int(value)
+                    _args[0] = value if isinstance(value, (int, bool)) else int(value)
                 else:
                     while True:
+                        # Directly set or clear subblocks with the attrib name.
                         subblk = self.get_subblock(attrib)
                         if not isinstance(subblk, Block):
                             break
@@ -225,10 +229,8 @@ class Block:
                         elif value:
                             subblk.set(count=1)
                         else:
-                            subblk.clear(count=1)   # Value is "" or False
+                            subblk.clear()   # Value is "" or False
                     self.set_variables(autoclone=False, **{attrib: value})
-
-        return ret_vari_idx
 
     def get_subblock(self, *subblock_names: str) -> Union["Block", list["Block"], None]:
         """Returns the specified child block object from the current block content. Each child
