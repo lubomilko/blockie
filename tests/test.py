@@ -304,5 +304,57 @@ Short list: apples, potatoes, rice, cooking magazine, orange juice
 """
 
 
+def test_subrefs() -> None:
+    template = """
+<A>
+    <AA><*>,</AA>
+    <AB>
+        <AB_VA>
+        <A.AA><*>+</A.AA>
+        <ABA>
+            <ABA_VA>
+        </ABA>
+        <ABA.ABA_VA>
+    </AB>
+    <AB.ABA><ABA_VA></AB.ABA>
+</A>
+<B>
+    <B_VA>
+    <A.AB.AB_VA>
+</B>
+<VA>
+"""
+
+    data = {
+        "a": {
+            "aa": ["aa_val1", "aa_val2", "aa_val3"],
+            "ab": {
+                "ab_va": "ab_va_val",
+                "aba": {
+                    "aba_va": "aba_va_val"
+                }
+            }
+        },
+        "b": {
+            "b_va": "b_va_val"
+        },
+        "va": "va_val"
+    }
+
+    blk = Block(template)
+    blk.fill(data, subrefs=True)
+    assert blk.content == """
+    aa_val1,aa_val2,aa_val3,
+        ab_va_val
+        aa_val1+aa_val2+aa_val3+
+            aba_va_val
+        aba_va_val
+    aba_va_val
+    b_va_val
+    ab_va_val
+va_val
+"""
+
+
 if __name__ == "__main__":
-    test_shoplist_custom_cfg()
+    test_subrefs()
