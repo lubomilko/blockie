@@ -129,7 +129,8 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object, _clone_idx: int = 0, _args: list[Any] | None = None) -> None:
+    def fill(self, data: dict | object, subrefs: bool = False, backrefs: bool = False,
+             _clone_idx: int = 0, _args: list[Any] | None = None) -> None:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -170,7 +171,7 @@ class Block:
         self.__fill_simple(data_dict, _args)
 
     @staticmethod
-    def __add_obj_refs(data: dict[str, Any]) -> None:
+    def __add_subrefs(data: dict[str, Any]) -> None:
         def gen_refs(data: dict[str, Any], var_name: str = "") -> Generator[
                 tuple[str, dict | tuple | list | str | int | float | bool]]:
             for (k, v) in data.items():
@@ -184,43 +185,41 @@ class Block:
     def __fill_iter(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of tuple or list type."""
         for (attrib, value) in data_dict.items():
-            if isinstance(value, (list, tuple)):
-                while True:
-                    subblk = self.get_subblock(attrib)
-                    if not isinstance(subblk, Block):
-                        # If no block is found and value is empty, then try to clear variables.
-                        if not value:
-                            self.clear_variables(attrib)
-                        break
-                    if value:
-                        for (i, elem) in enumerate(value):
-                            if isinstance(elem, (list, tuple, str, int, float, bool)):
-                                # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
-                                elem = {self.config.tag_implct_iter: elem}
-                            subblk.fill(elem, _clone_idx=i)
-                            subblk.clone()
-                        subblk.set(count=1)
-                    else:
-                        subblk.clear()   # Value is an empty list, i.e., [].
+            while isinstance(value, (list, tuple)):
+                subblk = self.get_subblock(attrib)
+                if not isinstance(subblk, Block):
+                    # If no block is found and value is empty, then try to clear variables.
+                    if not value:
+                        self.clear_variables(attrib)
+                    break
+                if value:
+                    for (i, elem) in enumerate(value):
+                        if isinstance(elem, (list, tuple, str, int, float, bool)):
+                            # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
+                            elem = {self.config.tag_implct_iter: elem}
+                        subblk.fill(elem, _clone_idx=i)
+                        subblk.clone()
+                    subblk.set(count=1)
+                else:
+                    subblk.clear()   # Value is an empty list, i.e., [].
 
     def __fill_dict_obj(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of dict or object type."""
         for (attrib, value) in data_dict.items():
-            if not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
-                while True:
-                    subblk = self.get_subblock(attrib)
-                    if not isinstance(subblk, Block):
-                        # If no block is found and value is empty, then try to clear the variables.
-                        if not value:
-                            self.clear_variables(attrib)
-                        break
-                    if value:
-                        v_idx = [0]
-                        # Get the variation index from the internal elements if they contain a vari_idx attribute.
-                        subblk.fill(value, _args=v_idx)
-                        subblk.set(vari_idx=v_idx[0], count=1)
-                    else:
-                        subblk.clear()   # Clear block if empty data are provided.
+            while not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
+                subblk = self.get_subblock(attrib)
+                if not isinstance(subblk, Block):
+                    # If no block is found and value is empty, then try to clear the variables.
+                    if not value:
+                        self.clear_variables(attrib)
+                    break
+                if value:
+                    v_idx = [0]
+                    # Get the variation index from the internal elements if they contain a vari_idx attribute.
+                    subblk.fill(value, _args=v_idx)
+                    subblk.set(vari_idx=v_idx[0], count=1)
+                else:
+                    subblk.clear()   # Clear block if empty data are provided.
 
     def __fill_simple(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of simple type (str, int, float or bool)."""
