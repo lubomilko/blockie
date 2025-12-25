@@ -50,6 +50,8 @@ class BlockConfig:
         tag_implct_iter: The *implicit iterator* tag symbol. Defaults to ``*``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
+        subref_sep: A block or variable subreference separator, e.g.
+            ``PARENT_BLOCK.CHILD_BLOCK.CHILD_VAR``. Defaults to ``.``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
     """
@@ -60,6 +62,7 @@ class BlockConfig:
     tag_implct_iter: str = "*"
     autotag_align: str = "+"
     autotag_vari: str = "."
+    subref_sep: str = "."
     tab_size: int = 4
 
 
@@ -161,30 +164,28 @@ class Block:
             return  # Do nothing if data is not a dictionary or an object.
         # Get the block data in form of a dictionary even if it is defined as an object.
         data_dict = data if isinstance(data, dict) else data.__dict__
+        if subrefs:
+            # Add block and variable subbreference data (e.g., block1.var1).
+            data_dict.update(dict(self.__gen_subrefs(data_dict)))
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
         if fill_hndl:
             fill_hndl(self, data, _clone_idx)
         # Fill iterable data, then dicts/objs, and then simple data types (str, int, float, bool).
-        self.__fill_iter(data_dict, _args)
-        self.__fill_dict_obj(data_dict, _args)
-        self.__fill_simple(data_dict, _args)
+        self.__fill_iter(data_dict, subrefs, backrefs, _args)
+        self.__fill_dict_obj(data_dict, subrefs, backrefs, _args)
+        self.__fill_simple(data_dict, subrefs, backrefs, _args)
 
-    @staticmethod
-    def __add_subrefs(data: dict[str, Any]) -> None:
-        def gen_refs(data: dict[str, Any], var_name: str = "") -> Generator[
-                tuple[str, dict | tuple | list | str | int | float | bool]]:
-            for (k, v) in data.items():
-                if isinstance(v, dict):
-                    yield (f"{var_name}.{k}" if var_name else k, v)
-                    yield from gen_refs(v, f"{var_name}.{k}" if var_name else k)
-                if var_name and isinstance(v, (tuple, list, str, int, float, bool)):
-                    yield (f"{var_name}.{k}", v)
-        data.update(dict(gen_refs(data)))
+    def __gen_subrefs(self, data: dict[str, Any], parent_name: str = "") -> Generator[tuple[str, Any]]:
+        for (k, v) in data.items():
+            if parent_name:
+                yield (f"{parent_name}{self.config.subref_sep}{k}", v)
+            if isinstance(v, dict):
+                yield from self.__gen_subrefs(v, f"{parent_name}{self.config.subref_sep}{k}" if parent_name else k)
 
-    def __fill_iter(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+    def __fill_iter(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of tuple or list type."""
-        for (attrib, value) in data_dict.items():
+        for (attrib, value) in data.items():
             while isinstance(value, (list, tuple)):
                 subblk = self.get_subblock(attrib)
                 if not isinstance(subblk, Block):
@@ -197,15 +198,15 @@ class Block:
                         if isinstance(elem, (list, tuple, str, int, float, bool)):
                             # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
                             elem = {self.config.tag_implct_iter: elem}
-                        subblk.fill(elem, _clone_idx=i)
+                        subblk.fill(elem, subrefs=_srefs, backrefs=_brefs, _clone_idx=i)
                         subblk.clone()
                     subblk.set(count=1)
                 else:
                     subblk.clear()   # Value is an empty list, i.e., [].
 
-    def __fill_dict_obj(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+    def __fill_dict_obj(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of dict or object type."""
-        for (attrib, value) in data_dict.items():
+        for (attrib, value) in data.items():
             while not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
                 subblk = self.get_subblock(attrib)
                 if not isinstance(subblk, Block):
@@ -216,14 +217,14 @@ class Block:
                 if value:
                     v_idx = [0]
                     # Get the variation index from the internal elements if they contain a vari_idx attribute.
-                    subblk.fill(value, _args=v_idx)
+                    subblk.fill(value, subrefs=_srefs, backrefs=_brefs, _args=v_idx)
                     subblk.set(vari_idx=v_idx[0], count=1)
                 else:
                     subblk.clear()   # Clear block if empty data are provided.
 
-    def __fill_simple(self, data_dict: dict[str, Any], _args: list[Any] | None = None) -> None:
+    def __fill_simple(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
         """Internal method to fill the template with data of simple type (str, int, float or bool)."""
-        for (attrib, value) in data_dict.items():
+        for (attrib, value) in data.items():
             if isinstance(value, (str, int, float, bool)):
                 if attrib == "vari_idx" and _args is not None:
                     # If the attribute is vari_idx, then return its value to be used as a variation idx
