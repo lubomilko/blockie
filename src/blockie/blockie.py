@@ -76,6 +76,15 @@ class Block:
         content (str): The generated block content, i.e., a template filled with data.
         autotags (bool): Enables the automatic tags (alignment, etc.) to be filled automatically.
     """
+    @dataclass
+    class FillState:
+        """Internal :meth:`fill` method state variaable used between its recursive calls."""
+        clone_idx: int = 0
+        vari_idx: int = 0
+        var_set: bool = False
+
+    __fill_state: FillState = FillState()  # Internal fill method data.
+
     def __init__(self, template: str | Path = "", name: str = "", config: BlockConfig = BlockConfig()) -> None:
         """Initializes a new block object.
 
@@ -93,8 +102,8 @@ class Block:
         self.__parent: Block | None = None
         self.__children: dict[str, Block] = {}
         self.__template: str = ""
-        self.__clone_flag: bool = False     # Enables autoclone when setting new variables or subblocks.
-        self.__autovari_first: bool = True   # Indicates use of the first content of the "variation" autotag.
+        self.__clone_flag: bool = False         # Enables autoclone when setting new variables or subblocks.
+        self.__autovari_first: bool = True      # Indicates use of the first content of the "variation" autotag.
 
         if Path(template).is_file():
             self.load_template(template)
@@ -132,8 +141,7 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object, subrefs: bool = False, backrefs: bool = False,
-             _clone_idx: int = 0, _args: list[Any] | None = None) -> None:
+    def fill(self, data: dict | object) -> None:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -155,26 +163,25 @@ class Block:
 
         Args:
             data: A dictionary or object to be used for filling a block template.
-            _clone_idx: A private internal index of a block clone being filled sent to the
-                ``fill_hndl`` function if it is defined. Do not set.
-            _args: Private internal arguments used by the recursive calls of this method.
-                Do not set.
         """
         if data is None or isinstance(data, (list, tuple, str, int, float, bool)):
             return  # Do nothing if data is not a dictionary or an object.
         # Get the block data in form of a dictionary even if it is defined as an object.
         data_dict = data if isinstance(data, dict) else data.__dict__
-        if subrefs:
-            # Add block and variable subbreference data (e.g., block1.var1).
-            data_dict.update(dict(self.__gen_subrefs(data_dict)))
+        # Add block and variable subbreference data (e.g., block1.var1).
+        data_dict.update({k: v for (k, v) in self.__gen_subrefs(data_dict) if k not in data_dict})
+        self.__fill_state.var_set = False
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
         if fill_hndl:
-            fill_hndl(self, data, _clone_idx)
+            fill_hndl(self, data, self.__fill_state.clone_idx)
         # Fill iterable data, then dicts/objs, and then simple data types (str, int, float, bool).
-        self.__fill_iter(data_dict, subrefs, backrefs, _args)
-        self.__fill_dict_obj(data_dict, subrefs, backrefs, _args)
-        self.__fill_simple(data_dict, subrefs, backrefs, _args)
+        self.__fill_iter(data_dict)
+        self.__fill_dict_obj(data_dict)
+        self.__fill_simple(data_dict)
+
+        while self.__fill_state.var_set:
+            self.fill(data_dict)
 
     def __gen_subrefs(self, data: dict[str, Any], parent_name: str = "") -> Generator[tuple[str, Any]]:
         for (k, v) in data.items():
@@ -183,7 +190,7 @@ class Block:
             if isinstance(v, dict):
                 yield from self.__gen_subrefs(v, f"{parent_name}{self.config.subref_sep}{k}" if parent_name else k)
 
-    def __fill_iter(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
+    def __fill_iter(self, data: dict[str, Any]) -> None:
         """Internal method to fill the template with data of tuple or list type."""
         for (attrib, value) in data.items():
             while isinstance(value, (list, tuple)):
@@ -198,13 +205,15 @@ class Block:
                         if isinstance(elem, (list, tuple, str, int, float, bool)):
                             # If an element is not an obj / dict, then make it a dict setting an implicit iterator.
                             elem = {self.config.tag_implct_iter: elem}
-                        subblk.fill(elem, subrefs=_srefs, backrefs=_brefs, _clone_idx=i)
+                        self.__fill_state.clone_idx = i
+                        subblk.fill(elem)
+                        self.__fill_state.clone_idx = 0  # Reset the internal clone index.
                         subblk.clone()
                     subblk.set(count=1)
                 else:
                     subblk.clear()   # Value is an empty list, i.e., [].
 
-    def __fill_dict_obj(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
+    def __fill_dict_obj(self, data: dict[str, Any]) -> None:
         """Internal method to fill the template with data of dict or object type."""
         for (attrib, value) in data.items():
             while not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
@@ -215,21 +224,21 @@ class Block:
                         self.clear_variables(attrib)
                     break
                 if value:
-                    v_idx = [0]
                     # Get the variation index from the internal elements if they contain a vari_idx attribute.
-                    subblk.fill(value, subrefs=_srefs, backrefs=_brefs, _args=v_idx)
-                    subblk.set(vari_idx=v_idx[0], count=1)
+                    subblk.fill(value)
+                    subblk.set(vari_idx=self.__fill_state.vari_idx, count=1)
+                    self.__fill_state.vari_idx = 0   # Reset the internal variation index.
                 else:
                     subblk.clear()   # Clear block if empty data are provided.
 
-    def __fill_simple(self, data: dict[str, Any], _srefs: bool, _brefs: bool, _args: list[Any] | None = None) -> None:
+    def __fill_simple(self, data: dict[str, Any]) -> None:
         """Internal method to fill the template with data of simple type (str, int, float or bool)."""
         for (attrib, value) in data.items():
             if isinstance(value, (str, int, float, bool)):
-                if attrib == "vari_idx" and _args is not None:
+                if attrib == "vari_idx":
                     # If the attribute is vari_idx, then return its value to be used as a variation idx
                     # argument of the set method setting the parent block containing this attribute.
-                    _args[0] = value if isinstance(value, (int, bool)) else int(value)
+                    self.__fill_state.vari_idx = value if isinstance(value, (int, bool)) else int(value)
                 else:
                     while True:
                         # Directly set or clear subblocks with the attrib name.
@@ -242,7 +251,9 @@ class Block:
                             subblk.set(count=1)
                         else:
                             subblk.clear()   # Value is "" or False
-                    self.set_variables(autoclone=False, **{attrib: value})
+                    var_set = self.set_variables(autoclone=False, **{attrib: value})
+                    if var_set:
+                        self.__fill_state.var_set = True
 
     def get_subblock(self, *subblock_names: str) -> Union["Block", list["Block"], None]:
         """Returns the specified child block object from the current block content. Each child
@@ -270,7 +281,7 @@ class Block:
             ret_blk.append(subblk)
         return ret_blk if len(ret_blk) > 1 else ret_blk[0]
 
-    def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> None:
+    def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> bool:
         """Sets values into the specified variables within this block content.
 
         Args:
@@ -279,7 +290,10 @@ class Block:
                 ``name="Thomas", surname="Anderson", age=37``. Tuples or lists can be used as
                 variable values, making this block to be automatically cloned after setting each
                 element value.
+        Returns:
+            ``True`` if any variable has been set. ``False`` is returned otherwise.
         """
+        var_set = False
         iter_idx = 0
         detected_iters_num = 1
         while iter_idx < detected_iters_num:
@@ -288,7 +302,7 @@ class Block:
             self.clone(passive=True)
             # Loop through variable tags and replace them with the corresponding variable values.
             for (tag, val) in [(self.config.tag_gen_var(f"{name}"), val) for (name, val) in name_value_kwargs.items()]:
-                if isinstance(val, str):
+                if isinstance(val, (str, int, float, bool)):
                     var_value = val
                 else:
                     # Check if the val is iterable and if so, then set its individual elements.
@@ -301,10 +315,13 @@ class Block:
                             var_value = val[-1]
                     except TypeError:
                         var_value = val
-                self.content = self.content.replace(tag, f"{var_value}")
+                if tag in self.content and tag != str(var_value):
+                    self.content = self.content.replace(tag, f"{var_value}")
+                    var_set = True
             iter_idx += 1
             if iter_idx < detected_iters_num or autoclone:
                 self.clone()
+        return var_set
 
     def set(self, vari_idx: int | bool = 0, all_children: bool = False, count: int = -1) -> None:
         """Sets the content of this block into its parent block content.
