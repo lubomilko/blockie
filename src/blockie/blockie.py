@@ -130,6 +130,9 @@ class Block:
         self.__template = template
         self.content = template
 
+    def __bool__(self) -> bool:
+        return bool(self.name or self.template)
+
     def load_template(self, file_path: str | Path) -> None:
         """Loads the block template from a text file."""
         with open(file_path, "r", encoding="utf-8") as file_template:
@@ -195,7 +198,7 @@ class Block:
         for (attrib, value) in data.items():
             while isinstance(value, (list, tuple)):
                 subblk = self.get_subblock(attrib)
-                if not isinstance(subblk, Block):
+                if not subblk:
                     # If no block is found and value is empty, then try to clear variables.
                     if not value:
                         self.clear_variables(attrib)
@@ -218,7 +221,7 @@ class Block:
         for (attrib, value) in data.items():
             while not isinstance(value, (list, tuple, str, int, float, bool)) and attrib != "fill_hndl":
                 subblk = self.get_subblock(attrib)
-                if not isinstance(subblk, Block):
+                if not subblk:
                     # If no block is found and value is empty, then try to clear the variables.
                     if not value:
                         self.clear_variables(attrib)
@@ -243,7 +246,7 @@ class Block:
                     while True:
                         # Directly set or clear subblocks with the attrib name.
                         subblk = self.get_subblock(attrib)
-                        if not isinstance(subblk, Block):
+                        if not subblk:
                             break
                         if isinstance(value, int):
                             subblk.set(vari_idx=value, count=1)
@@ -255,31 +258,30 @@ class Block:
                     if var_set:
                         self.__fill_state.var_set = True
 
-    def get_subblock(self, *subblock_names: str) -> Union["Block", list["Block"], None]:
-        """Returns the specified child block object from the current block content. Each child
-        is also automatically added into the ``children`` attribute of the current block.
+    def get_subblock(self, subblock_name: str) -> "Block":
+        """Returns the specified child block object from the this block content. Each child
+        is also automatically added into the ``children`` attribute of this block. If the
+        specified block is not found, then a block object with empty name and template is
+        returned.
 
         Args:
-            subblock_names: The tag names of blocks to be extracted from a current block content.
+            subblock_name: The tag name of a block to be extracted from a this block content.
 
         Returns:
-            A :class:`Block` object or a list of blocks if multiple subblock names are specified.
-            ``None`` is returned if the specified block tags are not found.
+            A :class:`Block` object. If the subblock is not found, then the returned block
+            object has an empty name and template.
         """
-        ret_blk = []
-        for subblock_name in subblock_names:
-            subblk = None
-            # Clone block if the cloning flag is set to true to ensure that the subblock tags
-            # can be found in the block content and the subblock can be extracted from them.
-            self.clone(passive=True)
-            if subblock_name:
-                (subblk_start, subblk_end) = self.__get_block_pos(subblock_name)
-                if subblk_start >= 0 and subblk_end >= 0:
-                    subblk = Block(self.content[subblk_start: subblk_end], subblock_name, self.config)
-                    subblk.__parent = self      # pylint: disable=protected-access, unused-private-member
-                    self.__children[subblock_name] = subblk
-            ret_blk.append(subblk)
-        return ret_blk if len(ret_blk) > 1 else ret_blk[0]
+        subblk = Block()
+        # Clone block if the cloning flag is set to true to ensure that the subblock tags
+        # can be found in the block content and the subblock can be extracted from them.
+        self.clone(passive=True)
+        if subblock_name:
+            (subblk_start, subblk_end) = self.__get_block_pos(subblock_name)
+            if subblk_start >= 0 and subblk_end >= 0:
+                subblk = Block(self.content[subblk_start: subblk_end], subblock_name, self.config)
+                subblk.__parent = self      # pylint: disable=protected-access, unused-private-member
+                self.__children[subblock_name] = subblk
+        return subblk
 
     def set_variables(self, autoclone: bool = False, **name_value_kwargs) -> bool:
         """Sets values into the specified variables within this block content.
@@ -383,7 +385,7 @@ class Block:
         for subblk in subblocks:
             if isinstance(subblk, str):
                 blk_sub = self.children.get(subblk, self.get_subblock(subblk))
-                if isinstance(blk_sub, Block):
+                if blk_sub:
                     blk_sub.set()
             else:
                 subblk.set()
