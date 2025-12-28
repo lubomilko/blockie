@@ -365,20 +365,54 @@ va_val
 def test_backrefs() -> None:
     template = """
 <A>
+    <A_VA>
+    <AA>
+        <AA_VA>
+    </AA>
+    <AB>
+        <AB_VA>
+    </AB>
+    <A_VB>
+    <A_VC>
+</A>
 <B>
+    <B_VA>
+    <B_VB>
+    <B_VC>
+    <B_VD>
+</B>
 """
 
     data = {
-        "a": "a_val", "b": "<A>"
+        "a": {
+            "a_va": "a_va_val",
+            "aa": {"aa_va": "<A.A_VA>"},
+            "ab": {"ab_va": "<A.AA.AA_VA>"},
+            "a_vb": "<AA.AA_VA>",
+            "a_vc": "<A_VB>"
+        },
+        "b": {
+            "b_va": "b_va_val",
+            "b_vb": "<B_VA>",
+            "b_vc": "<A.A_VA>",
+            "b_vd": "<A.AB.AB_VA>"
+        },
     }
 
     blk = Block(template)
     blk.fill(data)
     assert blk.content == """
-a_val
-a_val
+    a_va_val
+        a_va_val
+        a_va_val
+    a_va_val
+    a_va_val
+    b_va_val
+    b_va_val
+    a_va_val
+    a_va_val
 """
 
 
 if __name__ == "__main__":
-    test_dictfill()
+    test_backrefs()
