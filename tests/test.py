@@ -5,14 +5,19 @@ releases.
 """
 
 # pylint: disable = missing-class-docstring, missing-function-docstring
-
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(Path(__file__).parent.parent, "src").resolve()))
+sys.path.insert(0, str(Path(Path(__file__).parent, "data").resolve()))
 
 # pylint: disable = wrong-import-position, import-error
 from blockie import Block, BlockConfig      # noqa: E402
+
+
+def abs_path(path:  str | os.PathLike[str]) -> Path:
+    return Path(Path(__file__).parent, path).resolve()
 
 
 def compare_files(gen_file: Path, exp_file: Path) -> bool:
@@ -206,11 +211,11 @@ def test_dictfill() -> None:
         "text": ["line one", "line two", "line three"]
     }
 
-    blk_file = Block("data/fill_tmpl.txt")
+    blk_file = Block(abs_path("data/fill_tmpl.txt"))
     blk_file.fill(data)
-    blk_file.save_content("data/fill_gen.txt")
+    blk_file.save_content(abs_path("data/fill_gen.txt"))
 
-    assert compare_files("data/fill_gen.txt", "data/fill_exp.txt")
+    assert compare_files(abs_path("data/fill_gen.txt"), abs_path("data/fill_exp.txt"))
 
 
 def test_shoplist() -> None:
@@ -284,6 +289,7 @@ Short list: @items@item@_, @~_@!_@!items
         "---",                      # tag_implct_iter
         ">>",                       # autotag_align
         "_",                        # autotag_vari
+        "-",                        # subref_sep
         8                           # tab_size
     )
 
@@ -342,7 +348,7 @@ def test_subrefs() -> None:
     }
 
     blk = Block(template)
-    blk.fill(data, subrefs=True)
+    blk.fill(data)
     assert blk.content == """
     aa_val1,aa_val2,aa_val3,
         ab_va_val
@@ -356,5 +362,23 @@ va_val
 """
 
 
+def test_backrefs() -> None:
+    template = """
+<A>
+<B>
+"""
+
+    data = {
+        "a": "a_val", "b": "<A>"
+    }
+
+    blk = Block(template)
+    blk.fill(data)
+    assert blk.content == """
+a_val
+a_val
+"""
+
+
 if __name__ == "__main__":
-    test_subrefs()
+    test_dictfill()
