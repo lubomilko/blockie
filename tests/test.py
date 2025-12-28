@@ -16,13 +16,14 @@ sys.path.insert(0, str(Path(Path(__file__).parent, "data").resolve()))
 from blockie import Block, BlockConfig      # noqa: E402
 
 
-def abs_path(path:  str | os.PathLike[str]) -> Path:
+def abs_path(path: str | os.PathLike[str]) -> Path:
     return Path(Path(__file__).parent, path).resolve()
 
 
-def compare_files(gen_file: Path, exp_file: Path) -> bool:
+def compare_files(gen_file: str | os.PathLike[str], exp_file: str | os.PathLike[str]) -> bool:
     files_match = False
-    with open(gen_file, "r", encoding="utf-8") as file_gen, open(exp_file, "r", encoding="utf-8") as file_exp:
+    with (open(abs_path(gen_file), "r", encoding="utf-8") as file_gen,
+          open(abs_path(exp_file), "r", encoding="utf-8") as file_exp):
         if file_gen.read() == file_exp.read():
             files_match = True
         else:
@@ -43,7 +44,9 @@ def test_lowlevel() -> None:
     blk_simple.clone(force=True)
     blk_simple.set()
 
-    (blk_simple, blk_test1, blk_test2) = blk_file.get_subblock("SIMPLE2", "TEST1", "TEST2")
+    blk_simple = blk_file.get_subblock("SIMPLE2")
+    blk_test1 = blk_file.get_subblock("TEST1")
+    blk_test2 = blk_file.get_subblock("TEST2")
 
     blk_simple.template = "<VAL><.>,<^.>.</.>\n<VAL><.>,<^.>.</.>\n\n"
     blk_simple.set_variables(VAL=1)
@@ -215,7 +218,7 @@ def test_dictfill() -> None:
     blk_file.fill(data)
     blk_file.save_content(abs_path("data/fill_gen.txt"))
 
-    assert compare_files(abs_path("data/fill_gen.txt"), abs_path("data/fill_exp.txt"))
+    assert compare_files("data/fill_gen.txt", "data/fill_exp.txt")
 
 
 def test_shoplist() -> None:
@@ -415,4 +418,4 @@ def test_backrefs() -> None:
 
 
 if __name__ == "__main__":
-    test_backrefs()
+    test_shoplist()
