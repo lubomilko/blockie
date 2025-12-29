@@ -25,7 +25,7 @@ from typing import Any, Generator, Union
 
 __author__ = "Lubomir Milko"
 __copyright__ = "Copyright (C) 2025 Lubomir Milko"
-__version__ = "1.2.0"
+__version__ = "2.0.0"
 __license__ = "GPLv3"
 
 
@@ -144,7 +144,7 @@ class Block:
         with open(file_path, "w", encoding="utf-8") as file_content:
             file_content.write(self.content)
 
-    def fill(self, data: dict | object) -> None:
+    def fill(self, data: dict | object, subrefs: bool = True) -> None:
         """Fills the block content using the data from a dictionary or an object.
 
         The dictionary keys or object attribute names define the template variable or a block to
@@ -166,13 +166,16 @@ class Block:
 
         Args:
             data: A dictionary or object to be used for filling a block template.
+            subrefs: Enables filling of hierarchical block or variable subreferences in variable
+                values, e.g. ``PARENT_BLOCK.CHILD_BLOCK.CHILD_VAR``.
         """
         if data is None or isinstance(data, (list, tuple, str, int, float, bool)):
             return  # Do nothing if data is not a dictionary or an object.
         # Get the block data in form of a dictionary even if it is defined as an object.
         data_dict = data if isinstance(data, dict) else data.__dict__
-        # Add block and variable subbreference data (e.g., block1.var1).
-        data_dict.update({k: v for (k, v) in self.__gen_subrefs(data_dict) if k not in data_dict})
+        if subrefs:
+            # Add block and variable subbreference data (e.g., block1.var1).
+            data_dict.update({k: v for (k, v) in self.__gen_subrefs(data_dict) if k not in data_dict})
         self.__fill_state.var_set = False
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
