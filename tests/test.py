@@ -36,7 +36,7 @@ def test_lowlevel() -> None:
 
     blk_file = Block()
 
-    blk_file.load_template("data/content_tmpl.txt")
+    blk_file.load_template(abs_path("data/content_tmpl.txt"))
 
     blk_simple = blk_file.get_subblock("SIMPLE1")
     blk_simple.clone(force=True)
@@ -160,7 +160,7 @@ def test_lowlevel() -> None:
 
     blk_container = blk_file.get_subblock("MULTI2")
     blk_blk = blk_container.get_subblock("BLK")
-    blk_blk.autotags = False
+    blk_blk.config.enable_autotags = False
     blk_blk.set_variables(A=123)
     blk_blk.set(0)
     blk_container.clone()
@@ -186,7 +186,7 @@ def test_lowlevel() -> None:
     blk_html_table = blk_file.get_subblock("HTML_TABLE")
     blk_row = blk_html_table.get_subblock("ROW")
     blk_col = blk_row.get_subblock("COL")
-    blk_col.autotags = False
+    blk_col.config.enable_autotags = False
     for row_vals in tab_values:
         blk_col.set_variables(VALUE=row_vals)
         blk_row.clone(set_children=True)
@@ -290,10 +290,12 @@ Short list: @items@item@_, @~_@!_@!items
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
         "---",                      # tag_implct_iter
+        "#",                        # autotag_blk_var
         ">>",                       # autotag_align
         "_",                        # autotag_vari
         "-",                        # subref_sep
-        8                           # tab_size
+        8,                          # tab_size
+        True,                       # enable_autotags
     )
 
     blk = Block(template, config=config)
@@ -417,5 +419,37 @@ def test_backrefs() -> None:
 """
 
 
+def test_blk_loc_tags() -> None:
+    template = """
+<V_LIST>
+<V><*><.>, <^.></.></V>
+Values = <@V><+>            (<DESC>)
+<@V>
+</V_LIST>
+"""
+
+    data = {
+        "v_list": [
+            {"v": [1, 2, 3], "desc": "1-3"},
+            {"v": ["a", "b", "c"], "desc": "a-c"},
+            {"v": ["A", "B", "C", "D", "E"], "desc": "A-E"}
+        ]
+    }
+
+    blk = Block(template)
+    blk.fill(data)
+    assert blk.content == """
+
+Values = 1, 2, 3            (1-3)
+1, 2, 3
+
+Values = a, b, c            (a-c)
+a, b, c
+
+Values = A, B, C, D, E      (A-E)
+A, B, C, D, E
+"""
+
+
 if __name__ == "__main__":
-    test_shoplist()
+    test_blk_loc_tags()

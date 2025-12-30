@@ -22,6 +22,7 @@ from pathlib import Path
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, Generator, Union
+from copy import copy
 
 __author__ = "Lubomir Milko"
 __copyright__ = "Copyright (C) 2025 Lubomir Milko"
@@ -35,35 +36,36 @@ class BlockConfig:
 
     Attributes:
         tag_gen_var (Callable[[str], str]): A tag generator function for a variable tag.
-            Defaults to a lamba function converting a tag name ``name`` to a variable tag string
-            ``<NAME>``.
+            Defaults to a lamba function converting a variable name ``name`` to string ``<NAME>``.
         tag_gen_blk_start (Callable[[str], str]): A tag generator function for a block start tag.
-            Defaults to a lamba function converting a tag name ``name`` to a block start tag
-            string ``<NAME>``.
+            Defaults to a lamba function converting a block name ``name`` to string ``<NAME>``.
         tag_gen_blk_end (Callable[[str], str]): A tag generator function for a block end tag.
-            Defaults to a lamba function converting a tag name ``name`` to a block end tag string
-            ``</NAME>``.
+            Defaults to a lamba function converting a block name ``name`` to string ``</NAME>``.
         tag_gen_blk_vari (Callable[[str], str]): A tag generator function for a block variation
-            tag.
-            Defaults to a lamba function converting a tag name ``name`` to a block variation tag
-            string ``<^NAME>``.
+            tag. Defaults to a lamba function converting a block name ``name`` to string
+            ``<^NAME>``.
         tag_implct_iter: The *implicit iterator* tag symbol. Defaults to ``*``.
+        autotag_blk_var: The *block variable* automatic tag symbol. Defaults to ``@``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
         subref_sep: A block or variable subreference separator, e.g.
             ``PARENT_BLOCK.CHILD_BLOCK.CHILD_VAR``. Defaults to ``.``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
+        enable_autotags: Enables the automatic tags (alignment, etc.) to be filled automatically.
+            Defaults to True.
     """
     tag_gen_var: Callable[[str], str] = lambda name: f"<{name.upper()}>"
     tag_gen_blk_start: Callable[[str], str] = lambda name: f"<{name.upper()}>"
     tag_gen_blk_end: Callable[[str], str] = lambda name: f"</{name.upper()}>"
     tag_gen_blk_vari: Callable[[str], str] = lambda name: f"<^{name.upper()}>"
     tag_implct_iter: str = "*"
+    autotag_blk_var: str = "@"
     autotag_align: str = "+"
     autotag_vari: str = "."
     subref_sep: str = "."
     tab_size: int = 4
+    enable_autotags: bool = True
 
 
 class Block:
@@ -74,7 +76,6 @@ class Block:
             a template.
         name (str): A block name. Usually set automatically by the :meth:`get_subblock` method.
         content (str): The generated block content, i.e., a template filled with data.
-        autotags (bool): Enables the automatic tags (alignment, etc.) to be filled automatically.
     """
     @dataclass
     class FillState:
@@ -85,7 +86,7 @@ class Block:
 
     __fill_state: FillState = FillState()  # Internal fill method data.
 
-    def __init__(self, template: str | Path = "", name: str = "", config: BlockConfig = BlockConfig()) -> None:
+    def __init__(self, template: str | Path = "", name: str = "", config: BlockConfig | None = None) -> None:
         """Initializes a new block object.
 
         Args:
@@ -94,10 +95,9 @@ class Block:
             config (BlockConfig): A block configuration (template tags format, tabulator size,
                 etc.)
         """
-        self.config: BlockConfig = config
+        self.config: BlockConfig = config if config else BlockConfig()
         self.name: str = name
         self.content: str = ""
-        self.autotags: bool = True
 
         self.__parent: Block | None = None
         self.__children: dict[str, Block] = {}
@@ -281,7 +281,7 @@ class Block:
         if subblock_name:
             (subblk_start, subblk_end) = self.__get_block_pos(subblock_name)
             if subblk_start >= 0 and subblk_end >= 0:
-                subblk = Block(self.content[subblk_start: subblk_end], subblock_name, self.config)
+                subblk = Block(self.content[subblk_start: subblk_end], subblock_name, copy(self.config))
                 subblk.__parent = self      # pylint: disable=protected-access, unused-private-member
                 self.__children[subblock_name] = subblk
         return subblk
@@ -356,7 +356,7 @@ class Block:
             # its cloning flag is set to true to ensure that the subblock tags can be
             # found in the parent block content and the subblock content can be set into them.
             self.parent.clone(passive=True)
-        if self.autotags:
+        if self.config.enable_autotags:
             # Finalize the block content by setting the value of special tags.
             self.__set_autotag_vari(last=True)
             self.__autovari_first = True
@@ -364,14 +364,21 @@ class Block:
         set_num = 0
         while self.parent and (set_num < count or count < 0):
             # pylint: disable=protected-access
-            # rationale: Private method __get_block_pos is called from non-self object only here and
+            # rationale: The private method __get_block_pos is called from non-self object only here and
             # it is easier and simpler to keep it that way instead of rewriting the method to be static and sending
             # parent object data into it for processing.
             (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)     # type: ignore
             if 0 <= subblk_start < subblk_end:
                 blk_content = self.__get_variation(self.content, self.name, vari_idx)
-                # If subblock tags are found, then set the current block content into all corresponding subblock tags
-                # in the parent block content.
+                if self.config.enable_autotags:
+                    # Try to set this block content as a value of the block variable autotag, if it is present in the
+                    # template, and remove this original block from a parent block by setting its content to nothing.
+                    var_set = self.parent.set_variables(
+                        autoclone=False, **{f"{self.config.autotag_blk_var}{self.name}": blk_content})
+                    if var_set:
+                        blk_content = ""
+                # If subblock tags are found, then set the current block content into the corresponding subblock tags
+                # of the parent block content.
                 self.parent.content = \
                     f"{self.parent.content[: subblk_start]}{blk_content}{self.parent.content[subblk_end:]}"
                 # Increment number of blocks being set into the parent block.
@@ -418,7 +425,7 @@ class Block:
         else:
             # Check if cloning flag indicates that the cloning should be actually performed.
             if force or self.__clone_flag:
-                if self.autotags:
+                if self.config.enable_autotags:
                     self.__set_autotag_vari(first=self.__autovari_first)
                     self.__autovari_first = False
                     self.__set_autotag_align()
