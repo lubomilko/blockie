@@ -15,6 +15,7 @@ template engine project.
 
 - Make the `get_subblock` method to always return a `Block` object.
 - Replace the `Block.autotags` attribute with `Block.config.enable_autotags`.
+- General refactoring of multiple methods.
 
 ### Added
 
@@ -22,7 +23,9 @@ template engine project.
   blocks using hierarchical parent-child tag names separated using a new `subref_sep` separator.
 - Add recursive filling of variables and blocks referenced in variable values.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
-  content into the specified variable instead of keeping it in its place.
+  content into the specified variable instead of keeping it in the original block location.
+- Add return flag indicating whether any variable was set or cleared by the `set_variables` and
+  `clear_variables` methods.
 
 
 ## [1.1.0] - 2025-08-04
