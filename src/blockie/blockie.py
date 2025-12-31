@@ -295,6 +295,7 @@ class Block:
                 ``name="Thomas", surname="Anderson", age=37``. Tuples or lists can be used as
                 variable values, making this block to be automatically cloned after setting each
                 element value.
+
         Returns:
             ``True`` if any variable has been set. ``False`` is returned otherwise.
         """
@@ -363,22 +364,20 @@ class Block:
             self.__set_autotag_align()
         set_num = 0
         while self.parent and (set_num < count or count < 0):
+            blk_content = self.__get_variation(self.content, self.name, vari_idx)
+            if self.config.enable_autotags:
+                # Try to set this block content as a value of the block variable autotag, if it is present in the
+                # template, and remove this original block from a parent block by setting its content to nothing.
+                var_set = self.parent.set_variables(
+                    autoclone=False, **{f"{self.config.autotag_blk_var}{self.name}":
+                                        blk_content[: -1] if blk_content.endswith("\n") else blk_content})
+                if var_set:
+                    blk_content = ""
+            # Set the current block content into the corresponding subblock tags of the parent block content.
             # pylint: disable=protected-access
-            # rationale: The private method __get_block_pos is called from non-self object only here and
-            # it is easier and simpler to keep it that way instead of rewriting the method to be static and sending
-            # parent object data into it for processing.
-            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(self.name, True)     # type: ignore
+            (subblk_start, subblk_end) = self.parent._Block__get_block_pos(     # type: ignore
+                self.name, True, not bool(blk_content))
             if 0 <= subblk_start < subblk_end:
-                blk_content = self.__get_variation(self.content, self.name, vari_idx)
-                if self.config.enable_autotags:
-                    # Try to set this block content as a value of the block variable autotag, if it is present in the
-                    # template, and remove this original block from a parent block by setting its content to nothing.
-                    var_set = self.parent.set_variables(
-                        autoclone=False, **{f"{self.config.autotag_blk_var}{self.name}": blk_content})
-                    if var_set:
-                        blk_content = ""
-                # If subblock tags are found, then set the current block content into the corresponding subblock tags
-                # of the parent block content.
                 self.parent.content = \
                     f"{self.parent.content[: subblk_start]}{blk_content}{self.parent.content[subblk_end:]}"
                 # Increment number of blocks being set into the parent block.
@@ -439,15 +438,24 @@ class Block:
                 for child in self.__children.values():
                     child.reset(all_children=True)
 
-    def clear_variables(self, *var_names: str) -> None:
+    def clear_variables(self, *var_names: str) -> bool:
         """Clears the specified variables from this block content. Has the same effect as setting
         the variables to an empty string.
 
         Args:
             var_names: Names of the variables to be cleared.
+
+        Returns:
+            ``True`` if any variable has been cleared. ``False`` is returned otherwise.
         """
+        var_cleared = False
         for var_name in var_names:
-            self.content = self.content.replace(self.config.tag_gen_var(var_name), "")
+            tag = self.config.tag_gen_var(var_name)
+            if tag in self.content:
+                self.content = self.content.replace(tag, "")
+                var_cleared = True
+
+        return var_cleared
 
     def clear(self, count: int = -1) -> None:
         """Clears the block from its parent block, i.e., sets the block to an empty string.
@@ -484,7 +492,7 @@ class Block:
             for blk_obj in self.__children.values():
                 blk_obj.reset()
 
-    def __get_block_pos(self, block_name: str, include_tags: bool = False) -> tuple[int, int]:
+    def __get_block_pos(self, block_name: str, include_tags: bool = False, empty: bool = False) -> tuple[int, int]:
         """Returns the position of the specified block within the content of this block.
 
         Args:
@@ -498,31 +506,30 @@ class Block:
         start_tag = self.config.tag_gen_blk_start(block_name)
         end_tag = self.config.tag_gen_blk_end(block_name)
         subblk_start = self.content.find(start_tag)
-        if subblk_start >= 0:
-            if not include_tags:
+        subblk_end = self.content.find(end_tag)
+        if 0 <= subblk_start < subblk_end:
+            if include_tags:
+                prev_nl = self.content.rfind("\n", 0, subblk_start) + 1
+                first_nl = self.content.find("\n", subblk_start)
+                if prev_nl >= 0 and first_nl > 0 and self.content[prev_nl: first_nl].strip() == start_tag:
+                    subblk_start = prev_nl
+                last_nl = self.content.rfind("\n", 0, subblk_end)
+                subblk_end += len(end_tag)
+                next_nl = self.content.find("\n", subblk_end) + 1
+                if last_nl > 0 and next_nl >= 0 and self.content[last_nl: next_nl].strip() == end_tag:
+                    subblk_end = next_nl
+                if (empty and prev_nl >= 0 and next_nl >= 0 and not self.content[prev_nl: subblk_start].strip() and
+                        not self.content[subblk_end: next_nl].strip()):
+                    subblk_end = next_nl
+            else:
                 subblk_start += len(start_tag)
                 # Return "\n" char pos + 1 if "\n" is found, else return -1 + 1 = 0
-                next_nl = self.content.find("\n", subblk_start) + 1
-                if next_nl > 0 and not self.content[subblk_start: next_nl].strip():
-                    subblk_start = next_nl
-            else:
-                prev_nl = self.content.rfind("\n", 0, subblk_start) + 1
-                next_nl = self.content.find("\n", subblk_start)
-                if next_nl > 0 and self.content[prev_nl: next_nl].strip() == start_tag:
-                    subblk_start = prev_nl
-
-        subblk_end = self.content.find(end_tag)
-        if subblk_start >= 0 and subblk_end >= 0:
-            if not include_tags:
+                first_nl = self.content.find("\n", subblk_start) + 1
+                if first_nl > 0 and not self.content[subblk_start: first_nl].strip():
+                    subblk_start = first_nl
                 last_nl = self.content.rfind("\n", subblk_start, subblk_end) + 1
                 if last_nl > 0 and not self.content[last_nl: subblk_end].strip():
                     subblk_end = last_nl
-            else:
-                prev_nl = self.content.rfind("\n", 0, subblk_end)
-                subblk_end += len(end_tag)
-                next_nl = self.content.find("\n", subblk_end) + 1
-                if next_nl > 0 and self.content[prev_nl: next_nl].strip() == end_tag:
-                    subblk_end = next_nl
 
         return (subblk_start, subblk_end)
 
@@ -585,7 +592,7 @@ class Block:
             end_pos = st_pos + len(charrep_tag)
             # Get the repeated character immediately following the "alignment" tag.
             repeat_char = text[end_pos]
-            while text[end_pos] == repeat_char:
+            while end_pos < len(text) - 1 and text[end_pos] == repeat_char:
                 end_pos += 1
             # Get position of the last newline char before the "alignment" tag.
             line_st_pos = text.rfind("\n", 0, st_pos)
