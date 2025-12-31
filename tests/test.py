@@ -422,31 +422,35 @@ def test_backrefs() -> None:
 def test_blk_loc_tags() -> None:
     template = """
 <V_LIST>
+<A>
+numbers
+<^A>
+lowercase letters
+<^A>
+uppercase letters
+</A>
 <V><*><.>, <^.></.></V>
-Values = <@V><+>            (<DESC>)
+<@A>: <@V><+>                           (<DESC>)
 <@V>
 </V_LIST>
 """
 
     data = {
         "v_list": [
-            {"v": [1, 2, 3], "desc": "1-3"},
-            {"v": ["a", "b", "c"], "desc": "a-c"},
-            {"v": ["A", "B", "C", "D", "E"], "desc": "A-E"}
+            {"v": [1, 2, 3], "a": 0, "desc": "1-3"},
+            {"v": ["a", "b", "c"], "a": 1, "desc": "a-c"},
+            {"v": ["A", "B", "C", "D", "E"], "a": 2, "desc": "A-E"}
         ]
     }
 
     blk = Block(template)
     blk.fill(data)
     assert blk.content == """
-
-Values = 1, 2, 3            (1-3)
+numbers: 1, 2, 3                        (1-3)
 1, 2, 3
-
-Values = a, b, c            (a-c)
+lowercase letters: a, b, c              (a-c)
 a, b, c
-
-Values = A, B, C, D, E      (A-E)
+uppercase letters: A, B, C, D, E        (A-E)
 A, B, C, D, E
 """
 
