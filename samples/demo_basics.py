@@ -6,46 +6,57 @@ sys.path.insert(0, f"{sys.path[0]}/../src")
 import blockie      # pylint: disable = wrong-import-position   # noqa E402
 
 
-def demo_hello() -> None:
-    blk = blockie.Block("<WORD> ")
-    blk.fill({"word": "Hello!"})
-    print(blk.content)
-
-
 def demo_set_var() -> None:
-    blk = blockie.Block("<WORD1> <WORD2>")
-    blk.fill({"word1": "Hello", "word2": "world!"})
+    blk = blockie.Block("<WORD1> <WORD2>!")
+    blk.fill({"word1": "Hello", "word2": "world"})
     print(blk.content)
+    # prints:
+    # Hello world!
 
 
 def demo_set_block() -> None:
     blk = blockie.Block("<DATE><DAY> <MONTH></DATE>")
     blk.fill({"date": {"day": 24, "month": "December"}})
     print(blk.content)
+    # prints:
+    # 24 December
 
 
 def demo_set_block_clones() -> None:
     blk = blockie.Block("<DATE><DAY> <MONTH>\n</DATE>")
     blk.fill({"date": [{"day": 24, "month": 12}, {"day": 31, "month": 12}, {"day": 1, "month": "January"}]})
     print(blk.content)
+    # prints:
+    # 24 12
+    # 31 12
+    # 1 January
 
 
 def demo_set_implct_iter() -> None:
     blk = blockie.Block("<LIST>- <*>\n</LIST>")
     blk.fill({"list": ["gloves", "plastic bags", "duct tape", "shovel"]})
     print(blk.content)
+    # prints:
+    # - gloves
+    # - plastic bags
+    # - duct tape
+    # - shovel
 
 
 def demo_set_block_as_is() -> None:
     blk = blockie.Block("<DATE>24 December</DATE>")
     blk.fill({"date": True})
     print(blk.content)
+    # prints:
+    # 24 December
 
 
 def demo_set_block_vari_1() -> None:
     blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
     blk.fill({"date": {"vari_idx": 0, "day": 24, "month": 12}})
     print(blk.content)
+    # prints:
+    # 24.12.
 
 
 def demo_set_block_vari_2() -> None:
@@ -55,12 +66,16 @@ def demo_set_block_vari_2() -> None:
     blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
     blk.fill({"date": date_dict})
     print(blk.content)
+    # prints:
+    # 24 December
 
 
 def demo_set_block_vari_3() -> None:
     blk = blockie.Block("<DATE>24.12.<^DATE>24 December</DATE>")
     blk.fill({"date": 1})
     print(blk.content)
+    # prints:
+    # 24 December
 
 
 def demo_set_block_fill_hndl() -> None:
@@ -74,22 +89,55 @@ def demo_set_block_fill_hndl() -> None:
     blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE>")
     blk.fill({"day": 24, "month": "December", "fill_hndl": format_month})
     print(blk.content)
+    # prints:
+    # 24 DECEMBER
 
 
 def demo_remove_var() -> None:
     blk = blockie.Block("<NAME> <MIDNAME> <SURNAME>")
     blk.fill({"name": "Patrick", "midname": None, "surname": "Bateman"})
     print(blk.content)
+    # prints:
+    # Patrick  Bateman
 
 
 def demo_remove_block() -> None:
     blk = blockie.Block("<NAME> <MIDNAME_WRAP><MIDNAME> </MIDNAME_WRAP><SURNAME>")
     blk.fill({"name": "Patrick", "surname": "Bateman", "midname_wrap": None})
     print(blk.content)
+    # prints:
+    # Patrick Bateman
+
+
+def demo_subref_var() -> None:
+    blk = blockie.Block("<DATE.DAY>.<DATE.MONTH>.")
+    blk.fill({"date": {"day": 24, "month": 12}})
+    print(blk.content)
+    # prints:
+    # 24.12.
+
+
+def demo_subref_block() -> None:
+    blk = blockie.Block("<EVENT.DATE><DAY>.<MONTH>.</EVENT.DATE>")
+    blk.fill({"event": {"date": {"day": 24, "month": 12}, "name": "Christmas"}})
+    print(blk.content)
+    # prints:
+    # 24.12.
+
+
+def demo_subref_block_clones() -> None:
+    blk = blockie.Block("<BOOK.AUTHORS><NAME> <SURNAME>\n</BOOK.AUTHORS>")
+    blk.fill({"book": {
+        "title": "The C Programming Language",
+        "authors": [{"name": "Brian ", "surname": "Kernighan"}, {"name": "Dennis", "surname": "Ritchie"}],
+        "date": "1988"}})
+    print(blk.content)
+    # prints:
+    # Brian Kernighan
+    # Dennis Ritchie
 
 
 if __name__ == "__main__":
-    demo_hello()
     demo_set_var()
     demo_set_block()
     demo_set_block_clones()
@@ -101,3 +149,6 @@ if __name__ == "__main__":
     demo_set_block_fill_hndl()
     demo_remove_var()
     demo_remove_block()
+    demo_subref_var()
+    demo_subref_block()
+    demo_subref_block_clones()
