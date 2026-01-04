@@ -19,11 +19,11 @@ template engine project.
 
 ### Added
 
-- Add support for *subreferences* in variable values, i.e., tags referencing other variables or
-  blocks using hierarchical parent-child tag names separated using a new `subref_sep` separator.
 - Add recursive filling of variables and blocks referenced in variable values.
+- Add support for *subreferences*, i.e., tags referencing other variables or blocks using
+  hierarchical parent-child tag names separated using the new `Block.config.subref_sep` separator.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
-  content into the specified variable instead of keeping it in the original block location.
+  content into a specified variable instead of keeping it in the original block location.
 - Add return flag indicating whether any variable was set or cleared by the `set_variables` and
   `clear_variables` methods.
 
