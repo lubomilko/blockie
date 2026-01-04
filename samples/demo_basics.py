@@ -109,6 +109,22 @@ def demo_remove_block() -> None:
     # Patrick Bateman
 
 
+def demo_ref_var() -> None:
+    blk = blockie.Block("<GREETING> Welcome to the world of templating.")
+    blk.fill({"name": "John", "greeting": "Hello <NAME>!"})
+    print(blk.content)
+    # prints:
+    # Hello John! Welcome to the world of templating.
+
+
+def demo_ref_block() -> None:
+    blk = blockie.Block("The date is <DATE_STR>.")
+    blk.fill({"date": {"day": "01", "month": "01", "year": "2026"}, "date_str": "<DATE><DAY>.<MONTH>.<YEAR></DATE>"})
+    print(blk.content)
+    # prints:
+    # The date is 01.01.2026.
+
+
 def demo_subref_var() -> None:
     blk = blockie.Block("<DATE.DAY>.<DATE.MONTH>.")
     blk.fill({"date": {"day": 24, "month": 12}})
@@ -129,7 +145,7 @@ def demo_subref_block_clones() -> None:
     blk = blockie.Block("<BOOK.AUTHORS><NAME> <SURNAME>\n</BOOK.AUTHORS>")
     blk.fill({"book": {
         "title": "The C Programming Language",
-        "authors": [{"name": "Brian ", "surname": "Kernighan"}, {"name": "Dennis", "surname": "Ritchie"}],
+        "authors": [{"name": "Brian", "surname": "Kernighan"}, {"name": "Dennis", "surname": "Ritchie"}],
         "date": "1988"}})
     print(blk.content)
     # prints:
@@ -149,6 +165,8 @@ if __name__ == "__main__":
     demo_set_block_fill_hndl()
     demo_remove_var()
     demo_remove_block()
+    demo_ref_var()
+    demo_ref_block()
     demo_subref_var()
     demo_subref_block()
     demo_subref_block_clones()
