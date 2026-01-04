@@ -134,14 +134,6 @@ def demo_subref_var() -> None:
 
 
 def demo_subref_block() -> None:
-    blk = blockie.Block("<EVENT.DATE><DAY>.<MONTH>.</EVENT.DATE>")
-    blk.fill({"event": {"date": {"day": 24, "month": 12}, "name": "Christmas"}})
-    print(blk.content)
-    # prints:
-    # 24.12.
-
-
-def demo_subref_block_clones() -> None:
     blk = blockie.Block("<BOOK.AUTHORS><NAME> <SURNAME>\n</BOOK.AUTHORS>")
     blk.fill({"book": {
         "title": "The C Programming Language",
@@ -151,6 +143,26 @@ def demo_subref_block_clones() -> None:
     # prints:
     # Brian Kernighan
     # Dennis Ritchie
+
+
+def demo_autotag_block_var() -> None:
+    template = """
+<LIST>
+<IDX>a)<^IDX>b)<^IDX>c)<^IDX>d)<^IDX>e)<^IDX>f)</IDX>
+<@IDX> <ITEM><+>        <QTY>
+</LIST>
+"""
+
+    blk = blockie.Block(template)
+    blk.fill({"list": [
+        {"idx": 0, "item": "first", "qty": 1},
+        {"idx": 1, "item": "second", "qty": 2},
+        {"idx": 2, "item": "third", "qty": 3}]})
+    print(blk.content)
+    # prints:
+    # a) first                1
+    # b) second               2
+    # c) third                3
 
 
 if __name__ == "__main__":
@@ -169,4 +181,4 @@ if __name__ == "__main__":
     demo_ref_block()
     demo_subref_var()
     demo_subref_block()
-    demo_subref_block_clones()
+    demo_autotag_block_var()
