@@ -44,9 +44,7 @@ def test_lowlevel() -> None:
     blk_simple.clone(force=True)
     blk_simple.set()
 
-    blk_simple = blk_file.get_subblock("SIMPLE2")
-    blk_test1 = blk_file.get_subblock("TEST1")
-    blk_test2 = blk_file.get_subblock("TEST2")
+    (blk_simple, blk_test1, blk_test2) = (blk_file.get_subblock(n) for n in ("SIMPLE2", "TEST1", "TEST2"))
 
     blk_simple.template = "<VAL><.>,<^.>.</.>\n<VAL><.>,<^.>.</.>\n\n"
     blk_simple.set_variables(VAL=1)
