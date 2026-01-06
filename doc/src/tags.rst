@@ -123,7 +123,7 @@ Example of a template using the alignment autotag:
 
 .. code-block:: text
 
-    <NAME><+>               <SURNAME>
+    <NAME><+>   <SURNAME>
 
 repeats the space character located after the ``<+>`` tag right until the beginning of a surname
 (since the character "<" at the beginning of the ``<SURNAME>`` tag is different from the repeated
@@ -134,8 +134,8 @@ column:
 
 .. code-block:: text
 
-    John                    Connor
-    Thomas                  Anderson
+    John        Connor
+    Thomas      Anderson
 
 
 Variation autotag
