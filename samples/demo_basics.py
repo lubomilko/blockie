@@ -145,6 +145,68 @@ def demo_subref_block() -> None:
     # Dennis Ritchie
 
 
+def demo_autotag_align() -> None:
+    template = """
+<CHARACTERS>
+<NAME><+>       <SURNAME>
+</CHARACTERS>"""
+
+    blk = blockie.Block(template)
+    blk.fill({"characters": [
+        {"name": "Dave", "surname": "Bowman"},
+        {"name": "Frank", "surname": "Poole"},
+        {"name": "Heywood", "surname": "Floyd"},
+        {"name": "HAL", "surname": "9000"}]})
+    print(blk.content)
+    # prints:
+    # Dave            Bowman
+    # Frank           Poole
+    # Heywood         Floyd
+    # HAL             9000
+
+
+def demo_autotag_vari_1() -> None:
+    blk = blockie.Block("Characters: <CHARACTERS><NAME> <SURNAME><.>, <^.></.></CHARACTERS>.")
+    blk.fill({"characters": [
+        {"name": "Dave", "surname": "Bowman"},
+        {"name": "Frank", "surname": "Poole"},
+        {"name": "Heywood", "surname": "Floyd"},
+        {"name": "HAL", "surname": "9000"}]})
+    print(blk.content)
+    # prints:
+    # Characters: Dave Bowman, Frank Poole, Heywood Floyd, HAL 9000.
+
+
+def demo_autotag_vari_2() -> None:
+    template = """
+<CHARACTERS>
+<.>
+| <NAME><+>     <SURNAME><+> |
+<^.>
+| <NAME><+>     <SURNAME><+> |
++----------------------------+
+<^.>
++----------------------------+
+| <NAME><+>     <SURNAME><+> |
+</.>
+</CHARACTERS>"""
+
+    blk = blockie.Block(template)
+    blk.fill({"characters": [
+        {"name": "Dave", "surname": "Bowman"},
+        {"name": "Frank", "surname": "Poole"},
+        {"name": "Heywood", "surname": "Floyd"},
+        {"name": "HAL", "surname": "9000"}]})
+    print(blk.content)
+    # prints:
+    # +----------------------------+
+    # | Dave          Bowman       |
+    # | Frank         Poole        |
+    # | Heywood       Floyd        |
+    # | HAL           9000         |
+    # +----------------------------+
+
+
 def demo_autotag_block_var() -> None:
     template = """
 <LIST>
@@ -181,4 +243,7 @@ if __name__ == "__main__":
     demo_ref_block()
     demo_subref_var()
     demo_subref_block()
+    demo_autotag_align()
+    demo_autotag_vari_1()
+    demo_autotag_vari_2()
     demo_autotag_block_var()
