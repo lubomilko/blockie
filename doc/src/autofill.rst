@@ -38,13 +38,13 @@ Setting a variable value
 A variable value is set using a **basic data type** (i.e., ``int``, ``float``, ``str``, or
 ``bool``). 
 
-The example below sets the variables ``word1`` and ``word2`` to the string values ``Hello``,
-``World!``:
+The example below sets the variables ``word1`` and ``word2`` to the string values ``Hello`` and
+``world``:
 
 .. code-block:: python
 
-    blk = blockie.Block("<WORD1> <WORD2>")
-    blk.fill({"word1": "Hello", "word2": "world!"})
+    blk = blockie.Block("<WORD1> <WORD2>!")
+    blk.fill({"word1": "Hello", "word2": "world"})
     print(blk.content)
 
 prints:
@@ -471,7 +471,7 @@ The script code:
 .. note::
     Notice that the value of the ``FLAG`` variable in the template is defined by the script
     setting the ``flag`` key value into the input dictionary data. This is done to illustrate
-    how to     control the template filling logic within the script, since the Blockie templates
+    how to control the template filling logic within the script, since the Blockie templates
     are logicless.
 
 The generated output file *shoplist_gen.txt*:
