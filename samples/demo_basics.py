@@ -14,6 +14,27 @@ def demo_set_var() -> None:
     # Hello world!
 
 
+def demo_set_var_multiline() -> None:
+    template = """  <TEXT1>
+<TEXT2>
+        <TEXT3>"""
+    blk = blockie.Block(template)
+    blk.fill({
+        "text1": "text 1 - line 1\ntext 1 - line 2",
+        "text2": "text 2 - line 1\ntext 2 - line 2\ntext 2 - line 3",
+        "text3": "text 3 - line 1\ntext 3 - line 2\ntext 3 - line 3"})
+    print(blk.content)
+    # prints:
+    #   text 1 - line 1
+    #   text 1 - line 2
+    # text 2 - line 1
+    # text 2 - line 2
+    # text 2 - line 3
+    #         text 3 - line 1
+    #         text 3 - line 2
+    #         text 3 - line 3
+
+
 def demo_set_block() -> None:
     blk = blockie.Block("<DATE><DAY> <MONTH></DATE>")
     blk.fill({"date": {"day": 24, "month": "December"}})
@@ -229,6 +250,7 @@ def demo_autotag_block_var() -> None:
 
 if __name__ == "__main__":
     demo_set_var()
+    demo_set_var_multiline()
     demo_set_block()
     demo_set_block_clones()
     demo_set_implct_iter()
