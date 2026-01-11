@@ -151,10 +151,13 @@ Short list: @items@item@_, @~_@!_@!items
         lambda name: f"@{name}",    # tag_gen_blk_start
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
+        "&",                        # autotag_blk_var
         "---",                      # tag_implct_iter
         ">>",                       # autotag_align
         "_",                        # autotag_vari
-        8                           # tab_size
+        "/",                        # subref_sep
+        8,                          # tab_size
+        True                        # enable_autotags
     )
 
     blk = blockie.Block(template, config=config)
@@ -183,7 +186,7 @@ def demo_shoplist_manual_1() -> None:
 
     blk_template = blockie.Block(template)
     blk_items = blk_template.get_subblock("items")
-    [blk_flag, blk_unit] = blk_items.get_subblock("flag", "unit")
+    [blk_flag, blk_unit] = [blk_items.get_subblock(n) for n in ("flag", "unit")]
 
     for data_item in data:
         blk_items.set_variables(item=data_item[1], qty=data_item[2])
