@@ -1,10 +1,10 @@
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* IMPORTANT! potatoes                                           2 kg
-* IMPORTANT! rice                                               1 kg
-* orange juice                                                  1 l
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* IMPORTANT! potatoes               2 kg
+* IMPORTANT! rice                   1 kg
+* orange juice                      1 l
 * MAYBE? cooking magazine
 
 
