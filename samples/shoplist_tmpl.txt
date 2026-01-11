@@ -1,8 +1,9 @@
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY>
 </ITEMS>
 
 
