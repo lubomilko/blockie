@@ -453,5 +453,28 @@ A, B, C, D, E
 """
 
 
+def test_multiline_var() -> None:
+    template = """  <TEXT1>
+<TEXT2>
+        <TEXT3>
+    a   <TEXT3>"""
+    blk = Block(template)
+    blk.fill({
+        "text1": "text 1 - line 1\ntext 1 - line 2",
+        "text2": "text 2 - line 1\ntext 2 - line 2\ntext 2 - line 3",
+        "text3": "text 3 - line 1\ntext 3 - line 2\ntext 3 - line 3"})
+    assert blk.content == """  text 1 - line 1
+  text 1 - line 2
+text 2 - line 1
+text 2 - line 2
+text 2 - line 3
+        text 3 - line 1
+        text 3 - line 2
+        text 3 - line 3
+    a   text 3 - line 1
+text 3 - line 2
+text 3 - line 3"""
+
+
 if __name__ == "__main__":
     test_blk_loc_tags()
