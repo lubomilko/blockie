@@ -24,6 +24,7 @@ template engine project.
   hierarchical parent-child tag names separated using the new `Block.config.subref_sep` separator.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
   content into a specified variable instead of keeping it in the original block location.
+- Add automatic indentation of a multiline variable value if the variable tag is indented.
 - Add return flag indicating whether any variable was set or cleared by the `set_variables` and
   `clear_variables` methods.
 

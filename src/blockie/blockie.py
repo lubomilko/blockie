@@ -307,22 +307,32 @@ class Block:
             # found in the block content and the variable values can be set into them.
             self.clone(passive=True)
             # Loop through variable tags and replace them with the corresponding variable values.
-            for (tag, val) in [(self.config.tag_gen_var(f"{name}"), val) for (name, val) in name_value_kwargs.items()]:
-                if isinstance(val, (str, int, float, bool)):
-                    var_value = val
+            for (var_name, var_value) in name_value_kwargs.items():
+                if isinstance(var_value, (str, int, float, bool)):
+                    val_str = str(var_value)
                 else:
                     # Check if the val is iterable and if so, then set its individual elements.
                     try:
-                        _ = iter(val)
-                        detected_iters_num = max(detected_iters_num, len(val))
-                        if len(val) > iter_idx:
-                            var_value = val[iter_idx]
+                        _ = iter(var_value)
+                        detected_iters_num = max(detected_iters_num, len(var_value))
+                        if len(var_value) > iter_idx:
+                            val_str = str(var_value[iter_idx])
                         else:
-                            var_value = val[-1]
+                            val_str = str(var_value[-1])
                     except TypeError:
-                        var_value = val
-                if tag in self.content and tag != str(var_value):
-                    self.content = self.content.replace(tag, f"{var_value}")
+                        val_str = str(var_value)
+                var_tag = self.config.tag_gen_var(f"{var_name}")
+                if var_tag in self.content and var_tag != val_str:
+                    if "\n" in val_str:
+                        var_tag_pos = self.content.find(var_tag)
+                        while var_tag_pos >= 0:
+                            prev_nl = self.content.rfind("\n", 0, var_tag_pos) + 1
+                            ind_str = self.content[prev_nl: var_tag_pos]
+                            val = val_str.replace("\n", f"\n{ind_str}") if ind_str and not ind_str.strip() else val_str
+                            self.content = self.content.replace(var_tag, f"{val}", 1)
+                            var_tag_pos = self.content.find(var_tag)
+                    else:
+                        self.content = self.content.replace(var_tag, f"{val_str}")
                     var_set = True
             iter_idx += 1
             if iter_idx < detected_iters_num or autoclone:
@@ -511,14 +521,14 @@ class Block:
             if include_tags:
                 prev_nl = self.content.rfind("\n", 0, subblk_start) + 1
                 first_nl = self.content.find("\n", subblk_start)
-                if prev_nl >= 0 and first_nl > 0 and self.content[prev_nl: first_nl].strip() == start_tag:
+                if first_nl > 0 and self.content[prev_nl: first_nl].strip() == start_tag:
                     subblk_start = prev_nl
                 last_nl = self.content.rfind("\n", 0, subblk_end)
                 subblk_end += len(end_tag)
                 next_nl = self.content.find("\n", subblk_end) + 1
-                if last_nl > 0 and next_nl >= 0 and self.content[last_nl: next_nl].strip() == end_tag:
+                if last_nl > 0 and self.content[last_nl: next_nl].strip() == end_tag:
                     subblk_end = next_nl
-                if (empty and prev_nl >= 0 and next_nl >= 0 and not self.content[prev_nl: subblk_start].strip() and
+                if (empty and prev_nl >= 0 and not self.content[prev_nl: subblk_start].strip() and
                         not self.content[subblk_end: next_nl].strip()):
                     subblk_end = next_nl
             else:
