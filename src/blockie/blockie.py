@@ -360,6 +360,7 @@ class Block:
                 is the same as index 0.
             all_children: Enables setting of all child blocks of this block before setting it.
             count: The maximum number of blocks with the same name to be set (-1 = no limit).
+            enable_autotags: Enable setting of autotags if they are enabled in ``self.config``.
         """
         # Convert potentially boolean variation index to integer.
         if isinstance(vari_idx, bool):
@@ -524,6 +525,9 @@ class Block:
             block_name: The name of the block whose position should be returned.
             include_tags: Enables the inclusion of the block tags themselves in the returned
                 position.
+            empty: An indicator that the block content is empty. Used for removing the unwanted
+                newline after setting an empty block (clearing).
+            start: A start character position from which the block should be searched.
 
         Returns:
             A tuple with the start and end character position of the block.
