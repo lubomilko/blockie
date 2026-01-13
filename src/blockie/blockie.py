@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from pathlib import Path
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Generator, Union
+from typing import Any, Generator
 from copy import copy
 
 __author__ = "Lubomir Milko"
@@ -111,9 +111,9 @@ class Block:
             self.template = str(template)
 
     @property
-    def parent(self) -> Union["Block", None]:
+    def parent(self) -> "Block":
         """A parent block."""
-        return self.__parent
+        return self.__parent if self.__parent is not None else Block()
 
     @property
     def children(self) -> dict[str, "Block"]:
@@ -127,8 +127,14 @@ class Block:
 
     @template.setter
     def template(self, template: str) -> None:
+        if self.__parent and self.__template:
+            # If this block has a parent block and some already existing template, then replace
+            # the block in the parent block using the new template.
+            self.content = (f"{self.config.tag_gen_blk_start(self.name)}{template}"
+                            f"{self.config.tag_gen_blk_end(self.name)}" + "\n" if "\n" in template else "")
+            self.set(enable_autotags=False)
         self.__template = template
-        self.content = template
+        self.content = self.__template
 
     def __bool__(self) -> bool:
         return bool(self.name or self.template)
@@ -329,6 +335,7 @@ class Block:
                             prev_nl = self.content.rfind("\n", 0, var_tag_pos) + 1
                             ind_str = self.content[prev_nl: var_tag_pos]
                             val = val_str.replace("\n", f"\n{ind_str}") if ind_str and not ind_str.strip() else val_str
+                            val = val.rstrip()
                             self.content = self.content.replace(var_tag, f"{val}", 1)
                             var_tag_pos = self.content.find(var_tag)
                     else:
@@ -339,7 +346,8 @@ class Block:
                 self.clone()
         return var_set
 
-    def set(self, vari_idx: int | bool = 0, all_children: bool = False, count: int = -1) -> None:
+    def set(self, vari_idx: int | bool = 0, all_children: bool = False,
+            count: int = -1, enable_autotags: bool = True) -> None:
         """Sets the content of this block into its parent block content.
 
         Args:
@@ -367,15 +375,16 @@ class Block:
             # its cloning flag is set to true to ensure that the subblock tags can be
             # found in the parent block content and the subblock content can be set into them.
             self.parent.clone(passive=True)
-        if self.config.enable_autotags:
+        if enable_autotags and self.config.enable_autotags:
             # Finalize the block content by setting the value of special tags.
             self.__set_autotag_vari(last=True)
             self.__autovari_first = True
             self.__set_autotag_align()
         set_num = 0
+        find_start = 0
         while self.parent and (set_num < count or count < 0):
             blk_content = self.__get_variation(self.content, self.name, vari_idx)
-            if self.config.enable_autotags:
+            if enable_autotags and self.config.enable_autotags:
                 # Try to set this block content as a value of the block variable autotag, if it is present in the
                 # template, and remove this original block from a parent block by setting its content to nothing.
                 var_set = self.parent.set_variables(
@@ -386,7 +395,8 @@ class Block:
             # Set the current block content into the corresponding subblock tags of the parent block content.
             # pylint: disable=protected-access
             (subblk_start, subblk_end) = self.parent._Block__get_block_pos(     # type: ignore
-                self.name, True, not bool(blk_content))
+                block_name=self.name, include_tags=True, empty=not bool(blk_content), start=find_start)
+            find_start = subblk_start + len(blk_content)
             if 0 <= subblk_start < subblk_end:
                 self.parent.content = \
                     f"{self.parent.content[: subblk_start]}{blk_content}{self.parent.content[subblk_end:]}"
@@ -502,7 +512,8 @@ class Block:
             for blk_obj in self.__children.values():
                 blk_obj.reset()
 
-    def __get_block_pos(self, block_name: str, include_tags: bool = False, empty: bool = False) -> tuple[int, int]:
+    def __get_block_pos(self, block_name: str, include_tags: bool = False,
+                        empty: bool = False, start: int | None = None) -> tuple[int, int]:
         """Returns the position of the specified block within the content of this block.
 
         Args:
@@ -515,8 +526,8 @@ class Block:
         """
         start_tag = self.config.tag_gen_blk_start(block_name)
         end_tag = self.config.tag_gen_blk_end(block_name)
-        subblk_start = self.content.find(start_tag)
-        subblk_end = self.content.find(end_tag)
+        subblk_start = self.content.find(start_tag, start)
+        subblk_end = self.content.find(end_tag, start)
         if 0 <= subblk_start < subblk_end:
             if include_tags:
                 prev_nl = self.content.rfind("\n", 0, subblk_start) + 1
