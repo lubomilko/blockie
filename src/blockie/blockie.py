@@ -127,8 +127,8 @@ class Block:
 
     @template.setter
     def template(self, template: str) -> None:
-        if self.__parent and self.__template:
-            # If this block has a parent block and some already existing template, then replace
+        if self.__parent and self.__template != template:
+            # If this block has a parent block, then replace
             # the block in the parent block using the new template.
             self.content = (f"{self.config.tag_gen_blk_start(self.name)}{template}"
                             f"{self.config.tag_gen_blk_end(self.name)}" + "\n" if "\n" in template else "")
@@ -185,13 +185,17 @@ class Block:
         self.__fill_state.var_set = False
         # If an external fill handle is defined within the block data, then call it first.
         fill_hndl = data_dict.get("fill_hndl")
+        data_dict.pop("fill_hndl", None)    # Remove the fill_hndl for a reason described below.
         if fill_hndl:
             fill_hndl(self, data, self.__fill_state.clone_idx)
         # Fill iterable data, then dicts/objs, and then simple data types (str, int, float, bool).
         self.__fill_iter(data_dict)
         self.__fill_dict_obj(data_dict)
         self.__fill_simple(data_dict)
-
+        # If some variables have been set, then they might contain tag references to other blocks
+        # and variables, so we need to fill the block again using the same data, but fillh_hndl
+        # must be removed, because it can do low-level things like reseting a block causing an
+        # infinite loop of fills and resets.
         while self.__fill_state.var_set:
             self.fill(data_dict)
 
