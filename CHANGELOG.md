@@ -25,6 +25,7 @@ template engine project.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
   content into a specified variable instead of keeping it in the original block location.
 - Add automatic indentation of a multiline variable value if the variable tag is indented.
+- Add automatic replacement of a block template in its parent block when a new template is set.
 - Add return flag indicating whether any variable was set or cleared by the `set_variables` and
   `clear_variables` methods.
 
