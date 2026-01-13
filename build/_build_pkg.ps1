@@ -10,10 +10,8 @@ foreach($BuildPath in ('dist'), ("build\*.egg-info"))
     }
 }
 
-# Upgrade pip to ensure that latest features are avialable.
-python -m pip install --upgrade pip
 # Install build package to ensure it can be executed.
-python -m pip install build
+python -m pip install build --disable-pip-version-check
 # Build new package distribution files.
 python -m build
 
