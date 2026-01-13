@@ -246,8 +246,18 @@ def demo_shoplist_manual_3() -> None:
     print(blk_template.content)
 
 
-def demo_macro_like_1() -> None:
+def demo_macro_1() -> None:
     template = """
+<VLIST_A>
+</VLIST_A>
+
+<HLIST_A>
+</HLIST_A>
+
+<HLIST_B>
+</HLIST_B>
+
+<MACROS>
 <VLIST>
 <DESC>:
 <ITEMS>
@@ -259,24 +269,12 @@ def demo_macro_like_1() -> None:
 <DESC>:
 <ITEMS><*><.>, <^.></.></ITEMS>
 </HLIST>
-
-<VLIST_A>
-<REF_BLK>
-</VLIST_A>
-
-<HLIST_A>
-<REF_BLK>
-</HLIST_A>
-
-<HLIST_B>
-<REF_BLK>
-</HLIST_B>
+</MACROS>
 """
 
-    def ref_blk_hndl(block: blockie.Block, _data: dict, _clone_subidx: int) -> None:
-        # Set the 'ref_blk' variable value to the content of the block
-        # with a name defined in the first part of this block name.
-        block.set_variables(ref_blk=block.parent.get_subblock(block.name.split("_")[0]).content)
+    def ref_blk_hndl(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        # Set this block template to the template of a macro block defined in the first part of this block name.
+        block.template = block.parent.get_subblock("macros").get_subblock(block.name.split("_")[0]).template
 
     blk = blockie.Block(template)
     blk.fill({
@@ -292,9 +290,9 @@ def demo_macro_like_1() -> None:
             "fill_hndl": ref_blk_hndl,
             "desc": "vegetables",
             "items": ["carrot", "tomatoe", "pepper"]},
-        "vlist": None, "hlist": None})
+        "macros": None})
     print(blk.content)
-    # prints (ignoring the initial newlines):
+    # prints:
     # PC hardware:
     # - case
     # - display
@@ -308,8 +306,14 @@ def demo_macro_like_1() -> None:
     # carrot, tomatoe, pepper
 
 
-def demo_macro_like_2() -> None:
+def demo_macro_2() -> None:
     template = """
+<LISTS>
+<REF_BLK>
+
+</LISTS>
+
+<MACROS>
 <VLIST>
 <DESC>:
 <ITEMS>
@@ -321,17 +325,12 @@ def demo_macro_like_2() -> None:
 <DESC>:
 <ITEMS><*><.>, <^.></.></ITEMS>
 </HLIST>
-
-<LISTS>
-<REF_BLK>
-
-</LISTS>
+</MACROS>
 """
 
     def ref_blk_hndl(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
-        # Set the 'ref_blk' variable value to the content of the block
-        # with a name defined by the 'ref' attribute of the block data.
-        block.set_variables(ref_blk=block.parent.get_subblock(data.get("ref", "")).content)
+        # Set the 'ref_blk' variable value to the template of the block defined by the 'ref' data attribute.
+        block.set_variables(ref_blk=block.parent.get_subblock("macros").get_subblock(data.get("ref", "")).template)
 
     blk = blockie.Block(template)
     blk.fill({
@@ -351,9 +350,9 @@ def demo_macro_like_2() -> None:
                 "ref": "hlist",
                 "desc": "vegetables",
                 "items": ["carrot", "tomatoe", "pepper"]}],
-        "vlist": None, "hlist": None})
+        "macros": None})
     print(blk.content)
-    # prints (ignoring the initial newlines):
+    # prints:
     # PC hardware:
     # - case
     # - display
@@ -431,7 +430,6 @@ def demo_extensions_2() -> None:
 """
 
     extensions = """
-<EXT_BLKS>INTRO,ITEMS</EXT_BLKS>
 <INTRO>
 +--------------------------+
 | My list of <DESC><+>     |
@@ -444,18 +442,16 @@ def demo_extensions_2() -> None:
 """
 
     def ext_blk_hndl(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
-        # Get the block with extensions from 'blk_ext' data attribute.
-        blk_extensions = data.get("blk_ext")
-        if isinstance(blk_extensions, blockie.Block):
-            # Loop through block names defined in the 'EXT_BLKS' block content.
-            for ext_blk_name in blk_extensions.get_subblock("ext_blks").content.split(","):
-                # Replace the subblocks of this block with the templates of block extensions.
-                block.get_subblock(ext_blk_name).template = blk_extensions.get_subblock(ext_blk_name).template
+        # Loop through extended block names defined in the 'ext_blk_names' data attribute.
+        for name in data.get("ext_blk_names", ""):
+            # Replace this block template with the template of a subblock within the 'ext_blks' Block data attrib.
+            block.get_subblock(name).template = data.get("ext_blks", blockie.Block()).get_subblock(name).template
 
     blk = blockie.Block(template)
     blk.fill({
         "fill_hndl": ext_blk_hndl,
-        "blk_ext": blockie.Block(extensions),
+        "ext_blks": blockie.Block(extensions),
+        "ext_blk_names": ("intro", "items"),
         "intro": {"desc": "PC hardware"},
         "items": ["case", "display", "keyboard", "mouse"],
         "outro": {"NUM": 4}})
@@ -482,7 +478,7 @@ if __name__ == "__main__":
     demo_shoplist_manual_1()
     demo_shoplist_manual_2()
     demo_shoplist_manual_3()
-    demo_macro_like_1()
-    demo_macro_like_2()
+    demo_macro_1()
+    demo_macro_2()
     demo_extensions_1()
     demo_extensions_2()
