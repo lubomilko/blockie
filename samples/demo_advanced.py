@@ -375,6 +375,59 @@ def demo_extensions_1() -> None:
 </ITEMS>
 
 <OUTRO>There are <NUM> items in total.</OUTRO>
+
+<EXTENSIONS>
+<EXT_BLKS>INTRO,ITEMS</EXT_BLKS>
+<INTRO>
++--------------------------+
+| My list of <DESC><+>     |
++--------------------------+
+</INTRO>
+
+<ITEMS>
+* <*>
+</ITEMS>
+</EXTENSIONS>
+"""
+
+    def ext_blk_hndl(block: blockie.Block, _data: dict, _clone_subidx: int) -> None:
+        # Get the block with extensions from the 'extensions' subblock.
+        blk_extensions = block.get_subblock("extensions")
+        if isinstance(blk_extensions, blockie.Block):
+            # Loop through block names defined in the 'EXT_BLKS' block content.
+            for ext_blk_name in blk_extensions.get_subblock("ext_blks").content.split(","):
+                # Replace the subblocks of this block with the templates of block extensions.
+                block.get_subblock(ext_blk_name).template = blk_extensions.get_subblock(ext_blk_name).template
+
+    blk = blockie.Block(template)
+    blk.fill({
+        "fill_hndl": ext_blk_hndl,
+        "intro": {"desc": "PC hardware"},
+        "items": ["case", "display", "keyboard", "mouse"],
+        "outro": {"NUM": 4},
+        "extensions": None})
+    print(blk.content)
+    # prints:
+    # +--------------------------+
+    # | My list of PC hardware   |
+    # +--------------------------+
+    #
+    # * case
+    # * display
+    # * keyboard
+    # * mouse
+    #
+    # There are 4 items in total.
+
+
+def demo_extensions_2() -> None:
+    template = """
+<INTRO>This is a list of <DESC>:</INTRO>
+<ITEMS>
+- <*>
+</ITEMS>
+
+<OUTRO>There are <NUM> items in total.</OUTRO>
 """
 
     extensions = """
@@ -391,12 +444,12 @@ def demo_extensions_1() -> None:
 """
 
     def ext_blk_hndl(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
-        # Set the template of blocks within the parent block specified by their names in the
-        # 'EXT_BLKS' block content to the template of blocks within the 'EXTENDS' block for
-        # which this handler was called.
+        # Get the block with extensions from 'blk_ext' data attribute.
         blk_extensions = data.get("blk_ext")
         if isinstance(blk_extensions, blockie.Block):
+            # Loop through block names defined in the 'EXT_BLKS' block content.
             for ext_blk_name in blk_extensions.get_subblock("ext_blks").content.split(","):
+                # Replace the subblocks of this block with the templates of block extensions.
                 block.get_subblock(ext_blk_name).template = blk_extensions.get_subblock(ext_blk_name).template
 
     blk = blockie.Block(template)
@@ -432,3 +485,4 @@ if __name__ == "__main__":
     demo_macro_like_1()
     demo_macro_like_2()
     demo_extensions_1()
+    demo_extensions_2()
