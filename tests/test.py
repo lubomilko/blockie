@@ -417,7 +417,7 @@ def test_backrefs() -> None:
 """
 
 
-def test_blk_loc_tags() -> None:
+def test_blk_vars() -> None:
     template = """
 <V_LIST>
 <A>
@@ -477,4 +477,4 @@ text 3 - line 3"""
 
 
 if __name__ == "__main__":
-    test_blk_loc_tags()
+    test_subrefs()
