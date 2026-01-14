@@ -221,11 +221,12 @@ def test_dictfill() -> None:
 
 def test_shoplist() -> None:
     template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l</UNIT>
 </ITEMS>
 
 
@@ -245,13 +246,13 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     blk = Block(template)
     blk.fill(data)
     assert blk.content == """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* IMPORTANT! potatoes                                           2 kg
-* rice                                                          1 kg
-* orange juice                                                  1 l
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* IMPORTANT! potatoes               2 kg
+* rice                              1 kg
+* orange juice                      1 l
 * MAYBE? cooking magazine
 
 
@@ -261,11 +262,12 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
 
 def test_shoplist_custom_cfg() -> None:
     template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 @items
-* @flagIMPORTANT! @~flagMAYBE? @!flag@item@>>                   @qty@unit kg@~unit l@!unit
+@flagIMPORTANT! @~flagMAYBE? @!flag
+* @&flag@item@>>                    @qty@unit kg@~unit l@!unit
 @!items
 
 
@@ -288,7 +290,7 @@ Short list: @items@item@_, @~_@!_@!items
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
         "---",                      # tag_implct_iter
-        "#",                        # autotag_blk_var
+        "&",                        # autotag_blk_var
         ">>",                       # autotag_align
         "_",                        # autotag_vari
         "-",                        # subref_sep
@@ -299,14 +301,14 @@ Short list: @items@item@_, @~_@!_@!items
     blk = Block(template, config=config)
     blk.fill(data)
     assert blk.content == """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* IMPORTANT! potatoes                                           2 kg
-* rice                                                          1 kg
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* IMPORTANT! potatoes               2 kg
+* rice                              1 kg
 * MAYBE? cooking magazine
-* orange juice                                                  1 l
+* orange juice                      1 l
 
 
 Short list: apples, potatoes, rice, cooking magazine, orange juice
@@ -476,5 +478,319 @@ text 3 - line 2
 text 3 - line 3"""
 
 
+def test_macros_1() -> None:
+    template = """
+<VLIST_A>
+</VLIST_A>
+
+<HLIST_A>
+</HLIST_A>
+
+<HLIST_B>
+</HLIST_B>
+
+<MACROS>
+<VLIST>
+<DESC>:
+<ITEMS>
+- <*>
+</ITEMS>
+</VLIST>
+
+<HLIST>
+<DESC>:
+<ITEMS><*><.>, <^.></.></ITEMS>
+</HLIST>
+</MACROS>
+"""
+
+    def ref_blk_hndl(block: Block, data: dict, _clone_subidx: int) -> None:
+        # Set this block template to the template of a macro block defined in the first part of this block name.
+        block.template = block.parent.get_subblock("macros").get_subblock(block.name.split("_")[0]).template
+
+    blk = Block(template)
+    blk.fill({
+        "vlist_a": {
+            "fill_hndl": ref_blk_hndl,
+            "desc": "PC hardware",
+            "items": ["case", "display", "keyboard", "mouse"]},
+        "hlist_a": {
+            "fill_hndl": ref_blk_hndl,
+            "desc": "fruits",
+            "items": ["apple", "banana", "orange"]},
+        "hlist_b": {
+            "fill_hndl": ref_blk_hndl,
+            "desc": "vegetables",
+            "items": ["carrot", "tomatoe", "pepper"]},
+        "macros": None})
+    assert blk.content == """
+PC hardware:
+- case
+- display
+- keyboard
+- mouse
+
+fruits:
+apple, banana, orange
+
+vegetables:
+carrot, tomatoe, pepper
+
+"""
+
+
+def test_macros_2() -> None:
+    template = """
+<LISTS>
+<REF_BLK>
+
+</LISTS>
+
+<MACROS>
+<VLIST>
+<DESC>:
+<ITEMS>
+- <*>
+</ITEMS>
+</VLIST>
+
+<HLIST>
+<DESC>:
+<ITEMS><*><.>, <^.></.></ITEMS>
+</HLIST>
+</MACROS>
+"""
+
+    def ref_blk_hndl(block: Block, data: dict, _clone_subidx: int) -> None:
+        # Set the 'ref_blk' variable value to the template of the block defined by the 'ref' data attribute.
+        block.set_variables(ref_blk=block.parent.get_subblock("macros").get_subblock(data.get("ref", "")).template)
+
+    blk = Block(template)
+    blk.fill({
+        "lists": [
+            {
+                "fill_hndl": ref_blk_hndl,
+                "ref": "vlist",
+                "desc": "PC hardware",
+                "items": ["case", "display", "keyboard", "mouse"]},
+            {
+                "fill_hndl": ref_blk_hndl,
+                "ref": "hlist",
+                "desc": "fruits",
+                "items": ["apple", "banana", "orange"]},
+            {
+                "fill_hndl": ref_blk_hndl,
+                "ref": "hlist",
+                "desc": "vegetables",
+                "items": ["carrot", "tomatoe", "pepper"]}],
+        "macros": None})
+    assert blk.content == """
+PC hardware:
+- case
+- display
+- keyboard
+- mouse
+
+fruits:
+apple, banana, orange
+
+vegetables:
+carrot, tomatoe, pepper
+
+
+"""
+
+
+def test_extensions_1() -> None:
+    template = """
+<INTRO>This is a list of <DESC>:</INTRO>
+<ITEMS>
+- <*>
+</ITEMS>
+
+<OUTRO>There are <NUM> items in total.</OUTRO>
+
+<EXTENSIONS>
+<EXT_BLKS>INTRO,ITEMS</EXT_BLKS>
+<INTRO>
++--------------------------+
+| My list of <DESC><+>     |
++--------------------------+
+</INTRO>
+
+<ITEMS>
+* <*>
+</ITEMS>
+</EXTENSIONS>
+"""
+
+    def ext_blk_hndl(block: Block, _data: dict, _clone_subidx: int) -> None:
+        # Get the block with extensions from the 'extensions' subblock.
+        blk_extensions = block.get_subblock("extensions")
+        if isinstance(blk_extensions, Block):
+            # Loop through block names defined in the 'EXT_BLKS' block content.
+            for ext_blk_name in blk_extensions.get_subblock("ext_blks").content.split(","):
+                # Replace the subblocks of this block with the templates of block extensions.
+                block.get_subblock(ext_blk_name).template = blk_extensions.get_subblock(ext_blk_name).template
+
+    blk = Block(template)
+    blk.fill({
+        "fill_hndl": ext_blk_hndl,
+        "intro": {"desc": "PC hardware"},
+        "items": ["case", "display", "keyboard", "mouse"],
+        "outro": {"NUM": 4},
+        "extensions": None})
+    assert blk.content == """
++--------------------------+
+| My list of PC hardware   |
++--------------------------+
+
+* case
+* display
+* keyboard
+* mouse
+
+There are 4 items in total.
+
+"""
+
+
+def test_extensions_2() -> None:
+    template = """
+<INTRO>This is a list of <DESC>:</INTRO>
+<ITEMS>
+- <*>
+</ITEMS>
+
+<OUTRO>There are <NUM> items in total.</OUTRO>
+"""
+
+    extensions = """
+<INTRO>
++--------------------------+
+| My list of <DESC><+>     |
++--------------------------+
+</INTRO>
+
+<ITEMS>
+* <*>
+</ITEMS>
+"""
+
+    def ext_blk_hndl(block: Block, data: dict, _clone_subidx: int) -> None:
+        # Loop through extended block names defined in the 'ext_blk_names' data attribute.
+        for name in data.get("ext_blk_names", ""):
+            # Replace this block template with the template of a subblock within the 'ext_blks' Block data attrib.
+            block.get_subblock(name).template = data.get("ext_blks", Block()).get_subblock(name).template
+
+    blk = Block(template)
+    blk.fill({
+        "fill_hndl": ext_blk_hndl,
+        "ext_blks": Block(extensions),
+        "ext_blk_names": ("intro", "items"),
+        "intro": {"desc": "PC hardware"},
+        "items": ["case", "display", "keyboard", "mouse"],
+        "outro": {"NUM": 4}})
+    assert blk.content == """
++--------------------------+
+| My list of PC hardware   |
++--------------------------+
+
+* case
+* display
+* keyboard
+* mouse
+
+There are 4 items in total.
+"""
+
+
+def demo_references() -> None:
+    template = """
+<BOOKS>
+<TITLE><ENGLISH><ORIGINAL_WRAP> (<ORIGINAL>)</ORIGINAL_WRAP></TITLE>
++------------------------------------------------------------------------------+
+| <@TITLE> - <AUTHOR.FULL_INFO><+>                                             |
++------------------------------------------------------------------------------+
+| Genre     | <GENRE><+>                                                       |
+| Published | <PUBLICATION.DATE><DAY>.<MONTH>.<YEAR></PUBLICATION.DATE><+>     |
+| ISBN      | <PUBLICATION.ISBN><+>                                            |
+| Publisher | <PUBLICATION.PUBLISHER><+>                                       |
+| Language  | <PUBLICATION.LANGUAGE><+>                                        |
+| Pages     | <PUBLICATION.PAGE_NUM><+>                                        |
++------------------------------------------------------------------------------+
+
+</BOOKS>
+"""
+
+    data = {
+        "books":
+        [
+            {
+                "title": {"english": "Robur the Conqueror", "original": "Robur-le-Conquérant"},
+                "author":
+                {
+                    "name": "Jules", "surname": "Verne", "period": {"birth": 1828, "death": 1905},
+                    "full_info": "<AUTHOR><NAME> <SURNAME> (<PERIOD.BIRTH>-<PERIOD.DEATH>)</AUTHOR>"
+                },
+                "genre": "science fiction novel",
+                "publication":
+                {
+                    "isbn": "3750246963", "publisher": "epubli",
+                    "date": {"year": 2019, "month": 10, "day": 29},
+                    "language": "english", "page_num": 184
+                }
+            },
+            {
+                "title": {"english": "I, Robot", "original": ""},
+                "author":
+                {
+                    "name": "Isaac", "surname": "Asimov", "period": {"birth": 1920, "death": 1992},
+                    "full_info": "<AUTHOR><NAME> <SURNAME> (<PERIOD.BIRTH>-<PERIOD.DEATH>)</AUTHOR>"
+                },
+                "genre": "science fiction short stories",
+                "publication":
+                {
+                    "isbn": "0008279551", "publisher": "HarperCollins",
+                    "date": {"year": 2018, "month": 5, "day": 1},
+                    "language": "english", "page_num": 256
+                }
+            }
+        ]
+    }
+
+    for book in data["books"]:
+        book["title"]["original_wrap"] = bool(book["title"].get("original", ""))
+
+    blk = Block(template)
+    blk.fill(data)
+    assert blk.content == """
++------------------------------------------------------------------------------+
+| Robur the Conqueror (Robur-le-Conquérant) - Jules Verne (1828-1905)          |
++------------------------------------------------------------------------------+
+| Genre     | science fiction novel                                            |
+| Published | 29.10.2019                                                       |
+| ISBN      | 3750246963                                                       |
+| Publisher | epubli                                                           |
+| Language  | english                                                          |
+| Pages     | 184                                                              |
++------------------------------------------------------------------------------+
+
++------------------------------------------------------------------------------+
+| I, Robot - Isaac Asimov (1920-1992)                                          |
++------------------------------------------------------------------------------+
+| Genre     | science fiction short stories                                    |
+| Published | 1.5.2018                                                         |
+| ISBN      | 0008279551                                                       |
+| Publisher | HarperCollins                                                    |
+| Language  | english                                                          |
+| Pages     | 256                                                              |
++------------------------------------------------------------------------------+
+
+"""
+
+
 if __name__ == "__main__":
-    test_subrefs()
+    test_shoplist_custom_cfg()
+    test_macros_2()
+    test_extensions_2()
