@@ -545,9 +545,10 @@ class Block:
                 last_nl = self.content.rfind("\n", 0, subblk_end)
                 subblk_end += len(end_tag)
                 next_nl = self.content.find("\n", subblk_end) + 1
-                if last_nl > 0 and self.content[last_nl: next_nl].strip() == end_tag:
+                if next_nl >= last_nl and self.content[last_nl: next_nl].strip() == end_tag:
                     subblk_end = next_nl
-                if (empty and prev_nl >= 0 and not self.content[prev_nl: subblk_start].strip() and
+                if (empty and prev_nl >= 0 and next_nl >= subblk_end and
+                        not self.content[prev_nl: subblk_start].strip() and
                         not self.content[subblk_end: next_nl].strip()):
                     subblk_end = next_nl
             else:
