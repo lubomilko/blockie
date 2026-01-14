@@ -1,9 +1,0 @@
-{
-    "items": [
-        {"item": "apples", "qty": "1 kg"},
-        {"item": "potatoes", "qty": "2 kg"},
-        {"item": "rice", "qty": "1 kg"},
-        {"item": "orange juice", "qty": "1 l"},
-        {"item": "cooking magazine", "qty": null}
-    ]
-}

@@ -9,12 +9,12 @@ import blockie      # pylint: disable = wrong-import-position   # noqa E402
 
 
 def demo_shoplist_basic() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+    template = """demo_shoplist_basic:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <ITEM><+>                                                     <QTY>
+* <ITEM><+>                         <QTY>
 </ITEMS>
 
 
@@ -37,12 +37,12 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 
 
 def demo_shoplist_basic_obj() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+    template = """demo_shoplist_basic_obj:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <ITEM><+>                                                     <QTY>
+* <ITEM><+>                         <QTY>
 </ITEMS>
 
 
@@ -73,29 +73,14 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     print(blk.content)
 
 
-def demo_shoplist() -> None:
-    important_items = ("potatoes", "rice")
-    maybe_items = ("cooking magazine",)
-
-    with open("samples/shoplist_data.json", encoding="utf-8") as file:
-        data = json.load(file)
-
-        for item in data["items"]:
-            item["flag"] = 0 if item["item"] in important_items else 1 if item["item"] in maybe_items else None
-
-        blk = blockie.Block()
-        blk.load_template("samples/shoplist_tmpl.txt")
-        blk.fill(data)
-        blk.save_content("samples/shoplist_gen.txt")
-
-
-def demo_shoplist_1() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+def demo_shoplist_advanced_1() -> None:
+    template = """demo_shoplist_advanced_1:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l</UNIT>
 </ITEMS>
 
 
@@ -123,13 +108,14 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     print(blk.content)
 
 
-def demo_shoplist_custom_cfg() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+def demo_shoplist_advanced_custom_cfg() -> None:
+    template = """demo_shoplist_advanced_custom_cfg:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 @items
-* @flagIMPORTANT! @~flagMAYBE? @!flag@item@>>                   @qty@unit kg@~unit l@!unit
+@flagIMPORTANT! @~flagMAYBE? @!flag
+* @&flag@item@>>                    @qty@unit kg@~unit l@!unit
 @!items
 
 
@@ -151,13 +137,13 @@ Short list: @items@item@_, @~_@!_@!items
         lambda name: f"@{name}",    # tag_gen_blk_start
         lambda name: f"@!{name}",   # tag_gen_blk_end
         lambda name: f"@~{name}",   # tag_gen_blk_vari
-        "&",                        # autotag_blk_var
         "---",                      # tag_implct_iter
+        "&",                        # autotag_blk_var
         ">>",                       # autotag_align
         "_",                        # autotag_vari
-        "/",                        # subref_sep
+        "-",                        # subref_sep
         8,                          # tab_size
-        True                        # enable_autotags
+        True,                       # enable_autotags
     )
 
     blk = blockie.Block(template, config=config)
@@ -165,13 +151,14 @@ Short list: @items@item@_, @~_@!_@!items
     print(blk.content)
 
 
-def demo_shoplist_manual_1() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+def demo_shoplist_advanced_manual_1() -> None:
+    template = """demo_shoplist_advanced_manual_1:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l</UNIT>
 </ITEMS>
 """
 
@@ -197,13 +184,13 @@ def demo_shoplist_manual_1() -> None:
     print(blk_template.content)
 
 
-def demo_shoplist_manual_2() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+def demo_shoplist_advanced_manual_2() -> None:
+    template = """demo_shoplist_advanced_manual_2:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <ITEM><+>                                                     <QTY>
+* <ITEM><+>                         <QTY>
 </ITEMS>
 """
 
@@ -225,13 +212,13 @@ def demo_shoplist_manual_2() -> None:
     print(blk_template.content)
 
 
-def demo_shoplist_manual_3() -> None:
-    template = """
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
+def demo_shoplist_advanced_manual_3() -> None:
+    template = """demo_shoplist_advanced_manual_3:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
 <ITEMS>
-* <ITEM><+>                                                     <QTY>
+* <ITEM><+>                         <QTY>
 </ITEMS>
 """
 
@@ -246,8 +233,8 @@ def demo_shoplist_manual_3() -> None:
     print(blk_template.content)
 
 
-def demo_macro_1() -> None:
-    template = """
+def demo_macros_1() -> None:
+    template = """demo_macros_1:
 <VLIST_A>
 </VLIST_A>
 
@@ -306,8 +293,8 @@ def demo_macro_1() -> None:
     # carrot, tomatoe, pepper
 
 
-def demo_macro_2() -> None:
-    template = """
+def demo_macros_2() -> None:
+    template = """demo_macros_2:
 <LISTS>
 <REF_BLK>
 
@@ -367,7 +354,7 @@ def demo_macro_2() -> None:
 
 
 def demo_extensions_1() -> None:
-    template = """
+    template = """demo_extensions_1:
 <INTRO>This is a list of <DESC>:</INTRO>
 <ITEMS>
 - <*>
@@ -420,7 +407,7 @@ def demo_extensions_1() -> None:
 
 
 def demo_extensions_2() -> None:
-    template = """
+    template = """demo_extensions_2:
 <INTRO>This is a list of <DESC>:</INTRO>
 <ITEMS>
 - <*>
@@ -469,16 +456,47 @@ def demo_extensions_2() -> None:
     # There are 4 items in total.
 
 
+def demo_references() -> None:
+    template = """
+<BOOKS>
+<TITLE><ENGLISH><ORIGINAL_WRAP> (<ORIGINAL>)</ORIGINAL_WRAP></TITLE>
++------------------------------------------------------------------------------+
+| <@TITLE> - <AUTHOR.FULL_INFO><+>                                             |
++------------------------------------------------------------------------------+
+| Genre     | <GENRE><+>                                                       |
+| Published | <PUBLICATION.DATE><DAY>.<MONTH>.<YEAR></PUBLICATION.DATE><+>     |
+| ISBN      | <PUBLICATION.ISBN><+>                                            |
+| Publisher | <PUBLICATION.PUBLISHER><+>                                       |
+| Language  | <PUBLICATION.LANGUAGE><+>                                        |
+| Pages     | <PUBLICATION.PAGE_NUM><+>                                        |
++------------------------------------------------------------------------------+
+
+</BOOKS>
+"""
+
+    blk = blockie.Block(template)
+
+    # Load data from a JSON file and add an 'original_wrap' attribute to each 'book' needed for
+    # setting the 'ORIGINAL_WRAP' block.
+    with open("samples/data_books.json", encoding="utf-8") as file:
+        data = json.load(file)
+        for book in data["books"]:
+            book["title"]["original_wrap"] = bool(book["title"].get("original", ""))
+
+    blk.fill(data)
+    print(blk.content)
+
+
 if __name__ == "__main__":
     demo_shoplist_basic()
     demo_shoplist_basic_obj()
-    demo_shoplist()
-    demo_shoplist_1()
-    demo_shoplist_custom_cfg()
-    demo_shoplist_manual_1()
-    demo_shoplist_manual_2()
-    demo_shoplist_manual_3()
-    demo_macro_1()
-    demo_macro_2()
+    demo_shoplist_advanced_1()
+    demo_shoplist_advanced_custom_cfg()
+    demo_shoplist_advanced_manual_1()
+    demo_shoplist_advanced_manual_2()
+    demo_shoplist_advanced_manual_3()
+    demo_macros_1()
+    demo_macros_2()
     demo_extensions_1()
     demo_extensions_2()
+    demo_references()
