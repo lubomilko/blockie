@@ -259,7 +259,7 @@ def demo_macros_1() -> None:
 </MACROS>
 """
 
-    def ref_blk_hndl(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+    def ref_blk_hndl(block: blockie.Block, _data: dict, _clone_subidx: int) -> None:
         # Set this block template to the template of a macro block defined in the first part of this block name.
         block.template = block.parent.get_subblock("macros").get_subblock(block.name.split("_")[0]).template
 
