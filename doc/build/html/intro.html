@@ -45,11 +45,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-and-quickstart">Installation and quickstart</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automated template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -81,26 +81,23 @@
              
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is an extremely lightweight and simple universal
-Python-based template engine. It can generate various types of text-based content, e.g., standard
-text, source code, data files or markup language content like HTML, XML or markdown.</p>
-<p>Blockie is a minimalistic answer to the existing popular template engines that are usually bulky
-and difficult to use, requiring users to learn a template language and other complex principles,
-with templates often approaching the form of a source code. Many template-based projects do not
-need such complexity, and Blockie offers a much simpler approach with only a few simple but
-extremely multipurpose principles and clean, logicless templates. If a more advanced
-template-filling logic is needed, then it is expected to be defined directly within the
-user-defined Python script, which avoids the need for a custom template language.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The reasoning behind using a standard Python script to control certain parts of the template
-filling is that the input data in many cases need some additional processing anyway, so
-the commands that other template engines define through custom logic constructs within a
-template itself, can just as well be located directly within the script that loads the
-template, provides the input data, and potentially performs additional processing, etc.</p>
+<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, universal and easy to use
+Python-based template engine. It was developed as a lower-level and generic solution for the
+generation of any type of text-based content including a standard text, markup language, source
+code, and various data files.</p>
+<p>Blockie uses logicless templates consisting of the so-called <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variables and blocks</span></a>. There are no other template constructs and the logic of filling the template
+with values follows just a few generic principles. Typically, the filling logic is defined by
+the structure of input data. Additional customization can be implemented by the user-defined
+Python script that can also use low-level functions provided by the Blockie module.</p>
+<section id="installation-and-quickstart">
+<h2>Installation and quickstart<a class="headerlink" href="#installation-and-quickstart" title="Link to this heading"></a></h2>
+<p>The Blockie package can be installed from the <a class="reference external" href="https://pypi.org/project/blockie/">Python Package Index</a> using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> console
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; pip install blockie</span>
+</pre></div>
 </div>
-<p>The block diagram below illustrates the fairly standard process of generating the content from a
-template using values defined in the input data:</p>
+<p>The block diagram below illustrates a fairly standard process of generating a text <em>content</em>
+from the <em>template</em> using values defined in the <em>input data</em>.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------+   +------------+
 | template |   | input data |
 +----------+   +------------+
@@ -117,11 +114,56 @@ template using values defined in the input data:</p>
     +-------------------+
 </pre></div>
 </div>
-<section id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>For a quick overview, jump straight to the <a class="reference internal" href="autofill.html#tgt-auto-fill-basic-example"><span class="std std-ref">basic example</span></a> or
-even to the more <a class="reference internal" href="autofill.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a> that illustrates the
-most important principles of Blockie.</p>
+<p>In the simplest form, the user-defined <em>Python filling script</em> is just a set of three commands
+illustrated in the example below showing most of the <a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">automated template filling</span></a> concepts used by Blockie for the input data provided in form of an appropriately
+structured Python dictionary or a struct-like object (note that the format of template tags is
+<a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                SHOPPING LIST</span>
+<span class="s2">  Items                             Quantity</span>
+<span class="s2">--------------------------------------------</span>
+<span class="s2">&lt;ITEMS&gt;</span>
+<span class="s2">&lt;FLAG&gt;IMPORTANT! &lt;^FLAG&gt;MAYBE? &lt;/FLAG&gt;</span>
+<span class="s2">* &lt;@FLAG&gt;&lt;ITEM&gt;&lt;+&gt;                  &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;^UNIT&gt; m&lt;/UNIT&gt;</span>
+<span class="s2">&lt;ALTS&gt;&lt;.&gt;&lt;*&gt;, &lt;^.&gt;&lt;*&gt;&lt;^.&gt;  - Alternatives: &lt;*&gt;, &lt;/.&gt;&lt;/ALTS&gt;</span>
+<span class="s2">&lt;/ITEMS&gt;</span>
+
+<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;FLAG&gt;!&lt;^FLAG&gt;?&lt;/FLAG&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple juice&quot;</span><span class="p">,</span> <span class="s2">&quot;fruit mix juice&quot;</span><span class="p">,</span> <span class="s2">&quot;cola&quot;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;duct tape&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># User-defined template filling script:</span>
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>   <span class="c1"># 1. Create the primary block and load its template.</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>                  <span class="c1"># 2. Fill the template blocks and variables with values.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>              <span class="c1"># 3. Get the generated content from the primary block.</span>
+</pre></div>
+</div>
+<p>Prints the following output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* IMPORTANT! potatoes               2 kg
+* IMPORTANT! rice                   1 kg
+* orange juice                      1 l
+  - Alternatives: apple juice, fruit mix juice, cola
+* duct tape                         50 m
+* MAYBE? cooking magazine
+
+Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
+</pre></div>
+</div>
 </section>
 </section>
 

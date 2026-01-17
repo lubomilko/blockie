@@ -176,7 +176,7 @@ repeats the first character located right after this tag in the template until a
 character is found. The column position of the different character is kept according to the
 template regardless of the length of a generated content located before the alignment autotag.</p>
 <p>Example of a template using the alignment autotag:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;NAME&gt;&lt;+&gt;               &lt;SURNAME&gt;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;NAME&gt;&lt;+&gt;   &lt;SURNAME&gt;
 </pre></div>
 </div>
 <p>repeats the space character located after the <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> tag right until the beginning of a surname
@@ -185,8 +185,8 @@ space character). The surname start column will remain the same, regardless of t
 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> variable value. So, for example, filling the template using the name-surname pairs
 <code class="docutils literal notranslate"><span class="pre">John</span></code>, <code class="docutils literal notranslate"><span class="pre">Connor</span></code> and <code class="docutils literal notranslate"><span class="pre">Thomas</span></code>, <code class="docutils literal notranslate"><span class="pre">Anderson</span></code> results in both surnames aligned to the same
 column:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>John                    Connor
-Thomas                  Anderson
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>John        Connor
+Thomas      Anderson
 </pre></div>
 </div>
 </section>

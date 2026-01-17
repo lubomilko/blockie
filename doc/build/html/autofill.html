@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Automatic template filling &mdash; Blockie 1.1.0 documentation</title>
+  <title>Automated template filling &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -46,7 +46,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Automatic template filling</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Automated template filling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-automatic-filling">Basic automatic filling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-variable-value">Setting a variable value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content">Setting a block content</a></li>
@@ -85,7 +85,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Automatic template filling</li>
+      <li class="breadcrumb-item active">Automated template filling</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/autofill.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,16 +95,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="automatic-template-filling">
-<span id="tgt-auto-fill"></span><h1>Automatic template filling<a class="headerlink" href="#automatic-template-filling" title="Link to this heading"></a></h1>
-<p>The automatic template filling is the simplest way to generate a templated content. To fill the
-template variables and blocks with data, it is first necessary to load the whole template into
+  <section id="automated-template-filling">
+<span id="tgt-auto-fill"></span><h1>Automated template filling<a class="headerlink" href="#automated-template-filling" title="Link to this heading"></a></h1>
+<p>The (semi-)automated template filling is the simplest way to generate a templated content. To fill
+the template variables and blocks with data, it is first necessary to load the whole template into
 the primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. This can be done by setting a template string text or a
 text file in the <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a> constructor. Alternatively, the
 <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
 <p>A template can then be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
 provided as an argument in a Python <strong>dictionary</strong>. The dictionary keys represent the template
-<a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>. The data dictionary needs to</p>
+<a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In reality, the automatic template filling process is, of course, not fully automatic. It is
@@ -121,10 +121,10 @@ operations described in the sections below depending on the data type of the dic
 <h3>Setting a variable value<a class="headerlink" href="#setting-a-variable-value" title="Link to this heading"></a></h3>
 <p>A variable value is set using a <strong>basic data type</strong> (i.e., <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">bool</span></code>).</p>
-<p>The example below sets the variables <code class="docutils literal notranslate"><span class="pre">word1</span></code> and <code class="docutils literal notranslate"><span class="pre">word2</span></code> to the string values <code class="docutils literal notranslate"><span class="pre">Hello</span></code>,
-<code class="docutils literal notranslate"><span class="pre">World!</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;WORD1&gt; &lt;WORD2&gt;&quot;</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;word1&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot;word2&quot;</span><span class="p">:</span> <span class="s2">&quot;world!&quot;</span><span class="p">})</span>
+<p>The example below sets the variables <code class="docutils literal notranslate"><span class="pre">word1</span></code> and <code class="docutils literal notranslate"><span class="pre">word2</span></code> to the string values <code class="docutils literal notranslate"><span class="pre">Hello</span></code> and
+<code class="docutils literal notranslate"><span class="pre">world</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;WORD1&gt; &lt;WORD2&gt;!&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;word1&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot;word2&quot;</span><span class="p">:</span> <span class="s2">&quot;world&quot;</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -469,7 +469,7 @@ Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&g
 <p class="admonition-title">Note</p>
 <p>Notice that the value of the <code class="docutils literal notranslate"><span class="pre">FLAG</span></code> variable in the template is defined by the script
 setting the <code class="docutils literal notranslate"><span class="pre">flag</span></code> key value into the input dictionary data. This is done to illustrate
-how to     control the template filling logic within the script, since the Blockie templates
+how to control the template filling logic within the script, since the Blockie templates
 are logicless.</p>
 </div>
 <p>The generated output file <em>shoplist_gen.txt</em>:</p>
