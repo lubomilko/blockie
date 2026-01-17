@@ -17,13 +17,11 @@ def demo_shoplist_basic() -> None:
 * <ITEM><+>                         <QTY>
 </ITEMS>
 
-
 Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 """
 
     data = {
         "items": [
-            {"item": "apples", "qty": "1 kg"},
             {"item": "potatoes", "qty": "2 kg"},
             {"item": "rice", "qty": "1 kg"},
             {"item": "orange juice", "qty": "1 l"},
@@ -36,6 +34,37 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     print(blk.content)
 
 
+def demo_shoplist_advanced() -> None:
+    template = """demo_shoplist_advanced:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l<^UNIT> m</UNIT>
+<ALTS><.><*>, <^.><*><^.>  - Alternatives: <*>, </.></ALTS>
+</ITEMS>
+
+Short list: <ITEMS><ITEM><FLAG>!<^FLAG>?</FLAG><.>, <^.></.></ITEMS>
+"""
+
+    data = {
+        "items": [
+            {"flag": 0, "item": "potatoes", "qty": "2", "unit": 0, "alts": None},
+            {"flag": 0, "item": "rice", "qty": "1", "unit": 0, "alts": None},
+            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1,
+             "alts": ["apple juice", "fruit mix juice", "cola"]},
+            {"flag": None, "item": "duct tape", "qty": "50", "unit": 2, "alts": None},
+            {"flag": 1, "item": "cooking magazine", "qty": None, "unit": None, "alts": None}
+        ]
+    }
+
+    # User-defined template filling script:
+    blk = blockie.Block(template)   # 1. Create the primary block and load its template.
+    blk.fill(data)                  # 2. Fill the template blocks and variables with data values.
+    print(blk.content)              # 3. Get the generated content from the primary block.
+
+
 def demo_shoplist_basic_obj() -> None:
     template = """demo_shoplist_basic_obj:
                 SHOPPING LIST
@@ -44,7 +73,6 @@ def demo_shoplist_basic_obj() -> None:
 <ITEMS>
 * <ITEM><+>                         <QTY>
 </ITEMS>
-
 
 Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
 """
@@ -73,41 +101,6 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     print(blk.content)
 
 
-def demo_shoplist_advanced_1() -> None:
-    template = """demo_shoplist_advanced_1:
-                SHOPPING LIST
-  Items                             Quantity
---------------------------------------------
-<ITEMS>
-<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
-* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l</UNIT>
-</ITEMS>
-
-
-Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
-"""
-
-    important_items = ("potatoes", "rice")
-    maybe_items = ("cooking magazine",)
-
-    data = {
-        "items": [
-            {"item": "apples", "qty": "1", "unit": 0},
-            {"item": "potatoes", "qty": "2", "unit": 0},
-            {"item": "rice", "qty": "1", "unit": 0},
-            {"item": "orange juice", "qty": "1", "unit": 1},
-            {"item": "cooking magazine", "qty": None, "unit": None}
-        ]
-    }
-
-    for item in data["items"]:
-        item["flag"] = 0 if item["item"] in important_items else 1 if item["item"] in maybe_items else None
-
-    blk = blockie.Block(template)
-    blk.fill(data)
-    print(blk.content)
-
-
 def demo_shoplist_advanced_custom_cfg() -> None:
     template = """demo_shoplist_advanced_custom_cfg:
                 SHOPPING LIST
@@ -117,7 +110,6 @@ def demo_shoplist_advanced_custom_cfg() -> None:
 @flagIMPORTANT! @~flagMAYBE? @!flag
 * @&flag@item@>>                    @qty@unit kg@~unit l@!unit
 @!items
-
 
 Short list: @items@item@_, @~_@!_@!items
 """
@@ -151,8 +143,57 @@ Short list: @items@item@_, @~_@!_@!items
     print(blk.content)
 
 
-def demo_shoplist_advanced_manual_1() -> None:
-    template = """demo_shoplist_advanced_manual_1:
+def demo_shoplist_manual_1() -> None:
+    template = """demo_shoplist_manual_1:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY>
+</ITEMS>
+"""
+
+    #   item,                   qty
+    data = (
+        ("apples",              "1 kg"),
+        ("potatoes",            "2 kg"),
+        ("rice",                "1 kg"),
+        ("orange juice",        "1 l"),
+        ("cooking magazine",    "")
+    )
+
+    blk_template = blockie.Block(template)
+    blk_items = blk_template.get_subblock("items")
+
+    for data_item in data:
+        blk_items.set_variables(autoclone=True, item=data_item[0], qty=data_item[1])
+    blk_items.set()
+    print(blk_template.content)
+
+
+def demo_shoplist_manual_2() -> None:
+    template = """demo_shoplist_manual_2:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY>
+</ITEMS>
+"""
+
+    data_item = ("apples", "potatoes", "rice", "orange juice", "cooking magazine")
+    data_qty = ("1 kg", "2 kg", "1 kg", "1 l", "")
+
+    blk_template = blockie.Block(template)
+    blk_items = blk_template.get_subblock("items")
+
+    blk_items.set_variables(item=data_item, qty=data_qty)
+    blk_items.set()
+    print(blk_template.content)
+
+
+def demo_shoplist_advanced_manual() -> None:
+    template = """demo_shoplist_advanced_manual:
                 SHOPPING LIST
   Items                             Quantity
 --------------------------------------------
@@ -180,55 +221,6 @@ def demo_shoplist_advanced_manual_1() -> None:
         blk_flag.set(data_item[0])
         blk_unit.set(data_item[3])
         blk_items.clone()
-    blk_items.set()
-    print(blk_template.content)
-
-
-def demo_shoplist_advanced_manual_2() -> None:
-    template = """demo_shoplist_advanced_manual_2:
-                SHOPPING LIST
-  Items                             Quantity
---------------------------------------------
-<ITEMS>
-* <ITEM><+>                         <QTY>
-</ITEMS>
-"""
-
-    #   item,                   qty
-    data = (
-        ("apples",              "1 kg"),
-        ("potatoes",            "2 kg"),
-        ("rice",                "1 kg"),
-        ("orange juice",        "1 l"),
-        ("cooking magazine",    "")
-    )
-
-    blk_template = blockie.Block(template)
-    blk_items = blk_template.get_subblock("items")
-
-    for data_item in data:
-        blk_items.set_variables(autoclone=True, item=data_item[0], qty=data_item[1])
-    blk_items.set()
-    print(blk_template.content)
-
-
-def demo_shoplist_advanced_manual_3() -> None:
-    template = """demo_shoplist_advanced_manual_3:
-                SHOPPING LIST
-  Items                             Quantity
---------------------------------------------
-<ITEMS>
-* <ITEM><+>                         <QTY>
-</ITEMS>
-"""
-
-    data_item = ("apples", "potatoes", "rice", "orange juice", "cooking magazine")
-    data_qty = ("1 kg", "2 kg", "1 kg", "1 l", "")
-
-    blk_template = blockie.Block(template)
-    blk_items = blk_template.get_subblock("items")
-
-    blk_items.set_variables(item=data_item, qty=data_qty)
     blk_items.set()
     print(blk_template.content)
 
@@ -489,12 +481,12 @@ def demo_references() -> None:
 
 if __name__ == "__main__":
     demo_shoplist_basic()
+    demo_shoplist_advanced()
     demo_shoplist_basic_obj()
-    demo_shoplist_advanced_1()
     demo_shoplist_advanced_custom_cfg()
-    demo_shoplist_advanced_manual_1()
-    demo_shoplist_advanced_manual_2()
-    demo_shoplist_advanced_manual_3()
+    demo_shoplist_manual_1()
+    demo_shoplist_manual_2()
+    demo_shoplist_advanced_manual()
     demo_macros_1()
     demo_macros_2()
     demo_extensions_1()
