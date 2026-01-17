@@ -3,15 +3,16 @@ Introduction
 ###################################################################################################
 
 `Blockie <https://github.com/lubomilko/blockie>`_ is a lightweight, universal and easy to use
-Python-based template engine. It was developed as a lower-level and generic solution for the
-generation of any type of text-based content including a standard text, markup language, source
-code, and various data files.
+Python-based template engine. It was developed as a lower-level, yet powerful and generic
+solution for the generation of any type of text-based content including a standard text, markup
+language, source code, and various data files without using complex program-like logic constructs
+in the templates.
 
 Blockie uses logicless templates consisting of the so-called :ref:`variables and blocks
-<tgt_primary_tags>`. There are no other template constructs and the logic of filling the template
-with values follows just a few generic principles. Typically, the filling logic is defined by
-the structure of input data. Additional customization can be implemented by the user-defined
-Python script that can also use low-level functions provided by the Blockie module.
+<tgt_primary_tags>`. There are no other template elements and the logic of filling the template
+with values follows just a few general principles. Typically, the filling logic is defined just by
+the structure of the input data with optional further customization implemented by the
+user-defined Python script.
 
 
 ***************************************************************************************************
@@ -50,7 +51,10 @@ In the simplest form, the user-defined *Python filling script* is just a set of 
 illustrated in the example below showing most of the :ref:`automated template filling 
 <tgt_auto_fill>` concepts used by Blockie for the input data provided in form of an appropriately
 structured Python dictionary or a struct-like object (note that the format of template tags is
-:ref:`configurable <tgt_config>`).
+:ref:`configurable <tgt_config>`). Any required additional template filling logic can be
+implemented by the Python script either by restructuring the original input data and/or using
+the :ref:`low-level functions <tgt_manual_fill>` provided by the Blockie module to precisely
+control the content generation.
 
 .. code-block:: python
 
