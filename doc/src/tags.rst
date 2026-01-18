@@ -1,169 +1,96 @@
 ###################################################################################################
-Template tags
+Template tags and operations with them
 ###################################################################################################
 
-Blockie uses templates containing *tags* to indicate variable parts of the template intended to
-be filled with specific values by the Python script.
+Tags are used to indicate the variable parts of the template intended to be filled with specific
+values provided in the input data.
+
+By default, the tags have an XML-like format and they use uppercase letters for names, e.g.,
+``<NAME>``. The tag references in the input data and Python filling script can use lowercase
+letters that are automatically converted to the uppercase tag names in the template, e.g.,
+a ``name`` data attribute is used to set the value of a ``<NAME>`` template tag.
+
+The most straightforward way to work with tags is to use an input data dictionary or an object
+with key (or attribute) names corresponding to the template tag names. The data values are then
+used to fill the template, i.e., replace the tags with the specified values.
 
 .. important::
-    
-    By default, the tags have an XML-like form using the uppercase letters for names, e.g.,
-    ``<TAG_NAME>`` is a tag named ``TAG_NAME``.
 
-    The tag names in a Python filling script are automatically converted to the uppercase format
-    by default, i.e., it is possible to refer to the ``<TAG_NAME>`` tag using a lowercase name
-    ``tag_name`` in the script.
+    The tag format and automatic uppercase conversion described above is used in almost all
+    examples within this document together with a Python dictionary used as a data input.
+    However, the tag format is :ref:` configurable <tgt_config>` and the dictionaries can be
+    replaced with struct-like objects with attributes corresponding to the dictinary keys.
 
-    This tag format and automatic uppercase conversion is used in almost all examples within this
-    document. However, the :ref:`tag format is configurable <tgt_config>`, as will be described
-    later.
-
-
-.. _tgt_primary_tags:
 
 ***************************************************************************************************
-Primary tags
+Variables
 ***************************************************************************************************
 
-Variable tag
-===================================================================================================
+Variables are the simplest parts of the template consisting of a single tag.
 
-A *variable* consists of a single tag, e.g., ``<VARIABLE>`` representing a variable named
-``VARIABLE`` that can be set to the required value using a simple string replacement.
+Operations:
 
+- **Set value** using a **basic data type** (``str``, ``int``, ``float``, or ``bool``).
+- **Clear value** using a **basic data type** (``str``, ``int``, ``float``, or ``bool``).
 
-Block tag
-===================================================================================================
+.. code-block:: python
 
-A *block* consists of a start-end tag pair defining a portion, i.e., block, of text within a
-template. For example, ``<BLOCK>content</BLOCK>`` represents a block  named ``BLOCK`` having an
-internal content consisting of a simple string ``content``. Apart from a constant text, a block
-can also contain *variables* and other child *blocks*.
+    blk = blockie.Block("<WORD1> <WORD2>!")
+    blk.fill({"word1": "Hello", "word2": "world"})
+    print(blk.content)
 
-The whole template itself is considered to be a *primary block*. However, it is not marked by any
-start-end tag pair, i.e., the primary template block does not have a name.
-
-The block content can be **cloned**, i.e., duplicated as many times as needed, with variables in
-each clone filled with different values. For example, the simple template string below contains
-a block named ``PEOPLE`` that can be used to define a list with each row containing information
-about a different person:
-
-Template:
+prints:
 
 .. code-block:: text
 
-    A list of people:
-    <PEOPLE>
-    - <NAME> <SURNAME>, <AGE>
-    </PEOPLE>
-
-.. seealso::
-    The description of filling the template with values is :ref:`described later
-    <tgt_auto_fill_basic>` after the description of all types of tags.
+    Hello world!
 
 
-.. _tgt_primary_tags_content_vari:
 
-Block variation tag
+Clearing a variable
 ===================================================================================================
 
-A block can have multiple predefined **content variations**, with each variation separated by
-a special tag, which by default has a ``<^BLOCK>`` format, where the ``BLOCK`` is a block name.
-The script filling the template with data can then select a required variation of the predefined
-content.
+A variable can be cleared, i.e., removed, from the generated content by setting its dictionary value to an
+**empty string or to none** as shown on the example below removing the variable for a middle name.
 
-The example below illustrates a template with a ``BLOCK`` block having three variations of its
-content selectable by the filling script:
+.. code-block:: python
+
+    blk = blockie.Block("<NAME> <MIDNAME> <SURNAME>")
+    blk.fill({"name": "Patrick", "midname": None, "surname": "Bateman"})
+    print(blk.content)
+
+prints:
 
 .. code-block:: text
 
-    <BLOCK>content 1<^BLOCK>content 2<^BLOCK>content 3</BLOCK>
-
-
-.. _tgt_primary_tags_implicit_iter:
-
-Implicit iterator tag
-===================================================================================================
-
-If a block contains just a single variable, then such variable can be defined as an **implicit
-iterator** using a ``<*>`` format by default. A parent block containing the implicit iterator
-can be cloned automatically with the implicit iterator having a new value in each cloned content.
-
-The example below shows a template with a ``BLOCK`` block having an implicit iterator inside for
-creating a simple list:
-
-<BLOCK>
-- <*>
-</BLOCK>
-
-.. seealso::
-    See the details of :ref:`setting an implicit iterator value <tgt_setting_implicit_iter>`
-    described later.
-
-
-.. _tgt_auto_tags:
+    Patrick  Bateman
 
 ***************************************************************************************************
-Secondary - automatic tags
+Blocks
 ***************************************************************************************************
 
-The special secondary *autotags* are filled automatically, i.e., without any values explicitly
-assigned by the filling script.
+    Set - non-empty val / Dict
+    Clone
+    Clear
 
 
-Alignment autotag
-===================================================================================================
+***************************************************************************************************
+Special tags
+***************************************************************************************************
 
-An *alignment autotag* ``<+>`` is special tag useful for the text alignment. It automatically
-repeats the first character located right after this tag in the template until a different
-character is found. The column position of the different character is kept according to the
-template regardless of the length of a generated content located before the alignment autotag.
-
-Example of a template using the alignment autotag:
-
-.. code-block:: text
-
-    <NAME><+>   <SURNAME>
-
-repeats the space character located after the ``<+>`` tag right until the beginning of a surname
-(since the character "<" at the beginning of the ``<SURNAME>`` tag is different from the repeated
-space character). The surname start column will remain the same, regardless of the length of the
-``NAME`` variable value. So, for example, filling the template using the name-surname pairs
-``John``, ``Connor`` and ``Thomas``, ``Anderson`` results in both surnames aligned to the same
-column:
-
-.. code-block:: text
-
-    John        Connor
-    Thomas      Anderson
+    Implicit iterator block variable
+    Block variation - vari_idx / integer
 
 
-Variation autotag
-===================================================================================================
+***************************************************************************************************
+Automatic tags
+***************************************************************************************************
 
-A *variation autotag* has a form of a ``<.>`` (dot) block with two, or optionally three
-:ref:`content variations <tgt_primary_tags>`: ``<.>standard<^.>last</.>`` or
-``<.>standard<^.>last<^.>first</.>``. This autotag is intended to be placed inside another
-block that is cloned during the :ref:`template filling <tgt_auto_fill>`. Then the first
-clone is (optionally) set to the ``first`` content of the variation autotag, the last clone is
-automatically set to the ``last`` content, and the rest of the clones in between are set to
-the ``standard`` content.
+    block var
+    align
+    variation
 
-This autoblock can be useful, for example, for the comma-separation of variables within a
-cloned block as illustrated below where the *standard* content is set to a comma ``, ``
-and the *last* content is set to an empty string ````:
 
-.. code-block:: text
-
-    <NUM_LIST><NUM><.>, <^.></.></NUM_LIST>
-
-Cloning the ``NUM_LIST`` block with values ``1``, ``2``, ``3``, ``4`` set to the ``NUM``
-variable in each cloned content will result in a following string (notice that the last
-value ``4`` is not followed by a comma):
-
-.. code-block:: text
-
-    1, 2, 3, 4
-
-.. seealso::
-    See the :ref:`code example <tgt_auto_fill_basic_example>` using both of the automatic tags.
+***************************************************************************************************
+Fill handler
+***************************************************************************************************
