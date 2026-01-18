@@ -82,21 +82,17 @@
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, universal and easy to use
-Python-based template engine. It was developed as a lower-level, yet powerful and generic
-solution for the generation of any type of text-based content including a standard text, markup
-language, source code, and various data files without using complex program-like logic constructs
-in the templates.</p>
-<p>Blockie uses logicless templates consisting of the so-called <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variables and blocks</span></a>. There are no other template elements and the logic of filling the template
-with values follows just a few general principles. Typically, the filling logic is defined just by
-the structure of the input data with optional further customization implemented by the
-user-defined Python script.</p>
+Python-based template engine. It was developed as a lower-level and generic solution for the
+generation of any type of text-based content including a standard text, markup language, source
+code, and various data files without using complex program-like logic constructs in the templates.</p>
+<p>Blockie uses logicless templates consisting of the so-called <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variables and blocks</span></a>. No other template elements are used, although there are some variables and
+blocks with special functionalities. The logic of filling the template with values follows just
+a few general principles. Typically, the filling logic can be defined just by the structure of
+the input data with optional further customization implemented by the user-defined Python script.</p>
 <section id="installation-and-quickstart">
 <h2>Installation and quickstart<a class="headerlink" href="#installation-and-quickstart" title="Link to this heading"></a></h2>
 <p>The Blockie package can be installed from the <a class="reference external" href="https://pypi.org/project/blockie/">Python Package Index</a> using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> console
-command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; pip install blockie</span>
-</pre></div>
-</div>
+command: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">blockie</span></code>.</p>
 <p>The block diagram below illustrates a fairly standard process of generating a text <em>content</em>
 from the <em>template</em> using values defined in the <em>input data</em>.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------+   +------------+
@@ -106,7 +102,7 @@ from the <em>template</em> using values defined in the <em>input data</em>.</p>
       V              V
   +-----------------------+
   | Python filling script |
-  |     using blockie     |
+  | using blockie module  |
   +-----------------------+
               |
               V
@@ -116,12 +112,9 @@ from the <em>template</em> using values defined in the <em>input data</em>.</p>
 </pre></div>
 </div>
 <p>In the simplest form, the user-defined <em>Python filling script</em> is just a set of three commands
-illustrated in the example below showing most of the <a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">automated template filling</span></a> concepts used by Blockie for the input data provided in form of an appropriately
-structured Python dictionary or a struct-like object (note that the format of template tags is
-<a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a>). Any required additional template filling logic can be
-implemented by the Python script either by restructuring the original input data and/or using
-the <a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">low-level functions</span></a> provided by the Blockie module to precisely
-control the content generation.</p>
+illustrated in the example below using a more complex template to show most of the <a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">automated
+template filling</span></a> concepts used by Blockie for the input data provided in form of
+an appropriately structured Python dictionary or a struct-like object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
 
 <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -168,6 +161,9 @@ control the content generation.</p>
 Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
 </pre></div>
 </div>
+<p>Any required additional template filling logic can be implemented within the Python script either
+by restructuring the original input data and/or using the <a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">low-level functions</span></a> provided by the Blockie module to precisely control the content generation.
+The script can also <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configure</span></a> a different format of template tags.</p>
 </section>
 </section>
 
