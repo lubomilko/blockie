@@ -7,6 +7,7 @@ Blockie
 	:caption: Contents
 
 	intro
+	overview
 	tags
 	autofill
 	manfill
