@@ -8,7 +8,7 @@ generation of any type of text-based content including a standard text, markup l
 code, and various data files without using complex program-like logic constructs in the templates.
 
 Blockie uses logicless templates consisting of the so-called :ref:`variables and blocks
-<tgt_primary_tags>`. No other template elements are used, although there are some variables and
+<tgt_tags>`. No other template elements are used, although there are some variables and
 blocks with special functionalities. The logic of filling the template with values follows just
 a few general principles. Typically, the filling logic can be defined just by the structure of
 the input data with optional further customization implemented by the user-defined Python script.
