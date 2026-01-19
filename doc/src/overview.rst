@@ -23,14 +23,28 @@ Template filling
 ***************************************************************************************************
 
 The most straightforward way to fill the template with values is to load the template into the
-:py:class:`.Block` object through its constructor or a :py:attr:`.Block.template` attribute and
-to use the :py:meth:`.Block.fill` method with an input data dictionary having keys
+primary :py:class:`.Block` object through its constructor or a :py:attr:`.Block.template`
+attribute and to use the :py:meth:`.Block.fill` method with an input data dictionary having keys
 corresponding to the template tag names. The template tags are then replaced with the dictionary
 values in the generated :py:attr:`.Block.content` attribute of the :py:class:`.Block` object.
 
 The tag references in the input data and Python filling script can use lowercase letters that
 are by default automatically converted to the uppercase tag names in the template, e.g.,
 a ``name`` data attribute is used to set the value of a ``<NAME>`` template tag.
+
+.. code-block:: python
+
+    import blockie
+
+    blk = blockie.Block("The date is: <DATE><MONTH> <DAY></DATE>")
+    blk.fill({"date": {"day": 24, "month": "December"}})
+    print(blk.content)
+
+output:
+
+.. code-block:: text
+
+    The date is: December 24
 
 .. important::
 
