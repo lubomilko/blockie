@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Template tags" href="tags.html" />
-    <link rel="prev" title="Overview of principles" href="overview.html" /> 
+    <link rel="prev" title="Introduction" href="intro.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,12 +45,12 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of principles</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Filling the template tags</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#variable-tags">Variable tags</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#block-tags">Block tags</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#special-tags">Special tags</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#automatic-tags">Automatic tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-tags">Template tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-filling">Template filling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blocks">Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-variables-and-blocks">Automatic variables and blocks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fill-handler">Fill handler</a></li>
 </ul>
 </li>
@@ -87,8 +87,51 @@
              
   <section id="filling-the-template-tags">
 <h1>Filling the template tags<a class="headerlink" href="#filling-the-template-tags" title="Link to this heading"></a></h1>
-<section id="variable-tags">
-<span id="tgt-variables"></span><h2>Variable tags<a class="headerlink" href="#variable-tags" title="Link to this heading"></a></h2>
+<section id="template-tags">
+<h2>Template tags<a class="headerlink" href="#template-tags" title="Link to this heading"></a></h2>
+<p>Tags are used to indicate the variable parts of the template intended to be filled with specific
+values provided in the input data.</p>
+<p>By default, the tags have an XML-like format and their names use uppercase letters. The template
+consists of two primary elements:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#tgt-variables"><span class="std std-ref">Variables</span></a> defined by a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p></li>
+<li><p><a class="reference internal" href="#tgt-blocks"><span class="std std-ref">Blocks</span></a> defined by the two start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code>,
+with a content consisting of other blocks and variables between these tags. The whole template
+is also considered to be a block despite not having any explicitly defined start and end tags.</p></li>
+</ul>
+</section>
+<section id="template-filling">
+<h2>Template filling<a class="headerlink" href="#template-filling" title="Link to this heading"></a></h2>
+<p>The most straightforward way to fill the template with values is to load the template into the
+primary <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object through its constructor or a <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a>
+attribute and to use the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with an input data dictionary having keys
+corresponding to the template tag names. The template tags are then replaced with the dictionary
+values in the generated <a class="reference internal" href="api.html#blockie.Block.content" title="blockie.Block.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.content</span></code></a> attribute of the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object.</p>
+<p>The tag references in the input data and Python filling script can use lowercase letters that
+are by default automatically converted to the uppercase tag names in the template, e.g.,
+a <code class="docutils literal notranslate"><span class="pre">month</span></code> data attribute (dictionary key) is used to set the value of a <code class="docutils literal notranslate"><span class="pre">&lt;MONTH&gt;</span></code> variable
+in the example below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: December 24
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The tag format and automatic uppercase conversion described above is used in almost all
+examples within this document together with a Python dictionary used as a data input. However,
+the tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a> and instead of a dictionary, it is also
+possible to use a struct-like object with attributes corresponding to the dictionary keys.</p>
+</div>
+</section>
+<section id="variables">
+<span id="tgt-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h2>
 <p>Variables are the simplest parts of the template defined by a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p>
 <ul>
 <li><p>A variable can be <strong>set</strong> to the required value using a <strong>basic data type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>,
@@ -117,15 +160,15 @@
 </li>
 </ul>
 </section>
-<section id="block-tags">
-<span id="tgt-blocks"></span><h2>Block tags<a class="headerlink" href="#block-tags" title="Link to this heading"></a></h2>
+<section id="blocks">
+<span id="tgt-blocks"></span><h2>Blocks<a class="headerlink" href="#blocks" title="Link to this heading"></a></h2>
 <p>Blocks are used for splitting the template into multiple hierarchical parts. A block is defined
 by the two start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code> with a content between them consisting
 of constant text, other child blocks and <a class="reference internal" href="#tgt-variables"><span class="std std-ref">variables</span></a>. The whole template is
 considered to be a primary block even without explicitly defined tags.</p>
 <ul>
 <li><p>The variables and other subblocks in a block content can be <strong>set</strong> by setting the
-block value to a <strong>non-empty dictinary</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>).</p>
+block value to a <strong>non-empty dictionary</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">}})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
@@ -151,7 +194,8 @@ non-zero <code class="docutils literal notranslate"><span class="pre">float</spa
 </li>
 <li><p>It is possible to <strong>clone</strong>, i.e., duplicate, the block content by setting its value to
 a <strong>list or tuple of non-empty dictionaries</strong> (<code class="docutils literal notranslate"><span class="pre">[{...},</span> <span class="pre">{...},</span> <span class="pre">...]</span></code>,
-<code class="docutils literal notranslate"><span class="pre">({...},</span> <span class="pre">{...},</span> <span class="pre">...)</span></code>).</p>
+<code class="docutils literal notranslate"><span class="pre">({...},</span> <span class="pre">{...},</span> <span class="pre">...)</span></code>) with the content of dictionaries setting other blocks and
+<a class="reference internal" href="#tgt-variables"><span class="std std-ref">variables</span></a> within the block.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;* &lt;EVENTS&gt;&lt;EVENT&gt;: &lt;MONTH&gt; &lt;DAY&gt;</span><span class="se">\n</span><span class="s2">&lt;/EVENTS&gt;&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;events&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;Christmas&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">},</span>
@@ -167,6 +211,28 @@ a <strong>list or tuple of non-empty dictionaries</strong> (<code class="docutil
 </pre></div>
 </div>
 </li>
+<li><p>A block can also be <strong>cloned using an implicit iterator variable</strong> which is a special
+single-only variable defined by the <code class="docutils literal notranslate"><span class="pre">&lt;*&gt;</span></code> tag with a value that can be set directly using a
+<strong>basic data type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">bool</span></code>) without specifying any
+<a class="reference internal" href="#tgt-variables"><span class="std std-ref">variable</span></a> name</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;LIST&gt;- &lt;*&gt;</span><span class="se">\n</span><span class="s2">&lt;/LIST&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gloves&quot;</span><span class="p">,</span> <span class="s2">&quot;plastic bags&quot;</span><span class="p">,</span> <span class="s2">&quot;duct tape&quot;</span><span class="p">,</span> <span class="s2">&quot;shovel&quot;</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- gloves
+- plastic bags
+- duct tape
+- shovel
+</pre></div>
+</div>
+</li>
+<li><p>It is possible to define multiple <strong>content variations of a block</strong> using intermediary tags
+having a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK_NAME&gt;</span></code> format between the start and end block tags. The required content
+variation can then be set by setting an integer number (<code class="docutils literal notranslate"><span class="pre">int</span></code>) representing the index of a
+variation (starting from 0) to the special <code class="docutils literal notranslate"><span class="pre">vari_idx</span></code> key defined within the block data
+dictionary.</p></li>
 <li><p>A block can be <strong>cleared</strong>, i.e., removed, by setting it to either an <strong>empty dictionary,
 list or tuple</strong> (<code class="docutils literal notranslate"><span class="pre">{}</span></code>, <code class="docutils literal notranslate"><span class="pre">[]</span></code>, <code class="docutils literal notranslate"><span class="pre">()</span></code>), or to <strong>none, negative number or false</strong> (<code class="docutils literal notranslate"><span class="pre">None</span></code>,
 negative <code class="docutils literal notranslate"><span class="pre">int</span></code>, negative <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
@@ -182,16 +248,8 @@ negative <code class="docutils literal notranslate"><span class="pre">int</span>
 </li>
 </ul>
 </section>
-<section id="special-tags">
-<span id="tgt-special-tags"></span><h2>Special tags<a class="headerlink" href="#special-tags" title="Link to this heading"></a></h2>
-<ul>
-<li><p>I Implicit iterator block variable</p>
-<p>Block variation - vari_idx / integer</p>
-</li>
-</ul>
-</section>
-<section id="automatic-tags">
-<span id="tgt-autotags"></span><h2>Automatic tags<a class="headerlink" href="#automatic-tags" title="Link to this heading"></a></h2>
+<section id="automatic-variables-and-blocks">
+<span id="tgt-autotags"></span><h2>Automatic variables and blocks<a class="headerlink" href="#automatic-variables-and-blocks" title="Link to this heading"></a></h2>
 <blockquote>
 <div><p>block var
 align
@@ -207,7 +265,7 @@ variation</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="overview.html" class="btn btn-neutral float-left" title="Overview of principles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="tags.html" class="btn btn-neutral float-right" title="Template tags" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

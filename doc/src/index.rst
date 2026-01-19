@@ -7,7 +7,6 @@ Blockie
 	:caption: Contents
 
 	intro
-	overview
 	fill_tags
 	tags
 	autofill
