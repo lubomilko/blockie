@@ -80,7 +80,7 @@ an appropriately structured Python dictionary or a struct-like object.
     blk.fill(data)                  # 2. Fill the template blocks and variables with data values.
     print(blk.content)              # 3. Get the generated content from the primary block.
 
-Prints the following output:
+Output:
 
 .. code-block:: text
 

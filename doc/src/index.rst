@@ -8,6 +8,7 @@ Blockie
 
 	intro
 	overview
+	fill_tags
 	tags
 	autofill
 	manfill

@@ -12,7 +12,7 @@ text file in the :py:meth:`.Block.__init__` constructor. Alternatively, the
 
 A template can then be filled using the :py:meth:`.Block.fill` method with the required data
 provided as an argument in a Python **dictionary**. The dictionary keys represent the template
-:ref:`variable and block tags <tgt_primary_tags>`.
+:ref:`variable and block tags <tgt_tags>`.
 
 .. note::
     In reality, the automatic template filling process is, of course, not fully automatic. It is
@@ -100,7 +100,7 @@ prints:
 .. _tgt_cloning_content_variations:
 
 .. important::
-    The blocks having multiple :ref:`content variations <tgt_primary_tags_content_vari>` cannot
+    The blocks having multiple :ref:`content variations <tgt_tags_content_vari>` cannot
     be cloned directly. They can, however, be cloned indirectly by "wrapping" them in a standard
     parent block that can be cloned, e.g.,
     ``<DATE_WRAP><DATE><DAY>.<MONTH>.<^DATE><DAY> <MONTH></DATE><DATE_WRAP>``, where the
@@ -109,70 +109,6 @@ prints:
 
     Note that the process of :ref:`setting the selected block content variation
     <tgt_auto_fill_advanced_set_block_vari>` is described later.
-
-
-.. _tgt_auto_fill_basic_example:
-
-Example
-===================================================================================================
-
-The following filling script example shows all simple concepts described above, i.e., the template
-containing the :ref:`basic tags <tgt_primary_tags>` and also :ref:`automatic tags <tgt_auto_tags>`
-filled using the :ref:`basic principles <tgt_auto_fill_basic>` of automatic filling. The template
-is defined directly by the ``template`` string and the data to fill the template with are defined
-by the ``data`` dictionary.
-
-.. code-block:: python
-
-    from blockie import Block
-
-
-    template = """
-                                SHOPPING LIST
-      Items                                                         Quantity
-    ------------------------------------------------------------------------
-    <ITEMS>
-    * <ITEM><+>                                                     <QTY>
-    </ITEMS>
-
-
-    Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
-    """
-
-    data = {
-        "items": [
-            {"item": "apples", "qty": "1 kg"},
-            {"item": "potatoes", "qty": "2 kg"},
-            {"item": "rice", "qty": "1 kg"},
-            {"item": "orange juice", "qty": "1 l"},
-            {"item": "cooking magazine", "qty": 1},
-        ]
-    }
-
-    blk = Block(template)
-    blk.fill(data)
-    print(blk.content)
-
-
-The script prints the following generated content:
-
-.. code-block:: text
-
-                                SHOPPING LIST
-      Items                                                         Quantity
-    ------------------------------------------------------------------------
-    * apples                                                        1 kg
-    * potatoes                                                      2 kg
-    * rice                                                          1 kg
-    * orange juice                                                  1 l
-    * cooking magazine                                              1
-
-
-    Short list: apples, potatoes, rice, orange juice, cooking magazine
-
-.. note::
-    Notice that the template contains two ``ITEMS`` blocks containing the variable ``ITEM`` and
-    that both blocks are automatically filled by the same data, since they have the same name.
 
 
 .. _tgt_auto_fill_advanced:
@@ -214,7 +150,7 @@ Setting an implicit iterator value
 ===================================================================================================
 
 If a block contains just one variable, then cloning such a block and setting its single variable
-can be simplified using an :ref:`implicit iterator tag <tgt_primary_tags_implicit_iter>`
+can be simplified using an :ref:`implicit iterator tag <tgt_tags_implicit_iter>`
 inside the block and then filling the block by setting its value to a **list or tuple of iterator
 values** as illustrated below:
 
