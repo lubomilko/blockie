@@ -36,21 +36,24 @@ def demo_set_var_multiline() -> None:
 
 
 def demo_set_block() -> None:
-    blk = blockie.Block("<DATE><MONTH> <DAY></DATE>")
+    blk = blockie.Block("The date is: <DATE><MONTH> <DAY></DATE>")
     blk.fill({"date": {"day": 24, "month": "December"}})
     print(blk.content)
     # prints:
-    # December 24
+    # The date is: December 24
 
 
 def demo_set_block_clones() -> None:
-    blk = blockie.Block("<DATE><MONTH> <DAY>\n</DATE>")
-    blk.fill({"date": [{"day": 24, "month": 12}, {"day": 31, "month": 12}, {"day": 1, "month": "January"}]})
+    blk = blockie.Block("* <EVENTS><EVENT>: <MONTH> <DAY>\n</EVENTS>")
+    blk.fill({"events": [
+        {"event": "Christmas", "day": 24, "month": "December"},
+        {"event": "New Year's Eve", "day": 31, "month": "December"},
+        {"event": "New Year's Day", "day": 1, "month": "January"}]})
     print(blk.content)
     # prints:
-    # 12 24
-    # 12 31
-    # January 1
+    # * Christmas: December 24
+    # * New Year's Eve: December 31
+    # * New Year's Day: January 1
 
 
 def demo_set_implct_iter() -> None:
@@ -65,38 +68,38 @@ def demo_set_implct_iter() -> None:
 
 
 def demo_set_block_as_is() -> None:
-    blk = blockie.Block("<DATE>24 December</DATE>")
+    blk = blockie.Block("The date is: <DATE>July 2</DATE>")
     blk.fill({"date": True})
     print(blk.content)
     # prints:
-    # 24 December
+    # The date is: July 2
 
 
 def demo_set_block_vari_1() -> None:
-    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
+    blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
     blk.fill({"date": {"vari_idx": 0, "day": 24, "month": 12}})
     print(blk.content)
     # prints:
-    # 24.12.
+    # The date is: 24.12.
 
 
 def demo_set_block_vari_2() -> None:
     date_dict = {"day": 24, "month": "December"}
     date_dict["vari_idx"] = 0 if isinstance(date_dict["month"], int) else 1
 
-    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
+    blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
     blk.fill({"date": date_dict})
     print(blk.content)
     # prints:
-    # December 24
+    # The date is: December 24
 
 
 def demo_set_block_vari_3() -> None:
-    blk = blockie.Block("<DATE>24.12.<^DATE>December 24</DATE>")
+    blk = blockie.Block("The date is: <DATE>24.12.<^DATE>December 24</DATE>")
     blk.fill({"date": 1})
     print(blk.content)
     # prints:
-    # December 24
+    # The date is: December 24
 
 
 def demo_set_block_fill_hndl() -> None:
@@ -107,27 +110,27 @@ def demo_set_block_fill_hndl() -> None:
         else:
             block.get_subblock("date").set(vari_idx=0)
 
-    blk = blockie.Block("<DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
+    blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
     blk.fill({"day": 24, "month": "December", "fill_hndl": format_month})
     print(blk.content)
     # prints:
-    # DECEMBER 24
+    # The date is: DECEMBER 24
 
 
 def demo_clear_var() -> None:
     blk = blockie.Block("<NAME> <MIDNAME> <SURNAME>")
-    blk.fill({"name": "Patrick", "midname": None, "surname": "Bateman"})
+    blk.fill({"name": "Thomas", "midname": None, "surname": "Anderson"})
     print(blk.content)
     # prints:
-    # Patrick  Bateman
+    # Thomas  Anderson
 
 
 def demo_clear_block() -> None:
     blk = blockie.Block("<NAME> <MIDNAME_WRAP><MIDNAME> </MIDNAME_WRAP><SURNAME>")
-    blk.fill({"name": "Patrick", "surname": "Bateman", "midname_wrap": None})
+    blk.fill({"name": "Thomas", "surname": "Anderson", "midname_wrap": None})
     print(blk.content)
     # prints:
-    # Patrick Bateman
+    # Thomas Anderson
 
 
 def demo_ref_var() -> None:
@@ -139,19 +142,19 @@ def demo_ref_var() -> None:
 
 
 def demo_ref_block() -> None:
-    blk = blockie.Block("The date is <DATE_STR>.")
+    blk = blockie.Block("The date is: <DATE_STR>.")
     blk.fill({"date": {"day": "01", "month": "01", "year": "2026"}, "date_str": "<DATE><DAY>.<MONTH>.<YEAR></DATE>"})
     print(blk.content)
     # prints:
-    # The date is 01.01.2026.
+    # The date is: 01.01.2026.
 
 
 def demo_subref_var() -> None:
-    blk = blockie.Block("<DATE.DAY>.<DATE.MONTH>.")
+    blk = blockie.Block("The date is: <DATE.DAY>.<DATE.MONTH>.")
     blk.fill({"date": {"day": 24, "month": 12}})
     print(blk.content)
     # prints:
-    # 24.12.
+    # The date is: 24.12.
 
 
 def demo_subref_block() -> None:
@@ -248,12 +251,6 @@ def demo_autotag_block_var() -> None:
     # c) third                3
 
 
-def demo() -> None:
-    blk = blockie.Block("<A><*></A>")
-    blk.fill({"a": [1, 2]})
-    print(blk.content)
-
-
 if __name__ == "__main__":
     demo_set_var()
     demo_set_var_multiline()
@@ -275,4 +272,3 @@ if __name__ == "__main__":
     demo_autotag_vari_1()
     demo_autotag_vari_2()
     demo_autotag_block_var()
-    demo()
