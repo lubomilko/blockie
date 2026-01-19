@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Automatic template filling" href="autofill.html" />
-    <link rel="prev" title="Introduction" href="intro.html" /> 
+    <link rel="next" title="Automated template filling" href="autofill.html" />
+    <link rel="prev" title="Filling the template tags" href="fill_tags.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,22 +45,21 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fill_tags.html">Filling the template tags</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Template tags</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#primary-tags">Primary tags</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#variable-tag">Variable tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#block-tag">Block tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#block-variation-tag">Block variation tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#implicit-iterator-tag">Implicit iterator tag</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#secondary-automatic-tags">Secondary - automatic tags</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#alignment-autotag">Alignment autotag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#variation-autotag">Variation autotag</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automated template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -106,7 +105,7 @@ document. However, the <a class="reference internal" href="config.html#tgt-confi
 later.</p>
 </div>
 <section id="primary-tags">
-<span id="tgt-primary-tags"></span><h2>Primary tags<a class="headerlink" href="#primary-tags" title="Link to this heading"></a></h2>
+<span id="tgt-tags"></span><h2>Primary tags<a class="headerlink" href="#primary-tags" title="Link to this heading"></a></h2>
 <section id="variable-tag">
 <h3>Variable tag<a class="headerlink" href="#variable-tag" title="Link to this heading"></a></h3>
 <p>A <em>variable</em> consists of a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;VARIABLE&gt;</span></code> representing a variable named
@@ -137,7 +136,7 @@ about a different person:</p>
 </div>
 </section>
 <section id="block-variation-tag">
-<span id="tgt-primary-tags-content-vari"></span><h3>Block variation tag<a class="headerlink" href="#block-variation-tag" title="Link to this heading"></a></h3>
+<span id="tgt-tags-content-vari"></span><h3>Block variation tag<a class="headerlink" href="#block-variation-tag" title="Link to this heading"></a></h3>
 <p>A block can have multiple predefined <strong>content variations</strong>, with each variation separated by
 a special tag, which by default has a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK&gt;</span></code> format, where the <code class="docutils literal notranslate"><span class="pre">BLOCK</span></code> is a block name.
 The script filling the template with data can then select a required variation of the predefined
@@ -149,7 +148,7 @@ content selectable by the filling script:</p>
 </div>
 </section>
 <section id="implicit-iterator-tag">
-<span id="tgt-primary-tags-implicit-iter"></span><h3>Implicit iterator tag<a class="headerlink" href="#implicit-iterator-tag" title="Link to this heading"></a></h3>
+<span id="tgt-tags-implicit-iter"></span><h3>Implicit iterator tag<a class="headerlink" href="#implicit-iterator-tag" title="Link to this heading"></a></h3>
 <p>If a block contains just a single variable, then such variable can be defined as an <strong>implicit
 iterator</strong> using a <code class="docutils literal notranslate"><span class="pre">&lt;*&gt;</span></code> format by default. A parent block containing the implicit iterator
 can be cloned automatically with the implicit iterator having a new value in each cloned content.</p>
@@ -164,13 +163,8 @@ creating a simple list:</p>
 described later.</p>
 </div>
 </section>
-</section>
-<section id="secondary-automatic-tags">
-<span id="tgt-auto-tags"></span><h2>Secondary - automatic tags<a class="headerlink" href="#secondary-automatic-tags" title="Link to this heading"></a></h2>
-<p>The special secondary <em>autotags</em> are filled automatically, i.e., without any values explicitly
-assigned by the filling script.</p>
 <section id="alignment-autotag">
-<h3>Alignment autotag<a class="headerlink" href="#alignment-autotag" title="Link to this heading"></a></h3>
+<span id="tgt-autotag-align"></span><h3>Alignment autotag<a class="headerlink" href="#alignment-autotag" title="Link to this heading"></a></h3>
 <p>An <em>alignment autotag</em> <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> is special tag useful for the text alignment. It automatically
 repeats the first character located right after this tag in the template until a different
 character is found. The column position of the different character is kept according to the
@@ -193,7 +187,7 @@ Thomas      Anderson
 <section id="variation-autotag">
 <h3>Variation autotag<a class="headerlink" href="#variation-autotag" title="Link to this heading"></a></h3>
 <p>A <em>variation autotag</em> has a form of a <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;</span></code> (dot) block with two, or optionally three
-<a class="reference internal" href="#tgt-primary-tags"><span class="std std-ref">content variations</span></a>: <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard&lt;^.&gt;last&lt;/.&gt;</span></code> or
+<a class="reference internal" href="#tgt-tags"><span class="std std-ref">content variations</span></a>: <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard&lt;^.&gt;last&lt;/.&gt;</span></code> or
 <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard&lt;^.&gt;last&lt;^.&gt;first&lt;/.&gt;</span></code>. This autotag is intended to be placed inside another
 block that is cloned during the <a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">template filling</span></a>. Then the first
 clone is (optionally) set to the <code class="docutils literal notranslate"><span class="pre">first</span></code> content of the variation autotag, the last clone is
@@ -213,7 +207,7 @@ value <code class="docutils literal notranslate"><span class="pre">4</span></cod
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>See the <a class="reference internal" href="autofill.html#tgt-auto-fill-basic-example"><span class="std std-ref">code example</span></a> using both of the automatic tags.</p>
+<p>See the <span class="xref std std-ref">code example</span> using both of the automatic tags.</p>
 </div>
 </section>
 </section>
@@ -223,8 +217,8 @@ value <code class="docutils literal notranslate"><span class="pre">4</span></cod
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="autofill.html" class="btn btn-neutral float-right" title="Automatic template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="fill_tags.html" class="btn btn-neutral float-left" title="Filling the template tags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autofill.html" class="btn btn-neutral float-right" title="Automated template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

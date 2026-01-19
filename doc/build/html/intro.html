@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Template tags" href="tags.html" />
+    <link rel="next" title="Overview of principles" href="overview.html" />
     <link rel="prev" title="Blockie" href="index.html" /> 
 </head>
 
@@ -48,6 +48,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#installation-and-quickstart">Installation and quickstart</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fill_tags.html">Filling the template tags</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autofill.html">Automated template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
@@ -85,7 +87,7 @@
 Python-based template engine. It was developed as a lower-level and generic solution for the
 generation of any type of text-based content including a standard text, markup language, source
 code, and various data files without using complex program-like logic constructs in the templates.</p>
-<p>Blockie uses logicless templates consisting of the so-called <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variables and blocks</span></a>. No other template elements are used, although there are some variables and
+<p>Blockie uses logicless templates consisting of the so-called <a class="reference internal" href="tags.html#tgt-tags"><span class="std std-ref">variables and blocks</span></a>. No other template elements are used, although there are some variables and
 blocks with special functionalities. The logic of filling the template with values follows just
 a few general principles. Typically, the filling logic can be defined just by the structure of
 the input data with optional further customization implemented by the user-defined Python script.</p>
@@ -147,7 +149,7 @@ an appropriately structured Python dictionary or a struct-like object.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>              <span class="c1"># 3. Get the generated content from the primary block.</span>
 </pre></div>
 </div>
-<p>Prints the following output:</p>
+<p>Output:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                SHOPPING LIST
   Items                             Quantity
 --------------------------------------------
@@ -172,7 +174,7 @@ The script can also <a class="reference internal" href="config.html#tgt-config">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Blockie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tags.html" class="btn btn-neutral float-right" title="Template tags" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="Overview of principles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Manual template filling" href="manfill.html" />
-    <link rel="prev" title="Template tags" href="tags.html" /> 
+    <link rel="prev" title="Template tags and operations with them" href="tags.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,13 +45,12 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags and operations with them</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Automated template filling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-automatic-filling">Basic automatic filling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-variable-value">Setting a variable value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content">Setting a block content</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cloning-a-block">Cloning a block</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#advanced-automatic-filling">Advanced automatic filling</a><ul>
@@ -61,7 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#setting-a-handler-for-manual-filling">Setting a handler for manual filling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removing-a-variable">Removing a variable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removing-a-block">Removing a block</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tgt-auto-fill-advanced-example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -104,7 +103,7 @@ text file in the <a class="reference internal" href="api.html#blockie.Block.__in
 <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute, or the <a class="reference internal" href="api.html#blockie.Block.load_template" title="blockie.Block.load_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.load_template()</span></code></a> method can be used.</p>
 <p>A template can then be filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with the required data
 provided as an argument in a Python <strong>dictionary</strong>. The dictionary keys represent the template
-<a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">variable and block tags</span></a>.</p>
+<a class="reference internal" href="old_tags.html#tgt-tags"><span class="std std-ref">variable and block tags</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In reality, the automatic template filling process is, of course, not fully automatic. It is
@@ -166,70 +165,13 @@ two dates in two clones of a <code class="docutils literal notranslate"><span cl
 </div>
 <div class="admonition important" id="tgt-cloning-content-variations">
 <p class="admonition-title">Important</p>
-<p>The blocks having multiple <a class="reference internal" href="tags.html#tgt-primary-tags-content-vari"><span class="std std-ref">content variations</span></a> cannot
+<p>The blocks having multiple <a class="reference internal" href="old_tags.html#tgt-tags-content-vari"><span class="std std-ref">content variations</span></a> cannot
 be cloned directly. They can, however, be cloned indirectly by “wrapping” them in a standard
 parent block that can be cloned, e.g.,
 <code class="docutils literal notranslate"><span class="pre">&lt;DATE_WRAP&gt;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;DAY&gt;</span> <span class="pre">&lt;MONTH&gt;&lt;/DATE&gt;&lt;DATE_WRAP&gt;</span></code>, where the
 <code class="docutils literal notranslate"><span class="pre">DATE_WRAP</span></code> block content can be cloned and each clone would contain a new <code class="docutils literal notranslate"><span class="pre">DATE</span></code> block
 having two content variations.</p>
 <p>Note that the process of <a class="reference internal" href="#tgt-auto-fill-advanced-set-block-vari"><span class="std std-ref">setting the selected block content variation</span></a> is described later.</p>
-</div>
-</section>
-<section id="example">
-<span id="tgt-auto-fill-basic-example"></span><h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
-<p>The following filling script example shows all simple concepts described above, i.e., the template
-containing the <a class="reference internal" href="tags.html#tgt-primary-tags"><span class="std std-ref">basic tags</span></a> and also <a class="reference internal" href="tags.html#tgt-auto-tags"><span class="std std-ref">automatic tags</span></a>
-filled using the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic principles</span></a> of automatic filling. The template
-is defined directly by the <code class="docutils literal notranslate"><span class="pre">template</span></code> string and the data to fill the template with are defined
-by the <code class="docutils literal notranslate"><span class="pre">data</span></code> dictionary.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">blockie</span><span class="w"> </span><span class="kn">import</span> <span class="n">Block</span>
-
-
-<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            SHOPPING LIST</span>
-<span class="s2">  Items                                                         Quantity</span>
-<span class="s2">------------------------------------------------------------------------</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                                                     &lt;QTY&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-
-
-<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 kg&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2 kg&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 kg&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1 l&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The script prints the following generated content:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* potatoes                                                      2 kg
-* rice                                                          1 kg
-* orange juice                                                  1 l
-* cooking magazine                                              1
-
-
-Short list: apples, potatoes, rice, orange juice, cooking magazine
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Notice that the template contains two <code class="docutils literal notranslate"><span class="pre">ITEMS</span></code> blocks containing the variable <code class="docutils literal notranslate"><span class="pre">ITEM</span></code> and
-that both blocks are automatically filled by the same data, since they have the same name.</p>
 </div>
 </section>
 </section>
@@ -258,7 +200,7 @@ boolean true:</p>
 <section id="setting-an-implicit-iterator-value">
 <span id="tgt-setting-implicit-iter"></span><h3>Setting an implicit iterator value<a class="headerlink" href="#setting-an-implicit-iterator-value" title="Link to this heading"></a></h3>
 <p>If a block contains just one variable, then cloning such a block and setting its single variable
-can be simplified using an <a class="reference internal" href="tags.html#tgt-primary-tags-implicit-iter"><span class="std std-ref">implicit iterator tag</span></a>
+can be simplified using an <a class="reference internal" href="old_tags.html#tgt-tags-implicit-iter"><span class="std std-ref">implicit iterator tag</span></a>
 inside the block and then filling the block by setting its value to a <strong>list or tuple of iterator
 values</strong> as illustrated below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;LIST&gt;- &lt;*&gt;</span><span class="se">\n</span><span class="s2">&lt;/LIST&gt;&quot;</span><span class="p">)</span>
@@ -415,8 +357,8 @@ generated content. In the example above, it it allows to remove the variable for
 name and also the space character that would otherwise remain in the generated content.</p>
 </div>
 </section>
-<section id="tgt-auto-fill-advanced-example">
-<span id="id1"></span><h3>Example<a class="headerlink" href="#tgt-auto-fill-advanced-example" title="Link to this heading"></a></h3>
+<section id="example">
+<span id="tgt-auto-fill-advanced-example"></span><h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
 <p>The filling script below expands the <a class="reference internal" href="#tgt-auto-fill-basic"><span class="std std-ref">basic automatic filling concepts</span></a>
 using the advanced operations described above. The script uses a template loaded from a text file
 and data to fill it are loaded from a JSON file. The generated content is then saved into the
@@ -494,7 +436,7 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tags.html" class="btn btn-neutral float-left" title="Template tags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tags.html" class="btn btn-neutral float-left" title="Template tags and operations with them" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="manfill.html" class="btn btn-neutral float-right" title="Manual template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
