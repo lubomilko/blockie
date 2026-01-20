@@ -171,22 +171,26 @@ def demo_subref_block() -> None:
 
 def demo_autotag_align() -> None:
     template = """
+Name        Surname     Role
+----------------------------
 <CHARACTERS>
-<NAME><+>       <SURNAME>
+<NAME><+>   <SNAME><+>  <ROLE>
 </CHARACTERS>"""
 
     blk = blockie.Block(template)
     blk.fill({"characters": [
-        {"name": "Dave", "surname": "Bowman"},
-        {"name": "Frank", "surname": "Poole"},
-        {"name": "Heywood", "surname": "Floyd"},
-        {"name": "HAL", "surname": "9000"}]})
+        {"name": "Dave", "sname": "Bowman", "role": "astronaut 1"},
+        {"name": "Frank", "sname": "Poole", "role": "astronaut 2"},
+        {"name": "Heywood", "sname": "Floyd", "role": "chairman of the US National Council of Astronautics"},
+        {"name": "HAL", "sname": "9000", "role": "broken computer that can kill, but can't lie"}]})
     print(blk.content)
     # prints:
-    # Dave            Bowman
-    # Frank           Poole
-    # Heywood         Floyd
-    # HAL             9000
+    # Name        Surname     Role
+    # ----------------------------
+    # Dave        Bowman      astronaut 1
+    # Frank       Poole       astronaut 2
+    # Heywood     Floyd       chairman of the US National Council of Astronautics
+    # HAL         9000        broken computer that can kill, but can't lie
 
 
 def demo_autotag_vari_1() -> None:
