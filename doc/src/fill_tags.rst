@@ -260,29 +260,69 @@ A block can be cleared also by setting its :ref:`content variation <tgt_set_blk_
 (``int``) to a negative value.
 
 
+***************************************************************************************************
+Automatic variables and blocks
+***************************************************************************************************
+
+The template can contain special so-called *automatic* variables and blocks, meaning that they are
+filled automatically without any values specified in the input data.
+
+
 .. _tgt_auto_block_var:
 
-***************************************************************************************************
 Automatic block variable
-***************************************************************************************************
+===================================================================================================
 
 block var
 
 
 .. _tgt_auto_align_var:
 
-***************************************************************************************************
 Automatic left-alignment variable
-***************************************************************************************************
+===================================================================================================
 
-align
+A left-alignment automatic variable has a ``<+>`` tag and can be used to maintain the
+left-alignment of a text within the template having :ref:`variables <tgt_variables>` filled with
+values of different character lengths.
+
+Blockie automatically scans the first character located right after this tag and counts number
+of consecutive occurrences of this character until a different character is found. Then it
+maintains the column position of the different character regardless of the content generated
+on the line before this character.
+
+.. code-block:: python
+
+    template = """
+    Name        Surname     Role
+    ----------------------------
+    <CHARACTERS>
+    <NAME><+>   <SNAME><+>  <ROLE>
+    </CHARACTERS>"""
+
+    blk = blockie.Block(template)
+    blk.fill({"characters": [
+        {"name": "Dave", "sname": "Bowman", "role": "astronaut 1"},
+        {"name": "Frank", "sname": "Poole", "role": "astronaut 2"},
+        {"name": "Heywood", "sname": "Floyd", "role": "chairman of the US National Council of Astronautics"},
+        {"name": "HAL", "sname": "9000", "role": "broken computer that can kill, but can't lie"}]})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    Name        Surname     Role
+    ----------------------------
+    Dave        Bowman      astronaut 1
+    Frank       Poole       astronaut 2
+    Heywood     Floyd       chairman of the US National Council of Astronautics
+    HAL         9000        broken computer that can kill, but can't lie
 
 
 .. _tgt_auto_vari_block:
 
-***************************************************************************************************
 Automatic variation block
-***************************************************************************************************
+===================================================================================================
 
 variation
 
