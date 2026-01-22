@@ -1,59 +1,6 @@
 ###################################################################################################
-Filling the template tags
+Template elements
 ###################################################################################################
-
-***************************************************************************************************
-Template tags
-***************************************************************************************************
-
-Tags are used to indicate the variable parts of the template intended to be filled with specific
-values provided in the input data.
-
-By default, the tags have an XML-like format and their names use uppercase letters. The template
-consists of two primary elements:
-
--   :ref:`Variables <tgt_variables>` defined by a single tag, e.g., ``<NAME>``.
--   :ref:`Blocks <tgt_blocks>` defined by the two start and end tags, e.g., ``<LIST> ... </LIST>``,
-    with a content consisting of other blocks and variables between these tags. The whole template
-    is also considered to be a block despite not having any explicitly defined start and end tags.
-
-
-***************************************************************************************************
-Template filling
-***************************************************************************************************
-
-The most straightforward way to fill the template with values is to load the template into the
-primary :py:class:`.Block` object through its constructor or a :py:attr:`.Block.template`
-attribute and to use the :py:meth:`.Block.fill` method with an input data dictionary having keys
-corresponding to the template tag names. The template tags are then replaced with the dictionary
-values in the generated :py:attr:`.Block.content` attribute of the :py:class:`.Block` object.
-
-The tag references in the input data and Python filling script can use lowercase letters that
-are by default automatically converted to the uppercase tag names in the template, e.g.,
-a ``month`` data attribute (dictionary key) is used to set the value of a ``<MONTH>`` variable
-in the example below.
-
-.. code-block:: python
-
-    import blockie
-
-    blk = blockie.Block("The date is: <DATE><MONTH> <DAY></DATE>")
-    blk.fill({"date": {"day": 24, "month": "December"}})
-    print(blk.content)
-
-output:
-
-.. code-block:: text
-
-    The date is: December 24
-
-.. important::
-
-    The tag format and automatic uppercase conversion described above is used in almost all
-    examples within this document together with a Python dictionary used as a data input. However,
-    the tag format is :ref:`configurable <tgt_config>` and instead of a dictionary, it is also
-    possible to use a struct-like object with attributes corresponding to the dictionary keys.
-
 
 .. _tgt_variables:
 
@@ -114,6 +61,8 @@ of constant text, other child blocks and :ref:`variables <tgt_variables>`. The w
 considered to be a primary block even without explicitly defined tags.
 
 
+.. _tgt_set_blk_cont:
+
 Setting block content
 ===================================================================================================
 
@@ -148,6 +97,8 @@ Output:
 
     The date is: July 2
 
+
+.. _tgt_blk_cont_clone:
 
 Block content cloning
 ===================================================================================================
@@ -194,7 +145,7 @@ Output:
     - shovel
 
 
-.. _tgt_set_blk_cont_var:
+.. _tgt_set_blk_cont_vari:
 
 Setting a block content variation
 ===================================================================================================
@@ -237,6 +188,8 @@ Output:
     ``<DATE_WRAP><DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE><DATE_WRAP>``.
 
 
+.. _tgt_clear_blk:
+
 Clearing a block
 ===================================================================================================
 
@@ -256,75 +209,8 @@ Output:
 
     Thomas Anderson
 
-A block can be cleared also by setting its :ref:`content variation <tgt_set_blk_cont_var>` index
+A block can be cleared also by setting its :ref:`content variation <tgt_set_blk_cont_vari>` index
 (``int``) to a negative value.
-
-
-***************************************************************************************************
-Automatic variables and blocks
-***************************************************************************************************
-
-The template can contain special so-called *automatic* variables and blocks, meaning that they are
-filled automatically without any values specified in the input data.
-
-
-.. _tgt_auto_block_var:
-
-Automatic block variable
-===================================================================================================
-
-block var
-
-
-.. _tgt_auto_align_var:
-
-Automatic left-alignment variable
-===================================================================================================
-
-A left-alignment automatic variable has a ``<+>`` tag and can be used to maintain the
-left-alignment of a text within the template having :ref:`variables <tgt_variables>` filled with
-values of different character lengths.
-
-Blockie automatically scans the first character located right after this tag and counts number
-of consecutive occurrences of this character until a different character is found. Then it
-maintains the column position of the different character regardless of the content generated
-on the line before this character.
-
-.. code-block:: python
-
-    template = """
-    Name        Surname     Role
-    ----------------------------
-    <CHARACTERS>
-    <NAME><+>   <SNAME><+>  <ROLE>
-    </CHARACTERS>"""
-
-    blk = blockie.Block(template)
-    blk.fill({"characters": [
-        {"name": "Dave", "sname": "Bowman", "role": "astronaut 1"},
-        {"name": "Frank", "sname": "Poole", "role": "astronaut 2"},
-        {"name": "Heywood", "sname": "Floyd", "role": "chairman of the US National Council of Astronautics"},
-        {"name": "HAL", "sname": "9000", "role": "broken computer that can kill, but can't lie"}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    Name        Surname     Role
-    ----------------------------
-    Dave        Bowman      astronaut 1
-    Frank       Poole       astronaut 2
-    Heywood     Floyd       chairman of the US National Council of Astronautics
-    HAL         9000        broken computer that can kill, but can't lie
-
-
-.. _tgt_auto_vari_block:
-
-Automatic variation block
-===================================================================================================
-
-variation
 
 
 .. _tgt_fill_hndl:
@@ -332,3 +218,5 @@ variation
 ***************************************************************************************************
 Fill handler
 ***************************************************************************************************
+
+bla

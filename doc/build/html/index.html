@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="intro.html" /> 
+    <link rel="next" title="1. Introduction" href="intro.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,13 +43,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fill_tags.html">Filling the template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automated template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Basic principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elems.html">3. Template elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic template elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -81,64 +81,51 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#installation-and-quickstart">Installation and quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation-and-quickstart">1.1. Installation and quickstart</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="fill_tags.html">Filling the template tags</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#template-tags">Template tags</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#template-filling">Template filling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#variables">Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#blocks">Blocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#automatic-variables-and-blocks">Automatic variables and blocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fill_tags.html#fill-handler">Fill handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Basic principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="principles.html#template-elements-overview">2.1. Template elements overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="principles.html#template-filling-essentials">2.2. Template filling essentials</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tags.html#primary-tags">Primary tags</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#variable-tag">Variable tag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#block-tag">Block tag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#block-variation-tag">Block variation tag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#implicit-iterator-tag">Implicit iterator tag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#alignment-autotag">Alignment autotag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tags.html#variation-autotag">Variation autotag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elems.html">3. Template elements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="elems.html#variables">3.1. Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#setting-variable-value">3.1.1. Setting variable value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#clearing-variable">3.1.2. Clearing variable</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="elems.html#blocks">3.2. Blocks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#setting-block-content">3.2.1. Setting block content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#block-content-cloning">3.2.2. Block content cloning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#setting-a-block-content-variation">3.2.3. Setting a block content variation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elems.html#clearing-a-block">3.2.4. Clearing a block</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automated template filling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="autofill.html#basic-automatic-filling">Basic automatic filling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-a-variable-value">Setting a variable value</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-a-block-content">Setting a block content</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#cloning-a-block">Cloning a block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elems.html#fill-handler">3.3. Fill handler</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="autofill.html#advanced-automatic-filling">Advanced automatic filling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-a-block-content-as-is">Setting a block content as is</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-an-implicit-iterator-value">Setting an implicit iterator value</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-a-block-content-variation">Setting a block content variation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#setting-a-handler-for-manual-filling">Setting a handler for manual filling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#removing-a-variable">Removing a variable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#removing-a-block">Removing a block</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autofill.html#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic template elements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoelems.html#automatic-left-alignment-variable">4.1. Automatic left-alignment variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoelems.html#automatic-block-variable">4.2. Automatic block variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoelems.html#automatic-variation-block">4.3. Automatic variation block</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manfill.html#examples">5.1. Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-1">5.1.1. Example 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-2">5.1.2. Example 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-3">5.1.3. Example 3</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="manfill.html#examples">Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-1">Example 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-2">Example 2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="manfill.html#example-3">Example 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#example">6.1. Example</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="config.html#example">Example</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#blockie.Block"><code class="docutils literal notranslate"><span class="pre">Block</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api.html#blockie.Block.config"><code class="docutils literal notranslate"><span class="pre">Block.config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#blockie.Block.name"><code class="docutils literal notranslate"><span class="pre">Block.name</span></code></a></li>
@@ -186,7 +173,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="intro.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

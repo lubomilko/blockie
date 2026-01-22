@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; Blockie 1.1.0 documentation</title>
+  <title>7. API &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Template format configuration" href="config.html" /> 
+    <link rel="prev" title="6. Template format configuration" href="config.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,12 +43,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Basic principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elems.html">3. Template elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic template elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#blockie.Block"><code class="docutils literal notranslate"><span class="pre">Block</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.config"><code class="docutils literal notranslate"><span class="pre">Block.config</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blockie.Block.name"><code class="docutils literal notranslate"><span class="pre">Block.name</span></code></a></li>
@@ -107,7 +108,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">API</li>
+      <li class="breadcrumb-item active"><span class="section-number">7. </span>API</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,7 +119,7 @@
            <div itemprop="articleBody">
              
   <section id="api">
-<span id="tgt-api"></span><h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<span id="tgt-api"></span><h1><span class="section-number">7. </span>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="blockie.Block">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blockie.</span></span><span class="sig-name descname"><span class="pre">Block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#blockie.BlockConfig" title="blockie.blockie.BlockConfig"><span class="pre">BlockConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blockie/blockie.html#Block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blockie.Block" title="Link to this definition"></a></dt>
@@ -524,7 +525,7 @@ Defaults to True.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="config.html" class="btn btn-neutral float-left" title="Template format configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config.html" class="btn btn-neutral float-left" title="6. Template format configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

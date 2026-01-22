@@ -20,8 +20,9 @@ constructor :py:meth:`.Block.__init__`. All child blocks of a configured block w
 use the same configuration.
 
 
+***************************************************************************************************
 Example
-===================================================================================================
+***************************************************************************************************
 
 The following example generally equivalent to the
 :ref:`advanced example <tgt_auto_fill_advanced_example>` shown before, uses a block configuration
