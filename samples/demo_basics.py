@@ -169,7 +169,7 @@ def demo_subref_block() -> None:
     # Dennis Ritchie
 
 
-def demo_autotag_align() -> None:
+def demo_autotag_align_1() -> None:
     template = """
 Name        Surname     Role
 ----------------------------
@@ -191,6 +191,28 @@ Name        Surname     Role
     # Frank       Poole       astronaut 2
     # Heywood     Floyd       chairman of the US National Council of Astronautics
     # HAL         9000        broken computer that can kill, but can't lie
+
+
+def demo_autotag_align_2() -> None:
+    template = """
+Name            Phone number
+----------------------------
+<PEOPLE>
+<NAME><+>.......<PHONE>
+</PEOPLE>"""
+
+    blk = blockie.Block(template)
+    blk.fill({"people": [
+        {"name": "Dave", "phone": "0940 123 456"},
+        {"name": "Frank", "phone": "0933 987 654"},
+        {"name": "Heywood", "phone": "0911 111 111"}]})
+    print(blk.content)
+    # prints:
+    # Name            Phone number
+    # ----------------------------
+    # Dave............0940 123 456
+    # Frank...........0933 987 654
+    # Heywood.........0911 111 111
 
 
 def demo_autotag_vari_1() -> None:
@@ -272,7 +294,8 @@ if __name__ == "__main__":
     demo_ref_block()
     demo_subref_var()
     demo_subref_block()
-    demo_autotag_align()
+    demo_autotag_align_1()
+    demo_autotag_align_2()
     demo_autotag_vari_1()
     demo_autotag_vari_2()
     demo_autotag_block_var()
