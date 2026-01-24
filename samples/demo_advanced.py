@@ -203,23 +203,23 @@ def demo_shoplist_advanced_manual() -> None:
 </ITEMS>
 """
 
-    #   flag,   item,               qty,    unit
+    #   flag, item,               qty, unit
     data = (
-        (-1,    "apples",           "1",    0),
-        (0,     "potatoes",         "2",    0),
-        (-1,    "rice",             "1",    0),
-        (-1,    "orange juice",     "1",    1),
-        (1,     "cooking magazine", "",     -1)
+        ("",  "apples",           "1", 0),
+        ("!", "potatoes",         "2", 0),
+        ("",  "rice",             "1", 0),
+        ("",  "orange juice",     "1", 1),
+        ("?", "cooking magazine", "", -1)
     )
 
     blk_template = blockie.Block(template)
     blk_items = blk_template.get_subblock("items")
     [blk_flag, blk_unit] = [blk_items.get_subblock(n) for n in ("flag", "unit")]
 
-    for data_item in data:
-        blk_items.set_variables(item=data_item[1], qty=data_item[2])
-        blk_flag.set(data_item[0])
-        blk_unit.set(data_item[3])
+    for item_data in data:
+        blk_items.set_variables(item=item_data[1], qty=item_data[2])
+        blk_flag.set(0 if item_data[0] == "!" else 1 if item_data[0] == "?" else -1)
+        blk_unit.set(item_data[3])
         blk_items.clone()
     blk_items.set()
     print(blk_template.content)
