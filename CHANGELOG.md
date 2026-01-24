@@ -19,9 +19,10 @@ template engine project.
 
 ### Added
 
-- Add recursive filling of variables and blocks referenced in variable values.
-- Add support for *subreferences*, i.e., tags referencing other variables or blocks using
-  hierarchical parent-child tag names separated using the new `Block.config.subref_sep` separator.
+- Add support for *Subelements*, i.e., variable and block tags referencing data values defined
+  for nested subblocks.
+- Add support for *template values*, i.e., recursive filling of variable and block tags
+  defined in input data variable values.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
   content into a specified variable instead of keeping it in the original block location.
 - Add automatic indentation of a multiline variable value if the variable tag is indented.
