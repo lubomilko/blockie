@@ -48,8 +48,7 @@ class BlockConfig:
         autotag_blk_var: The *block variable* automatic tag symbol. Defaults to ``@``.
         autotag_align: The *alignment* automatic tag symbol. Defaults to ``+``.
         autotag_vari: The *variation* automatic tag symbol. Defaults to ``.``.
-        subref_sep: A block or variable subreference separator, e.g.
-            ``PARENT_BLOCK.CHILD_BLOCK.CHILD_VAR``. Defaults to ``.``.
+        subelem_sep: A subelement reference separator. Defaults to ``.``.
         tab_size: A tabulator size in the number of space characters. Used by the *alignment*
             automatic tag when tabulators are used for the alignment. Defaults to 4.
         enable_autotags: Enables the automatic tags (alignment, etc.) to be filled automatically.
@@ -63,7 +62,7 @@ class BlockConfig:
     autotag_blk_var: str = "@"
     autotag_align: str = "+"
     autotag_vari: str = "."
-    subref_sep: str = "."
+    subelem_sep: str = "."
     tab_size: int = 4
     enable_autotags: bool = True
 
@@ -202,9 +201,9 @@ class Block:
     def __gen_subrefs(self, data: dict[str, Any], parent_name: str = "") -> Generator[tuple[str, Any]]:
         for (k, v) in data.items():
             if parent_name:
-                yield (f"{parent_name}{self.config.subref_sep}{k}", v)
+                yield (f"{parent_name}{self.config.subelem_sep}{k}", v)
             if isinstance(v, dict):
-                yield from self.__gen_subrefs(v, f"{parent_name}{self.config.subref_sep}{k}" if parent_name else k)
+                yield from self.__gen_subrefs(v, f"{parent_name}{self.config.subelem_sep}{k}" if parent_name else k)
 
     def __fill_iter(self, data: dict[str, Any]) -> None:
         """Internal method to fill the template with data of tuple or list type."""
