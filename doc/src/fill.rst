@@ -260,11 +260,124 @@ A block can be cleared also by setting its :ref:`content variation <tgt_set_blk_
 
 
 ***************************************************************************************************
+Subelements
+***************************************************************************************************
+
+Variables and blocks in a template can reference input data values defined for nested subblocks
+using a ``.`` (dot) operator. For example, a ``<BOOK.AUTHOR.NAME>`` tag is equivalent to
+``<BOOK><AUTHOR><NAME></AUTHOR></BOOK>`` template.
+
+.. code-block:: python
+
+    blk = blockie.Block("The date is: <DATE.DAY>.<DATE.MONTH>.")
+    blk.fill({"date": {"day": 24, "month": 12}})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    The date is: 24.12.
+
+It is not possible for subelements to reference data "through" :ref:`cloned blocks
+<tgt_blk_cont_clone>`, e.g., a subelement tag ``<BOOK.AUTHORS.NAME>`` would not work in the
+example below, since the ``<AUTHORS> ... </AUTHORS>`` block is indended to be cloned and a ``NAME``
+reference is not sufficient to indicate the required name instance.
+
+However, a cloned block itself can be referenced, as illustrated by the ``<BOOK.AUTHORS> ...
+</BOOK.AUTHORS>`` subblock in the following code.
+
+.. code-block:: python
+
+    blk = blockie.Block("<BOOK.AUTHORS><NAME> <SURNAME>\n</BOOK.AUTHORS>")
+    blk.fill({"book": {
+        "title": "The C Programming Language",
+        "authors": [{"name": "Brian", "surname": "Kernighan"},
+                    {"name": "Dennis", "surname": "Ritchie"}],
+        "publication": {
+            "date": "1988",
+            "publisher": "Pearson"
+        }}})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    Brian Kernighan
+    Dennis Ritchie
+
+The subelements can always be defined starting from the top (outermost) block in the template
+downwards. However, if a subreference is defined within a block content, then that block can
+also be considered as a top (outermost) block, as illustrated in the example below with the
+``<PUBLICATION.PUBLISHER>`` and ``<PUBLICATION.DATE>`` subvariables using the ``BOOK`` block as
+the top block.
+
+.. code-block:: python
+
+    blk = blockie.Block("Publication info: <BOOK><PUBLICATION.PUBLISHER>, <PUBLICATION.DATE></BOOK>")
+    blk.fill({"book": {
+        "title": "The C Programming Language",
+        "authors": [{"name": "Brian", "surname": "Kernighan"},
+                    {"name": "Dennis", "surname": "Ritchie"}],
+        "publication": {
+            "date": "1988",
+            "publisher": "Pearson"
+        }}})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    Publication info: Pearson, 1988
+
+
+***************************************************************************************************
+Template values
+***************************************************************************************************
+
+String data values used for filling template variables can have a template form themselves, i.e.,
+the variable values can contain other :ref:`variable <tgt_variable>` and :ref:`block <tgt_block>`
+tags that are filled automatically if corresponding values are found in the input data for them.
+
+.. code-block:: python
+
+    blk = blockie.Block("<GREETING> Welcome to the world of templating.")
+    blk.fill({"name": "John", "greeting": "Hello <NAME>!"})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    Hello John! Welcome to the world of templating.
+
+The example below shows a more complex template used as a variable value. However, defining the
+templates this way is discouraged, since such a mix of templates and data can be difficult to
+maintain.
+
+.. code-block:: python
+
+    blk = blockie.Block("The date is: <DATE_STR>.")
+    blk.fill({"date": {"day": "01", "month": "01", "year": "2026"},
+              "date_str": "<DATE><DAY>.<MONTH>.<YEAR></DATE>"})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    The date is: 01.01.2026.
+
+
+***************************************************************************************************
 Automatic variables and blocks
 ***************************************************************************************************
 
-Automatic variables and blocks are filled automatically without any values specified in the
-input data. The automatic elements typically help with the formatting of the generated content.
+Automatic :ref:`variables <tgt_variable>` and :ref:`blocks <tgt_block>` are filled automatically
+without any values specified in the input data. The automatic elements typically help with the
+formatting of the generated content.
 
 
 .. _tgt_auto_align_var:
@@ -308,6 +421,8 @@ Output:
     Frank       Poole       astronaut 2
     Heywood     Floyd       chairman of the US National Council of Astronautics
     HAL         9000        broken computer that can kill, but can't lie
+
+An example illustrating the use of non-space characters for the left-alignment:
 
 .. code-block:: python
 
