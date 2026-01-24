@@ -59,10 +59,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#clearing-a-block">2.3.4. Clearing a block</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#automatic-variables-and-blocks">2.4. Automatic variables and blocks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-left-alignment-variable">2.4.1. Automatic left-alignment variable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-block-variable">2.4.2. Automatic block variable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-variation-block">2.4.3. Automatic variation block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subelements">2.4. Subelements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-values">2.5. Template values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-variables-and-blocks">2.6. Automatic variables and blocks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-left-alignment-variable">2.6.1. Automatic left-alignment variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-block-variable">2.6.2. Automatic block variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-variation-block">2.6.3. Automatic variation block</a></li>
 </ul>
 </li>
 </ul>
@@ -284,12 +286,99 @@ tuple</strong> (<code class="docutils literal notranslate"><span class="pre">{}<
 (<code class="docutils literal notranslate"><span class="pre">int</span></code>) to a negative value.</p>
 </section>
 </section>
+<section id="subelements">
+<h2><span class="section-number">2.4. </span>Subelements<a class="headerlink" href="#subelements" title="Link to this heading"></a></h2>
+<p>Variables and blocks in a template can reference input data values defined for nested subblocks
+using a <code class="docutils literal notranslate"><span class="pre">.</span></code> (dot) operator. For example, a <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHOR.NAME&gt;</span></code> tag is equivalent to
+<code class="docutils literal notranslate"><span class="pre">&lt;BOOK&gt;&lt;AUTHOR&gt;&lt;NAME&gt;&lt;/AUTHOR&gt;&lt;/BOOK&gt;</span></code> template.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE.DAY&gt;.&lt;DATE.MONTH&gt;.&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: 24.12.
+</pre></div>
+</div>
+<p>It is not possible for subelements to reference data “through” <a class="reference internal" href="#tgt-blk-cont-clone"><span class="std std-ref">cloned blocks</span></a>, e.g., a subelement tag <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHORS.NAME&gt;</span></code> would not work in the
+example below, since the <code class="docutils literal notranslate"><span class="pre">&lt;AUTHORS&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/AUTHORS&gt;</span></code> block is indended to be cloned and a <code class="docutils literal notranslate"><span class="pre">NAME</span></code>
+reference is not sufficient to indicate the required name instance.</p>
+<p>However, a cloned block itself can be referenced, as illustrated by the <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHORS&gt;</span> <span class="pre">...</span>
+<span class="pre">&lt;/BOOK.AUTHORS&gt;</span></code> subblock in the following code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;BOOK.AUTHORS&gt;&lt;NAME&gt; &lt;SURNAME&gt;</span><span class="se">\n</span><span class="s2">&lt;/BOOK.AUTHORS&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;book&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;The C Programming Language&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Brian&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Kernighan&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dennis&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Ritchie&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;publication&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;1988&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="s2">&quot;Pearson&quot;</span>
+    <span class="p">}}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Brian Kernighan
+Dennis Ritchie
+</pre></div>
+</div>
+<p>The subelements can always be defined starting from the top (outermost) block in the template
+downwards. However, if a subreference is defined within a block content, then that block can
+also be considered as a top (outermost) block, as illustrated in the example below with the
+<code class="docutils literal notranslate"><span class="pre">&lt;PUBLICATION.PUBLISHER&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;PUBLICATION.DATE&gt;</span></code> subvariables using the <code class="docutils literal notranslate"><span class="pre">BOOK</span></code> block as
+the top block.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;Publication info: &lt;BOOK&gt;&lt;PUBLICATION.PUBLISHER&gt;, &lt;PUBLICATION.DATE&gt;&lt;/BOOK&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;book&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;The C Programming Language&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Brian&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Kernighan&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dennis&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Ritchie&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;publication&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;1988&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="s2">&quot;Pearson&quot;</span>
+    <span class="p">}}})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Publication info: Pearson, 1988
+</pre></div>
+</div>
+</section>
+<section id="template-values">
+<h2><span class="section-number">2.5. </span>Template values<a class="headerlink" href="#template-values" title="Link to this heading"></a></h2>
+<p>String data values used for filling template variables can have a template form themselves, i.e.,
+the variable values can contain other <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variable</span></a> and <a class="reference internal" href="#tgt-block"><span class="std std-ref">block</span></a>
+tags that are filled automatically if corresponding values are found in the input data for them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;GREETING&gt; Welcome to the world of templating.&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello &lt;NAME&gt;!&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello John! Welcome to the world of templating.
+</pre></div>
+</div>
+<p>The example below shows a more complex template used as a variable value. However, defining the
+templates this way is discouraged, since such a mix of templates and data can be difficult to
+maintain.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE_STR&gt;.&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="s2">&quot;01&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;01&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="s2">&quot;2026&quot;</span><span class="p">},</span>
+          <span class="s2">&quot;date_str&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;YEAR&gt;&lt;/DATE&gt;&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: 01.01.2026.
+</pre></div>
+</div>
+</section>
 <section id="automatic-variables-and-blocks">
-<h2><span class="section-number">2.4. </span>Automatic variables and blocks<a class="headerlink" href="#automatic-variables-and-blocks" title="Link to this heading"></a></h2>
-<p>Automatic variables and blocks are filled automatically without any values specified in the
-input data. The automatic elements typically help with the formatting of the generated content.</p>
+<h2><span class="section-number">2.6. </span>Automatic variables and blocks<a class="headerlink" href="#automatic-variables-and-blocks" title="Link to this heading"></a></h2>
+<p>Automatic <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a> and <a class="reference internal" href="#tgt-block"><span class="std std-ref">blocks</span></a> are filled automatically
+without any values specified in the input data. The automatic elements typically help with the
+formatting of the generated content.</p>
 <section id="automatic-left-alignment-variable">
-<span id="tgt-auto-align-var"></span><h3><span class="section-number">2.4.1. </span>Automatic left-alignment variable<a class="headerlink" href="#automatic-left-alignment-variable" title="Link to this heading"></a></h3>
+<span id="tgt-auto-align-var"></span><h3><span class="section-number">2.6.1. </span>Automatic left-alignment variable<a class="headerlink" href="#automatic-left-alignment-variable" title="Link to this heading"></a></h3>
 <p>A left-alignment automatic variable has a <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> tag and can be used to maintain the
 left-alignment of a text within the template having <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a> filled with
 values of different character lengths.</p>
@@ -322,6 +411,7 @@ Heywood     Floyd       chairman of the US National Council of Astronautics
 HAL         9000        broken computer that can kill, but can&#39;t lie
 </pre></div>
 </div>
+<p>An example illustrating the use of non-space characters for the left-alignment:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">Name            Phone number</span>
 <span class="s2">----------------------------</span>
@@ -347,7 +437,7 @@ Heywood.........0911 111 111
 </div>
 </section>
 <section id="automatic-block-variable">
-<span id="tgt-auto-block-var"></span><h3><span class="section-number">2.4.2. </span>Automatic block variable<a class="headerlink" href="#automatic-block-variable" title="Link to this heading"></a></h3>
+<span id="tgt-auto-block-var"></span><h3><span class="section-number">2.6.2. </span>Automatic block variable<a class="headerlink" href="#automatic-block-variable" title="Link to this heading"></a></h3>
 <p>A <a class="reference internal" href="#tgt-block"><span class="std std-ref">block</span></a> content can be <a class="reference internal" href="#tgt-set-blk-cont"><span class="std std-ref">set</span></a> into a different location
 than its original location, or into multiple different locations within the template using a
 special tag having a <code class="docutils literal notranslate"><span class="pre">&lt;&#64;BLOCK_NAME&gt;</span></code> format. This so-called <em>block variable</em> acts as a target
@@ -381,7 +471,7 @@ c) third                3
 </div>
 </section>
 <section id="automatic-variation-block">
-<span id="tgt-auto-vari-block"></span><h3><span class="section-number">2.4.3. </span>Automatic variation block<a class="headerlink" href="#automatic-variation-block" title="Link to this heading"></a></h3>
+<span id="tgt-auto-vari-block"></span><h3><span class="section-number">2.6.3. </span>Automatic variation block<a class="headerlink" href="#automatic-variation-block" title="Link to this heading"></a></h3>
 <p>With <a class="reference internal" href="#tgt-blk-cont-clone"><span class="std std-ref">cloned block contents</span></a> it is often useful to have some part of the
 block content to be different in the first and/or the last clone. An <em>automatic variation block</em>
 can be used to define such part of the content using a special <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;</span></code> block tag having either two
