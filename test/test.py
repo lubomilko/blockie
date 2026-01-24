@@ -194,29 +194,113 @@ def test_lowlevel() -> None:
     assert compare_files("data/content_gen.txt", "data/content_exp.txt")
 
 
-def test_dictfill() -> None:
-    Path("data/fill_gen.txt").unlink(missing_ok=True)
-    data = {
-        "to_set": 1,
-        "to_clear": -1,
-        "struct_name": "SOME_STRUCT_T",
-        "members": (
-            {"type": {"vari_idx": 0, "t": "UNSIGNED8"}, "name": "u8Var", "arr": None},
-            {"type": {"vari_idx": 1, "t": "UNSIGNED16"}, "name": "au16Var", "arr": {"size": 10}},
-            {"type": {"vari_idx": 2, "t": "SIGNED8"}, "name": "ps8Var", "arr": None},
-            {"type": {"vari_idx": 3, "t": "SIGNED16"}, "name": "aps16Var", "arr": {"size": 20}},
-            {"type": {"vari_idx": -1}, "name": "InvalidVar1", "arr": None},
-            {"type": {"vari_idx": False}, "name": "InvalidVar2", "arr": None},
-            {"type": "", "name": "InvalidVar3", "arr": None},
-            {"type": {}, "name": "InvalidVar4", "arr": None}),
-        "text": ["line one", "line two", "line three"]
-    }
+def test_shoplist_manual_1() -> None:
+    template = """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY>
+</ITEMS>
+"""
 
-    blk_file = Block(abs_path("data/fill_tmpl.txt"))
-    blk_file.fill(data)
-    blk_file.save_content(abs_path("data/fill_gen.txt"))
+    #   item,                   qty
+    data = (
+        ("apples",              "1 kg"),
+        ("potatoes",            "2 kg"),
+        ("rice",                "1 kg"),
+        ("orange juice",        "1 l"),
+        ("cooking magazine",    "")
+    )
 
-    assert compare_files("data/fill_gen.txt", "data/fill_exp.txt")
+    blk_template = Block(template)
+    blk_items = blk_template.get_subblock("items")
+
+    for data_item in data:
+        blk_items.set_variables(autoclone=True, item=data_item[0], qty=data_item[1])
+    blk_items.set()
+    assert blk_template.content == """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* potatoes                          2 kg
+* rice                              1 kg
+* orange juice                      1 l
+* cooking magazine
+"""
+
+
+def test_shoplist_manual_2() -> None:
+    template = """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY>
+</ITEMS>
+"""
+
+    data_item = ("apples", "potatoes", "rice", "orange juice", "cooking magazine")
+    data_qty = ("1 kg", "2 kg", "1 kg", "1 l", "")
+
+    blk_template = Block(template)
+    blk_items = blk_template.get_subblock("items")
+
+    blk_items.set_variables(item=data_item, qty=data_qty)
+    blk_items.set()
+    assert blk_template.content == """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* potatoes                          2 kg
+* rice                              1 kg
+* orange juice                      1 l
+* cooking magazine
+"""
+
+
+def test_shoplist_manual_3() -> None:
+    template = """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+<FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
+* <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+"""
+
+    #   flag, item,               qty, unit
+    data = (
+        ("",  "apples",           "1", 0),
+        ("!", "potatoes",         "2", 0),
+        ("",  "rice",             "1", 0),
+        ("",  "orange juice",     "1", 1),
+        ("?", "cooking magazine", "", -1)
+    )
+
+    blk_template = Block(template)
+    blk_items = blk_template.get_subblock("items")
+    [blk_flag, blk_unit] = [blk_items.get_subblock(n) for n in ("flag", "unit")]
+
+    for item_data in data:
+        blk_items.set_variables(item=item_data[1], qty=item_data[2])
+        blk_flag.set(0 if item_data[0] == "!" else 1 if item_data[0] == "?" else -1)
+        blk_unit.set(item_data[3])
+        blk_items.clone()
+    blk_items.set()
+    assert blk_template.content == """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* IMPORTANT! potatoes               2 kg
+* rice                              1 kg
+* orange juice                      1 l
+* MAYBE? cooking magazine
+"""
 
 
 def test_shoplist() -> None:
@@ -293,7 +377,7 @@ Short list: @items@item@_, @~_@!_@!items
         "&",                        # autotag_blk_var
         ">>",                       # autotag_align
         "_",                        # autotag_vari
-        "-",                        # subref_sep
+        "-",                        # subelem_sep
         8,                          # tab_size
         True,                       # enable_autotags
     )
@@ -313,6 +397,31 @@ Short list: @items@item@_, @~_@!_@!items
 
 Short list: apples, potatoes, rice, cooking magazine, orange juice
 """
+
+
+def test_dictfill() -> None:
+    Path("data/fill_gen.txt").unlink(missing_ok=True)
+    data = {
+        "to_set": 1,
+        "to_clear": -1,
+        "struct_name": "SOME_STRUCT_T",
+        "members": (
+            {"type": {"vari_idx": 0, "t": "UNSIGNED8"}, "name": "u8Var", "arr": None},
+            {"type": {"vari_idx": 1, "t": "UNSIGNED16"}, "name": "au16Var", "arr": {"size": 10}},
+            {"type": {"vari_idx": 2, "t": "SIGNED8"}, "name": "ps8Var", "arr": None},
+            {"type": {"vari_idx": 3, "t": "SIGNED16"}, "name": "aps16Var", "arr": {"size": 20}},
+            {"type": {"vari_idx": -1}, "name": "InvalidVar1", "arr": None},
+            {"type": {"vari_idx": False}, "name": "InvalidVar2", "arr": None},
+            {"type": "", "name": "InvalidVar3", "arr": None},
+            {"type": {}, "name": "InvalidVar4", "arr": None}),
+        "text": ["line one", "line two", "line three"]
+    }
+
+    blk_file = Block(abs_path("data/fill_tmpl.txt"))
+    blk_file.fill(data)
+    blk_file.save_content(abs_path("data/fill_gen.txt"))
+
+    assert compare_files("data/fill_gen.txt", "data/fill_exp.txt")
 
 
 def test_subrefs() -> None:
@@ -705,7 +814,7 @@ There are 4 items in total.
 """
 
 
-def demo_references() -> None:
+def test_references() -> None:
     template = """
 <BOOKS>
 <TITLE><ENGLISH><ORIGINAL_WRAP> (<ORIGINAL>)</ORIGINAL_WRAP></TITLE>
@@ -791,6 +900,19 @@ def demo_references() -> None:
 
 
 if __name__ == "__main__":
+    test_lowlevel()
+    test_shoplist_manual_1()
+    test_shoplist_manual_2()
+    test_shoplist_manual_3()
+    test_shoplist()
     test_shoplist_custom_cfg()
+    test_dictfill()
+    test_subrefs()
+    test_backrefs()
+    test_blk_vars()
+    test_multiline_var()
+    test_macros_1()
     test_macros_2()
+    test_extensions_1()
     test_extensions_2()
+    test_references()
