@@ -8,9 +8,7 @@ Blockie
     :caption: Contents
 
     intro
-    principles
-    elems
-    autoelems
-    manfill
+    fill
+    man_fill
     config
     api

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6. Template format configuration &mdash; Blockie 1.1.0 documentation</title>
+  <title>4. Template format configuration &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="7. API" href="api.html" />
-    <link rel="prev" title="5. Manual template filling" href="manfill.html" /> 
+    <link rel="next" title="5. API" href="api.html" />
+    <link rel="prev" title="3. Manual template filling" href="man_fill.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,15 +45,13 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Basic principles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elems.html">3. Template elements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic template elements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Template format configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example">6.1. Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fill.html">2. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="man_fill.html">3. Manual template filling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Template format configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">4.1. Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">5. API</a></li>
 </ul>
 
         </div>
@@ -70,7 +68,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6. </span>Template format configuration</li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Template format configuration</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,7 +79,7 @@
            <div itemprop="articleBody">
              
   <section id="template-format-configuration">
-<span id="tgt-config"></span><h1><span class="section-number">6. </span>Template format configuration<a class="headerlink" href="#template-format-configuration" title="Link to this heading"></a></h1>
+<span id="tgt-config"></span><h1><span class="section-number">4. </span>Template format configuration<a class="headerlink" href="#template-format-configuration" title="Link to this heading"></a></h1>
 <p>The format of <a class="reference internal" href="tags.html#tgt-tags"><span class="std std-ref">tags</span></a> in a template, together with other settings, can be
 configured by the configuration object of the <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> class.</p>
 <p>The configuration object attributes define the format of <a class="reference internal" href="tags.html#tgt-tags"><span class="std std-ref">primary tags</span></a>
@@ -94,7 +92,7 @@ tabulators are used for the alignment.</p>
 constructor <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a>. All child blocks of a configured block will automatically
 use the same configuration.</p>
 <section id="example">
-<h2><span class="section-number">6.1. </span>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.1. </span>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
 <p>The following example generally equivalent to the
 <a class="reference internal" href="autofill.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a> shown before, uses a block configuration
 object with an <em>at</em> sign <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> used as a primary tag symbol:</p>
@@ -157,8 +155,8 @@ Short list: apples, potatoes, rice, orange juice, cooking magazine
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="manfill.html" class="btn btn-neutral float-left" title="5. Manual template filling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api.html" class="btn btn-neutral float-right" title="7. API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="man_fill.html" class="btn btn-neutral float-left" title="3. Manual template filling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="5. API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

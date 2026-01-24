@@ -18,7 +18,7 @@ provided as an argument in a Python **dictionary**. The dictionary keys represen
     In reality, the automatic template filling process is, of course, not fully automatic. It is
     necessary to provide the data to fill the template in a correct format matching the template
     structure. However, the filling process is then all done by the :py:meth:`.Block.fill` method,
-    unlike with a :ref:`manual approach <tgt_manual_fill>`, where the filling script needs to call
+    unlike with a :ref:`manual approach <tgt_man_fill>`, where the filling script needs to call
     the individual :py:class:`.Block` methods to generate the required content.
 
 
@@ -253,7 +253,7 @@ Setting a handler for manual filling
     common applications this section can be skipped.
 
 The automatic method of filling the block template can be partially suplemented by the
-:ref:`manual method <tgt_manual_fill>` using a **special** ``fill_hndl`` **key with a handler
+:ref:`manual method <tgt_man_fill>` using a **special** ``fill_hndl`` **key with a handler
 function value** defined in a *dictionary* corresponding to the block. The function assigned to
 the ``fill_hndl`` key defines a handler called when a block is being filled. The handler function
 can call the :py:class:`.Block` methods to perform special low-level operations if needed.

@@ -43,12 +43,10 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Basic principles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elems.html">3. Template elements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic template elements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fill.html">2. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="man_fill.html">3. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">4. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">5. API</a></li>
 </ul>
 
         </div>
@@ -90,7 +88,7 @@ provided as an argument in a Python <strong>dictionary</strong>. The dictionary 
 <p>In reality, the automatic template filling process is, of course, not fully automatic. It is
 necessary to provide the data to fill the template in a correct format matching the template
 structure. However, the filling process is then all done by the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method,
-unlike with a <a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">manual approach</span></a>, where the filling script needs to call
+unlike with a <a class="reference internal" href="man_fill.html#tgt-man-fill"><span class="std std-ref">manual approach</span></a>, where the filling script needs to call
 the individual <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to generate the required content.</p>
 </div>
 <section id="basic-automatic-filling">
@@ -265,7 +263,7 @@ in a data dictionary, as shown in the second example below:</p>
 common applications this section can be skipped.</p>
 </div>
 <p>The automatic method of filling the block template can be partially suplemented by the
-<a class="reference internal" href="manfill.html#tgt-manual-fill"><span class="std std-ref">manual method</span></a> using a <strong>special</strong> <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> <strong>key with a handler
+<a class="reference internal" href="man_fill.html#tgt-man-fill"><span class="std std-ref">manual method</span></a> using a <strong>special</strong> <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> <strong>key with a handler
 function value</strong> defined in a <em>dictionary</em> corresponding to the block. The function assigned to
 the <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key defines a handler called when a block is being filled. The handler function
 can call the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods to perform special low-level operations if needed.</p>
