@@ -133,7 +133,7 @@ Short list: @items@item@_, @~_@!_@!items
         "&",                        # autotag_blk_var
         ">>",                       # autotag_align
         "_",                        # autotag_vari
-        "-",                        # subref_sep
+        "-",                        # subelem_sep
         8,                          # tab_size
         True,                       # enable_autotags
     )
@@ -192,8 +192,8 @@ def demo_shoplist_manual_2() -> None:
     print(blk_template.content)
 
 
-def demo_shoplist_advanced_manual() -> None:
-    template = """demo_shoplist_advanced_manual:
+def demo_shoplist_manual_3() -> None:
+    template = """demo_shoplist_manual_3:
                 SHOPPING LIST
   Items                             Quantity
 --------------------------------------------
@@ -486,7 +486,7 @@ if __name__ == "__main__":
     demo_shoplist_advanced_custom_cfg()
     demo_shoplist_manual_1()
     demo_shoplist_manual_2()
-    demo_shoplist_advanced_manual()
+    demo_shoplist_manual_3()
     demo_macros_1()
     demo_macros_2()
     demo_extensions_1()
