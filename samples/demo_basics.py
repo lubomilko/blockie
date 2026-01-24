@@ -103,15 +103,18 @@ def demo_set_block_vari_3() -> None:
 
 
 def demo_set_block_fill_hndl() -> None:
-    def format_month(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
-        if isinstance(data["month"], str):
+    def format_date(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        if isinstance(data["month"], str) and not data["month"].isdigit():
+            # If month is specified by its name,
+            # then make it uppercase and set the date format to: <MONTH> <DAY>
             data["month"] = data["month"].upper()
             block.get_subblock("date").set(vari_idx=1)
         else:
+            # Set the date format to: <DAY>.<MONTH>.
             block.get_subblock("date").set(vari_idx=0)
 
     blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
-    blk.fill({"day": 24, "month": "December", "fill_hndl": format_month})
+    blk.fill({"day": 24, "month": "December", "fill_hndl": format_date})
     print(blk.content)
     # prints:
     # The date is: DECEMBER 24
@@ -143,7 +146,8 @@ def demo_ref_var() -> None:
 
 def demo_ref_block() -> None:
     blk = blockie.Block("The date is: <DATE_STR>.")
-    blk.fill({"date": {"day": "01", "month": "01", "year": "2026"}, "date_str": "<DATE><DAY>.<MONTH>.<YEAR></DATE>"})
+    blk.fill({"date": {"day": "01", "month": "01", "year": "2026"},
+              "date_str": "<DATE><DAY>.<MONTH>.<YEAR></DATE>"})
     print(blk.content)
     # prints:
     # The date is: 01.01.2026.
@@ -161,12 +165,28 @@ def demo_subref_block() -> None:
     blk = blockie.Block("<BOOK.AUTHORS><NAME> <SURNAME>\n</BOOK.AUTHORS>")
     blk.fill({"book": {
         "title": "The C Programming Language",
-        "authors": [{"name": "Brian", "surname": "Kernighan"}, {"name": "Dennis", "surname": "Ritchie"}],
+        "authors": [{"name": "Brian", "surname": "Kernighan"},
+                    {"name": "Dennis", "surname": "Ritchie"}],
         "date": "1988"}})
     print(blk.content)
     # prints:
     # Brian Kernighan
     # Dennis Ritchie
+
+
+def demo_subref_block_1() -> None:
+    blk = blockie.Block("Publication info: <BOOK><PUBLICATION.PUBLISHER>, <PUBLICATION.DATE></BOOK>")
+    blk.fill({"book": {
+        "title": "The C Programming Language",
+        "authors": [{"name": "Brian", "surname": "Kernighan"},
+                    {"name": "Dennis", "surname": "Ritchie"}],
+        "publication": {
+            "date": "1988",
+            "publisher": "Pearson"
+        }}})
+    print(blk.content)
+    # prints:
+    # Publication info: Pearson, 1988
 
 
 def demo_autotag_align_1() -> None:
@@ -294,6 +314,7 @@ if __name__ == "__main__":
     demo_ref_block()
     demo_subref_var()
     demo_subref_block()
+    demo_subref_block_1()
     demo_autotag_align_1()
     demo_autotag_align_2()
     demo_autotag_vari_1()
