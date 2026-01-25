@@ -15,20 +15,23 @@ template engine project.
 
 - Make the `get_subblock` method to always return a `Block` object.
 - Replace the `Block.autotags` attribute with `Block.config.enable_autotags`.
-- General refactoring of multiple methods.
+- Refactor multiple methods.
+- Rewrite documentation to improve structure and clarity.
 
 ### Added
 
 - Add support for *Subelements*, i.e., variable and block tags referencing data values defined
   for nested subblocks.
-- Add support for *template values*, i.e., recursive filling of variable and block tags
-  defined in input data variable values.
+- Add support for *variable templates*, i.e., recursive filling of variable and block tags
+  defined in the input data variable values.
 - Add *block variables* defined using the new `Block.config.autotag_blk_var` tag to set the block
   content into a specified variable instead of keeping it in the original block location.
 - Add automatic indentation of a multiline variable value if the variable tag is indented.
 - Add automatic replacement of a block template in its parent block when a new template is set.
 - Add return flag indicating whether any variable was set or cleared by the `set_variables` and
   `clear_variables` methods.
+- Add multiple new test functions.
+- Add multiple new demo functions.
 
 
 ## [1.1.0] - 2025-08-04
