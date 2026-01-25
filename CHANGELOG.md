@@ -9,11 +9,11 @@ template engine project.
 
 ---
 
-## [2.0.0] - 2026-mm-dd
+## [2.0.0] - 2026-01-25
 
 ### Changed
 
-- Make the `get_subblock` method to always return a `Block` object.
+- Change the `get_subblock` method return value to a `Block` object without `None` alternative.
 - Replace the `Block.autotags` attribute with `Block.config.enable_autotags`.
 - Refactor multiple methods.
 - Rewrite documentation to improve structure and clarity.
