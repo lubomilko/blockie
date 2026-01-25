@@ -2,45 +2,39 @@
 Introduction
 ###################################################################################################
 
-`Blockie <https://github.com/lubomilko/blockie>`_ is a lightweight, universal and easy to use
-Python-based template engine. It was developed as a lower-level and generic solution for the
+`Blockie <https://github.com/lubomilko/blockie>`_ is a lightweight, fast, universal and easy to
+use Python-based template engine. It was developed as a lower-level and generic solution for the
 generation of any type of text-based content including a standard text, markup language, source
 code, and various data files without using complex program-like logic constructs in the templates.
 
-Blockie uses simple logicless templates consisting of two types of elements :ref:`variables
-<tgt_variable>` and :ref:`blocks <tgt_block>`. In most cases, the logic of filling the template
-can be :ref:`driven by the input data <tgt_data_fill>`. No custom script-like statements are
-used. However, an additional logic can be implemented directly in the Python script executing the
-template filling process.
+Blockie uses simple logicless templates consisting of two types of elements: :ref:`variables and
+blocks <tgt_tags>`. In most cases, the logic of filling the template can be :ref:`driven by the
+input data <tgt_data_fill>`. No custom script-like statements are needed. However, an additional
+logic can be implemented directly in the Python script executing the template filling process.
 
 
 ***************************************************************************************************
-Installation and quickstart
+Installation
 ***************************************************************************************************
 
 The Blockie package can be installed from the `Python Package Index
 <https://pypi.org/project/blockie/>`__ using the `pip <https://pypi.org/project/pip/>`__ console
-command: ``pip install blockie``.
+command:
 
-The block diagram below illustrates a fairly standard process of generating a text *content*
-from the *template* using values defined in the *input data*.
+.. code-block:: console
+
+    pip install blockie
+
+
+***************************************************************************************************
+Quickstart
+***************************************************************************************************
+
+The content generation follows the following sequence:
 
 .. code-block:: text
 
-    +----------+   +------------+
-    | template |   | input data |
-    +----------+   +------------+
-          |              |
-          V              V
-      +-----------------------+
-      | Python filling script |
-      | using blockie module  |
-      +-----------------------+
-                  |
-                  V
-        +-------------------+
-        | generated content |
-        +-------------------+
+    template + input data -> Python filling script -> generated content
 
 In the simplest form, the user-defined *Python filling script* is just a set of three commands
 illustrated in the example below using a more complex template to show most of the
@@ -97,6 +91,6 @@ Output:
     Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
 
 Any required additional template filling logic can be implemented within the Python script either
-by restructuring the original input data and/or using the :ref:`low-level functions
-<tgt_man_fill>` provided by the Blockie module to precisely control the content generation.
-The script can also :ref:`configure <tgt_config>` a different format of template tags.
+by restructuring the original input data and/or using the low-level :ref:`manual filling
+<tgt_man_fill>` functions provided by the Blockie module to precisely control the content
+generation. The script can also :ref:`configure <tgt_config>` a different format of template tags.

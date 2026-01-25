@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Overview of principles &mdash; Blockie 1.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fc837d61"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Data-driven template filling" href="datafill.html" />
+    <link rel="prev" title="1. Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Blockie
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Overview of principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#template-based-content-generation">2.1. Template-based content generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-tags">2.2. Template tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-filling">2.3. Template filling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Blockie</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Overview of principles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/principles.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview-of-principles">
+<h1><span class="section-number">2. </span>Overview of principles<a class="headerlink" href="#overview-of-principles" title="Link to this heading"></a></h1>
+<section id="template-based-content-generation">
+<h2><span class="section-number">2.1. </span>Template-based content generation<a class="headerlink" href="#template-based-content-generation" title="Link to this heading"></a></h2>
+<p>The block diagram below illustrates a fairly standard process of generating a text <em>content</em>
+from the <em>template</em> using values defined in the <em>input data</em>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------+   +------------+
+| template |   | input data |
++----------+   +------------+
+      |              |
+      V              V
+  +-----------------------+
+  | Python filling script |
+  | using blockie module  |
+  +-----------------------+
+              |
+              V
+    +-------------------+
+    | generated content |
+    +-------------------+
+</pre></div>
+</div>
+<p>Blockie templates are logicless, so they do not contain any script-like command elements. Instead,
+the logic of filling the template can be defined purely by the structure of <em>template</em> elements
+and <em>input data</em>. Alternatively, the <em>Python filling script</em> can use low-level functions provided
+by Blockie to precisely control the content generation.</p>
+</section>
+<section id="template-tags">
+<span id="tgt-tags"></span><h2><span class="section-number">2.2. </span>Template tags<a class="headerlink" href="#template-tags" title="Link to this heading"></a></h2>
+<p>The variable elements of the template that can be filled with specific values from the input
+data are indicated by <em>tags</em>. The tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a>, and by default,
+the tags have an XML-like format and their names use uppercase letters.</p>
+<p>The template can contain two primary non-constant elements defined by their corresponding tags:</p>
+<ul class="simple">
+<li><p><strong>Variables</strong> defined by a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p></li>
+<li><p><strong>Blocks</strong>: Used for splitting the template into multiple hierarchical parts. A block is
+defined by the start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code> with a content between them
+consisting of a constant text, other child blocks and variables. The whole template is also
+considered to be a primary block despite not having any explicitly defined start and end tags.</p></li>
+</ul>
+<p>Additionally, there are special <a class="reference internal" href="autoelems.html#tgt-auto-elems"><span class="std std-ref">automatic elements</span></a>, i.e., variables and
+blocks, that are automatically set to appropriate values in the generated content without any
+additional user-defined input data or commands.</p>
+</section>
+<section id="template-filling">
+<h2><span class="section-number">2.3. </span>Template filling<a class="headerlink" href="#template-filling" title="Link to this heading"></a></h2>
+<p>Blocks in the template (including the whole template) can be loaded into the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a>
+objects to fill the template with data, i.e., to perform operations with template blocks and
+variables in order to generate an output content.</p>
+<p>Blockie provides two ways of filling the template:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">Data-driven</span></a> approach that uses the structure and content of the
+input data to control the template filling process. This method is suitable for most use
+cases and is generally more user-friendly.</p></li>
+<li><p><a class="reference internal" href="manfill.html#tgt-man-fill"><span class="std std-ref">Manual</span></a> process allowing to perform low-level operations and also
+implement custom extension-like features in form of a Python script using low-level functions
+provided by Blockie at the cost of higher complexity.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="1. Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datafill.html" class="btn btn-neutral float-right" title="3. Data-driven template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Lubomir Milko.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

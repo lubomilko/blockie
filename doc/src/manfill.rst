@@ -9,8 +9,8 @@ Block object methods
 ***************************************************************************************************
 
 The :py:class:`.Block` object allows to perform direct manual operations with the template
-:ref:`variables <tgt_variable>` and :ref:`blocks <tgt_block>` through its attributes and
-methods described in the :ref:`API <tgt_api>` section.
+:ref:`variables and blocks <tgt_tags>` using its attributes and methods described in the
+:ref:`API <tgt_api>` section.
 
 -   :py:class:`.Block` **attributes**:
 
@@ -97,7 +97,7 @@ possible with the :py:meth:`.Block.fill` method alone.
 Fill handler
 ***************************************************************************************************
 
-Template :ref:`blocks <tgt_block>` filled using the :py:meth:`.Block.fill` method can have a
+Template :ref:`blocks <tgt_tags>` filled using the :py:meth:`.Block.fill` method can have a
 custom function assigned for performing special :ref:`manual operations <tgt_man_fill>` with the
 block content. This function can be assigned within the :ref:`dictionary defining the block
 content values <tgt_set_blk_cont>` by the special ``fill_hndl`` key with a value of a function

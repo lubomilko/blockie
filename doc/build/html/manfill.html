@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3. Manual template filling &mdash; Blockie 1.1.0 documentation</title>
+  <title>5. Manual template filling &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Template format configuration" href="config.html" />
-    <link rel="prev" title="2. Data-driven template filling" href="fill.html" /> 
+    <link rel="next" title="6. Template format configuration" href="config.html" />
+    <link rel="prev" title="4. Automatic variables and blocks" href="autoelems.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,19 +45,21 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fill.html">2. Data-driven template filling</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Manual template filling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#block-object-methods">3.1. Block object methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fill-handler">3.2. Fill handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-extensions">3.3. Custom extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#template-macros">3.3.1. Template macros</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#template-extensions">3.3.2. Template extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Manual template filling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#block-object-methods">5.1. Block object methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fill-handler">5.2. Fill handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-extensions">5.3. Custom extensions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#template-macros">5.3.1. Template macros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#template-extensions">5.3.2. Template extensions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">4. Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">5. API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -74,9 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3. </span>Manual template filling</li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Manual template filling</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/man_fill.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/manfill.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -85,12 +87,12 @@
            <div itemprop="articleBody">
              
   <section id="manual-template-filling">
-<span id="tgt-man-fill"></span><h1><span class="section-number">3. </span>Manual template filling<a class="headerlink" href="#manual-template-filling" title="Link to this heading"></a></h1>
+<span id="tgt-man-fill"></span><h1><span class="section-number">5. </span>Manual template filling<a class="headerlink" href="#manual-template-filling" title="Link to this heading"></a></h1>
 <section id="block-object-methods">
-<h2><span class="section-number">3.1. </span>Block object methods<a class="headerlink" href="#block-object-methods" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1. </span>Block object methods<a class="headerlink" href="#block-object-methods" title="Link to this heading"></a></h2>
 <p>The <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object allows to perform direct manual operations with the template
-<a class="reference internal" href="fill.html#tgt-variable"><span class="std std-ref">variables</span></a> and <a class="reference internal" href="fill.html#tgt-block"><span class="std std-ref">blocks</span></a> through its attributes and
-methods described in the <a class="reference internal" href="api.html#tgt-api"><span class="std std-ref">API</span></a> section.</p>
+<a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and blocks</span></a> using its attributes and methods described in the
+<a class="reference internal" href="api.html#tgt-api"><span class="std std-ref">API</span></a> section.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> <strong>attributes</strong>:</p>
 <ul>
@@ -104,7 +106,7 @@ variables.</p></li>
 <li><p><a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> <strong>methods</strong>:</p>
 <ul>
 <li><p><a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a>: Fills the block template in a semi-automated way using the
-provided input data, as described in the <a class="reference internal" href="fill.html#tgt-data-fill"><span class="std std-ref">Data-driven template filling</span></a> section.</p></li>
+provided input data, as described in the <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">Data-driven template filling</span></a> section.</p></li>
 <li><p><a class="reference internal" href="api.html#blockie.Block.get_subblock" title="blockie.Block.get_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a>: Loads a child block from this block’s content into another
 <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object.</p></li>
 <li><p><a class="reference internal" href="api.html#blockie.Block.set_variables" title="blockie.Block.set_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set_variables()</span></code></a>: Sets the variables within the content of this block to
@@ -163,15 +165,15 @@ template manually.</p>
 * MAYBE? cooking magazine
 </pre></div>
 </div>
-<p>Filling the templates manually is typically not needed and a <a class="reference internal" href="fill.html#tgt-data-fill"><span class="std std-ref">data-driven approach</span></a> should be preferred. However, using the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object methods allows
+<p>Filling the templates manually is typically not needed and a <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven approach</span></a> should be preferred. However, using the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object methods allows
 to implement more complex operations and custom <a class="reference internal" href="#tgt-extensions"><span class="std std-ref">extensions</span></a> that are not
 possible with the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method alone.</p>
 </section>
 <section id="fill-handler">
-<span id="tgt-fill-hndl"></span><h2><span class="section-number">3.2. </span>Fill handler<a class="headerlink" href="#fill-handler" title="Link to this heading"></a></h2>
-<p>Template <a class="reference internal" href="fill.html#tgt-block"><span class="std std-ref">blocks</span></a> filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method can have a
+<span id="tgt-fill-hndl"></span><h2><span class="section-number">5.2. </span>Fill handler<a class="headerlink" href="#fill-handler" title="Link to this heading"></a></h2>
+<p>Template <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">blocks</span></a> filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method can have a
 custom function assigned for performing special <a class="reference internal" href="#tgt-man-fill"><span class="std std-ref">manual operations</span></a> with the
-block content. This function can be assigned within the <a class="reference internal" href="fill.html#tgt-set-blk-cont"><span class="std std-ref">dictionary defining the block
+block content. This function can be assigned within the <a class="reference internal" href="datafill.html#tgt-set-blk-cont"><span class="std std-ref">dictionary defining the block
 content values</span></a> by the special <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key with a value of a function
 having the following signature:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">object</span><span class="p">,</span> <span class="n">clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
@@ -201,13 +203,13 @@ month is specified using its name or number).</p>
 </div>
 </section>
 <section id="custom-extensions">
-<span id="tgt-extensions"></span><h2><span class="section-number">3.3. </span>Custom extensions<a class="headerlink" href="#custom-extensions" title="Link to this heading"></a></h2>
+<span id="tgt-extensions"></span><h2><span class="section-number">5.3. </span>Custom extensions<a class="headerlink" href="#custom-extensions" title="Link to this heading"></a></h2>
 <p>The following subsections provide examples of useful custom extensions created using the
 <a class="reference internal" href="#tgt-man-fill"><span class="std std-ref">manual filling methods</span></a> and <a class="reference internal" href="#tgt-fill-hndl"><span class="std std-ref">fill handler</span></a> of the
 <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. The examples should serve as an inspiration for further experimentation
 and creation of other features.</p>
 <section id="template-macros">
-<h3><span class="section-number">3.3.1. </span>Template macros<a class="headerlink" href="#template-macros" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.3.1. </span>Template macros<a class="headerlink" href="#template-macros" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">&lt;VLIST_A&gt;</span>
 <span class="s2">&lt;/VLIST_A&gt;</span>
@@ -332,7 +334,7 @@ carrot, tomatoe, pepper
 </div>
 </section>
 <section id="template-extensions">
-<h3><span class="section-number">3.3.2. </span>Template extensions<a class="headerlink" href="#template-extensions" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.3.2. </span>Template extensions<a class="headerlink" href="#template-extensions" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">&lt;INTRO&gt;This is a list of &lt;DESC&gt;:&lt;/INTRO&gt;</span>
 <span class="s2">&lt;ITEMS&gt;</span>
@@ -446,8 +448,8 @@ There are 4 items in total.
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="fill.html" class="btn btn-neutral float-left" title="2. Data-driven template filling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="config.html" class="btn btn-neutral float-right" title="4. Template format configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="autoelems.html" class="btn btn-neutral float-left" title="4. Automatic variables and blocks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config.html" class="btn btn-neutral float-right" title="6. Template format configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -11,7 +11,7 @@ The configuration object attributes define the format of :ref:`primary tags <tgt
 using functions defining how a template tag string is generated from a tag name. The most
 straightforward way to define these tag generators is to use the *lamba* functions.
 
-The tabulator size attribute is used by the :ref:`alignment autotag <tgt_autotag_align>` when
+The tabulator size attribute is used by the :ref:`alignment autotag <tgt_auto_align_var>` when
 tabulators are used for the alignment.
 
 The created :py:class:`.BlockConfig` object can be either assigned directly to the
@@ -24,9 +24,7 @@ use the same configuration.
 Example
 ***************************************************************************************************
 
-The following example generally equivalent to the
-:ref:`advanced example <tgt_auto_fill_advanced_example>` shown before, uses a block configuration
-object with an *at* sign ``@`` used as a primary tag symbol:
+The following example uses an *at* sign ``@`` as a primary tag symbol:
 
 .. code-block:: python
 

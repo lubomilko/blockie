@@ -4,28 +4,9 @@
 Data-driven template filling
 ###################################################################################################
 
-.. _tgt_principles:
-
-***************************************************************************************************
-Basic principles
-***************************************************************************************************
-
-The variable elements of the template that can be filled with specific values from the input
-data are indicated by tags. By default, the tags have an XML-like format and their names use
-uppercase letters. The template consists of two primary elements defined by their corresponding
-tags:
-
--   :ref:`Variables <tgt_variable>` defined by a single tag, e.g., ``<NAME>``.
--   :ref:`Blocks <tgt_block>` defined by the two start and end tags, e.g., ``<LIST> ... </LIST>``,
-    with a content between these tags consisting of other blocks and variables. The whole template
-    is also considered to be a block despite not having any explicitly defined start and end tags.
-
-Blocks in the template (including the whole template) can be loaded into the :py:class:`.Block`
-objects to perform operations with them and with the variables in their content.
-
-In most cases, the **template filling logic can be defined purely by the structure of the template
-elements and the structure and values of the input data** without any explicit custom script-like
-instructions in the templates or data values.
+In most cases, the template filling logic can be defined purely by the structure of the template
+elements and the structure and values of the input data without any explicit custom script-like
+instructions in the templates or data values. 
 
 The most straightforward way to fill the whole template is to load it into the primary
 :py:class:`.Block` object through its constructor or a :py:attr:`.Block.template` attribute and
@@ -45,18 +26,22 @@ template.
     the tag format is :ref:`configurable <tgt_config>` and instead of a dictionary, it is also
     possible to use a struct-like object with attributes corresponding to the dictionary keys.
 
+.. note::
+    Using the :py:meth:`.Block.fill` method also enables the use of :ref:`additional features
+    <tgt_add_features>` described later.
 
-.. _tgt_variable:
+
+.. _tgt_variable_oper:
 
 ***************************************************************************************************
-Variable
+Variable operations
 ***************************************************************************************************
 
 Variables are the simplest modifiable parts of the template defined by a single tag, e.g.,
 ``<NAME>``.
 
 
-Setting variable value
+Setting the variable value
 ===================================================================================================
 
 A variable can be **set** to the required value using a **basic data type** (``str``, ``int``,
@@ -75,7 +60,7 @@ Output:
     Hello world!
 
 
-Clearing variable
+Clearing a variable
 ===================================================================================================
 
 A variable can be **cleared**, i.e., removed, by setting it to an **empty string or none**
@@ -94,21 +79,15 @@ Output:
     Thomas  Anderson
 
 
-.. _tgt_block:
+.. _tgt_block_oper:
 
 ***************************************************************************************************
-Block
+Block operations
 ***************************************************************************************************
-
-Blocks are used for splitting the template into multiple hierarchical parts. A block is defined
-by the two start and end tags, e.g., ``<LIST> ... </LIST>`` with a content between them consisting
-of constant text, other child blocks and :ref:`variables <tgt_variable>`. The whole template is
-considered to be a primary block even without explicitly defined tags.
-
 
 .. _tgt_set_blk_cont:
 
-Setting block content
+Setting the block content
 ===================================================================================================
 
 The variables and other subblocks in a block content can be **set** by setting the block value to
@@ -150,8 +129,7 @@ Block content cloning
 
 It is possible to **clone**, i.e., duplicate, the block template by setting its value to a **list
 or tuple of non-empty dictionaries** (``[{...}, {...}, ...]``, ``({...}, {...}, ...)``) with the
-inner dictionaries setting the content of other blocks and :ref:`variables <tgt_variable>` for
-each block clone.
+inner dictionaries setting the content of other blocks and variables for each block clone.
 
 .. code-block:: python
 
@@ -172,8 +150,8 @@ Output:
 
 A block can also be **cloned with an implicit iterator variable** which is a special single-only
 variable defined by the ``<*>`` tag that can be set directly using a **list or tuple of basic
-data type** values (``str``, ``int``, ``float``, or ``bool``) without specifying any :ref:`variable
-<tgt_variable>` name or block content dictionary.
+data type** values (``str``, ``int``, ``float``, or ``bool``) without specifying any variable
+name or block content dictionary.
 
 .. code-block:: python
 
@@ -193,7 +171,7 @@ Output:
 
 .. _tgt_set_blk_cont_vari:
 
-Setting a block content variation
+Setting the block content variation
 ===================================================================================================
 
 It is possible to define multiple **content variations of a block** using intermediary tags with
@@ -259,9 +237,19 @@ A block can be cleared also by setting its :ref:`content variation <tgt_set_blk_
 (``int``) to a negative value.
 
 
+.. _tgt_add_features:
+
 ***************************************************************************************************
+Addtional features
+***************************************************************************************************
+
+The :ref:`data-driven template filling <tgt_data_fill>` approach, i.e. usage of the
+:py:meth:`.Block.fill` method, also allows to use extended features of :ref:`variables and blocks
+<tgt_tags>` described in the subsequent sections.
+
+
 Subelements
-***************************************************************************************************
+===================================================================================================
 
 Variables and blocks in a template can reference input data values defined for nested subblocks
 using a ``.`` (dot) operator. For example, a ``<BOOK.AUTHOR.NAME>`` tag is equivalent to
@@ -281,8 +269,8 @@ Output:
 
 It is not possible for subelements to reference data "through" :ref:`cloned blocks
 <tgt_blk_cont_clone>`, e.g., a subelement tag ``<BOOK.AUTHORS.NAME>`` would not work in the
-example below, since the ``<AUTHORS> ... </AUTHORS>`` block is indended to be cloned and a ``NAME``
-reference is not sufficient to indicate the required name instance.
+example below, since the ``<AUTHORS> ... </AUTHORS>`` block is indended to be cloned and a
+``NAME`` reference is not sufficient to indicate the required name instance.
 
 However, a cloned block itself can be referenced, as illustrated by the ``<BOOK.AUTHORS> ...
 </BOOK.AUTHORS>`` subblock in the following code.
@@ -333,13 +321,12 @@ Output:
     Publication info: Pearson, 1988
 
 
-***************************************************************************************************
-Template values
-***************************************************************************************************
+Variable templates
+===================================================================================================
 
-String data values used for filling template variables can have a template form themselves, i.e.,
-the variable values can contain other :ref:`variable <tgt_variable>` and :ref:`block <tgt_block>`
-tags that are filled automatically if corresponding values are found in the input data for them.
+String data values used for filling the template variables can have a template form themselves,
+i.e., the variable values can contain other variable and block :ref:`tags <tgt_tags>` that are
+filled automatically if corresponding values are found in the input data for them.
 
 .. code-block:: python
 
@@ -353,9 +340,8 @@ Output:
 
     Hello John! Welcome to the world of templating.
 
-The example below shows a more complex template used as a variable value. However, defining the
-templates this way is discouraged, since such a mix of templates and data can be difficult to
-maintain.
+The example below shows a more complex template used as a variable value. Although, such a mix of
+templates and data can be difficult to maintain.
 
 .. code-block:: python
 
@@ -369,192 +355,3 @@ Output:
 .. code-block:: text
 
     The date is: 01.01.2026.
-
-
-***************************************************************************************************
-Automatic variables and blocks
-***************************************************************************************************
-
-Automatic :ref:`variables <tgt_variable>` and :ref:`blocks <tgt_block>` are filled automatically
-without any values specified in the input data. The automatic elements typically help with the
-formatting of the generated content.
-
-
-.. _tgt_auto_align_var:
-
-Automatic left-alignment variable
-===================================================================================================
-
-A left-alignment automatic variable has a ``<+>`` tag and can be used to maintain the
-left-alignment of a text within the template having :ref:`variables <tgt_variable>` filled with
-values of different character lengths.
-
-Blockie automatically scans the first character located right after this tag and counts the number
-of consecutive occurrences of this character until a different character is found. Then it
-maintains the column position of the different character regardless of the content generated
-on the line before this character.
-
-.. code-block:: python
-
-    template = """
-    Name        Surname     Role
-    ----------------------------
-    <CHARACTERS>
-    <NAME><+>   <SNAME><+>  <ROLE>
-    </CHARACTERS>"""
-
-    blk = blockie.Block(template)
-    blk.fill({"characters": [
-        {"name": "Dave", "sname": "Bowman", "role": "astronaut 1"},
-        {"name": "Frank", "sname": "Poole", "role": "astronaut 2"},
-        {"name": "Heywood", "sname": "Floyd", "role": "chairman of the US National Council of Astronautics"},
-        {"name": "HAL", "sname": "9000", "role": "broken computer that can kill, but can't lie"}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    Name        Surname     Role
-    ----------------------------
-    Dave        Bowman      astronaut 1
-    Frank       Poole       astronaut 2
-    Heywood     Floyd       chairman of the US National Council of Astronautics
-    HAL         9000        broken computer that can kill, but can't lie
-
-An example illustrating the use of non-space characters for the left-alignment:
-
-.. code-block:: python
-
-    template = """
-    Name            Phone number
-    ----------------------------
-    <PEOPLE>
-    <NAME><+>.......<PHONE>
-    </PEOPLE>"""
-
-    blk = blockie.Block(template)
-    blk.fill({"people": [
-        {"name": "Dave", "phone": "0940 123 456"},
-        {"name": "Frank", "phone": "0933 987 654"},
-        {"name": "Heywood", "phone": "0911 111 111"}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    Name            Phone number
-    ----------------------------
-    Dave............0940 123 456
-    Frank...........0933 987 654
-    Heywood.........0911 111 111
-
-
-.. _tgt_auto_block_var:
-
-Automatic block variable
-===================================================================================================
-
-A :ref:`block <tgt_block>` content can be :ref:`set <tgt_set_blk_cont>` into a different location
-than its original location, or into multiple different locations within the template using a
-special tag having a ``<@BLOCK_NAME>`` format. This so-called *block variable* acts as a target
-for a block content, while the original block is :ref:`cleared <tgt_clear_blk>`.
-
-The block variable can be useful for repeating the referenced content multiple times or for
-maintaining the :ref:`left-alignment <tgt_auto_align_var>` as illustrated in the example below.
-
-.. code-block:: python
-
-    template = """
-    <LIST>
-    <IDX>a)<^IDX>b)<^IDX>c)<^IDX>d)<^IDX>e)<^IDX>f)</IDX>
-    <@IDX> <ITEM><+>        <QTY>
-    </LIST>
-    """
-
-    blk = blockie.Block(template)
-    blk.fill({"list": [
-        {"idx": 0, "item": "first", "qty": 1},
-        {"idx": 1, "item": "second", "qty": 2},
-        {"idx": 2, "item": "third", "qty": 3}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    a) first                1
-    b) second               2
-    c) third                3
-
-.. note::
-    The block variable tag(s) must be located within the parent block of a referenced block.
-
-
-.. _tgt_auto_vari_block:
-
-Automatic variation block
-===================================================================================================
-
-With :ref:`cloned block contents <tgt_blk_cont_clone>` it is often useful to have some part of the
-block content to be different in the first and/or the last clone. An *automatic variation block*
-can be used to define such part of the content using a special ``<.>`` block tag having either two
-or three :ref:`content variations <tgt_set_blk_cont_vari>`:
-
-- ``<.>standard content<^.>last content</.>``
-- ``<.>standard content<^.>last content<^.>first content</.>``
-
-Where the ``standard content`` is used in the second and second to last clones of a parent block,
-the ``last content`` is used in the last clone, and the ``first content`` is used in the first
-parent block content.
-
-.. code-block:: python
-
-    blk = blockie.Block("Characters: <CHARACTERS><NAME> <SURNAME><.>, <^.></.></CHARACTERS>.")
-    blk.fill({"characters": [
-        {"name": "Dave", "surname": "Bowman"},
-        {"name": "Frank", "surname": "Poole"},
-        {"name": "Heywood", "surname": "Floyd"},
-        {"name": "HAL", "surname": "9000"}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    Characters: Dave Bowman, Frank Poole, Heywood Floyd, HAL 9000.
-
-.. code-block:: python
-
-    template = """
-    <CHARACTERS>
-    <.>
-    | <NAME><+>     <SURNAME><+> |
-    <^.>
-    | <NAME><+>     <SURNAME><+> |
-    +----------------------------+
-    <^.>
-    +----------------------------+
-    | <NAME><+>     <SURNAME><+> |
-    </.>
-    </CHARACTERS>"""
-
-    blk = blockie.Block(template)
-    blk.fill({"characters": [
-        {"name": "Dave", "surname": "Bowman"},
-        {"name": "Frank", "surname": "Poole"},
-        {"name": "Heywood", "surname": "Floyd"},
-        {"name": "HAL", "surname": "9000"}]})
-    print(blk.content)
-
-Output:
-
-.. code-block:: text
-
-    +----------------------------+
-    | Dave          Bowman       |
-    | Frank         Poole        |
-    | Heywood       Floyd        |
-    | HAL           9000         |
-    +----------------------------+

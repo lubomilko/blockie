@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. Data-driven template filling" href="fill.html" />
+    <link rel="next" title="2. Overview of principles" href="principles.html" />
     <link rel="prev" title="Blockie" href="index.html" /> 
 </head>
 
@@ -45,13 +45,16 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation-and-quickstart">1.1. Installation and quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">1.1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart">1.2. Quickstart</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="fill.html">2. Data-driven template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="man_fill.html">3. Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">4. Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">5. API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -80,39 +83,31 @@
              
   <section id="introduction">
 <h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, universal and easy to use
-Python-based template engine. It was developed as a lower-level and generic solution for the
+<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, fast, universal and easy to
+use Python-based template engine. It was developed as a lower-level and generic solution for the
 generation of any type of text-based content including a standard text, markup language, source
 code, and various data files without using complex program-like logic constructs in the templates.</p>
-<p>Blockie uses simple logicless templates consisting of two types of elements <a class="reference internal" href="fill.html#tgt-variable"><span class="std std-ref">variables</span></a> and <a class="reference internal" href="fill.html#tgt-block"><span class="std std-ref">blocks</span></a>. In most cases, the logic of filling the template
-can be <a class="reference internal" href="fill.html#tgt-data-fill"><span class="std std-ref">driven by the input data</span></a>. No custom script-like statements are
-used. However, an additional logic can be implemented directly in the Python script executing the
-template filling process.</p>
-<section id="installation-and-quickstart">
-<h2><span class="section-number">1.1. </span>Installation and quickstart<a class="headerlink" href="#installation-and-quickstart" title="Link to this heading"></a></h2>
+<p>Blockie uses simple logicless templates consisting of two types of elements: <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and
+blocks</span></a>. In most cases, the logic of filling the template can be <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">driven by the
+input data</span></a>. No custom script-like statements are needed. However, an additional
+logic can be implemented directly in the Python script executing the template filling process.</p>
+<section id="installation">
+<h2><span class="section-number">1.1. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <p>The Blockie package can be installed from the <a class="reference external" href="https://pypi.org/project/blockie/">Python Package Index</a> using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> console
-command: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">blockie</span></code>.</p>
-<p>The block diagram below illustrates a fairly standard process of generating a text <em>content</em>
-from the <em>template</em> using values defined in the <em>input data</em>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------+   +------------+
-| template |   | input data |
-+----------+   +------------+
-      |              |
-      V              V
-  +-----------------------+
-  | Python filling script |
-  | using blockie module  |
-  +-----------------------+
-              |
-              V
-    +-------------------+
-    | generated content |
-    +-------------------+
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install blockie</span>
+</pre></div>
+</div>
+</section>
+<section id="quickstart">
+<h2><span class="section-number">1.2. </span>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
+<p>The content generation follows the following sequence:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>template + input data -&gt; Python filling script -&gt; generated content
 </pre></div>
 </div>
 <p>In the simplest form, the user-defined <em>Python filling script</em> is just a set of three commands
 illustrated in the example below using a more complex template to show most of the
-<a class="reference internal" href="fill.html#tgt-data-fill"><span class="std std-ref">data-driven template filling</span></a> concepts used by Blockie for the input data
+<a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven template filling</span></a> concepts used by Blockie for the input data
 provided in form of an appropriately structured Python dictionary or a struct-like object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
 
@@ -161,8 +156,8 @@ Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
 </pre></div>
 </div>
 <p>Any required additional template filling logic can be implemented within the Python script either
-by restructuring the original input data and/or using the <a class="reference internal" href="man_fill.html#tgt-man-fill"><span class="std std-ref">low-level functions</span></a> provided by the Blockie module to precisely control the content generation.
-The script can also <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configure</span></a> a different format of template tags.</p>
+by restructuring the original input data and/or using the low-level <a class="reference internal" href="manfill.html#tgt-man-fill"><span class="std std-ref">manual filling</span></a> functions provided by the Blockie module to precisely control the content
+generation. The script can also <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configure</span></a> a different format of template tags.</p>
 </section>
 </section>
 
@@ -171,7 +166,7 @@ The script can also <a class="reference internal" href="config.html#tgt-config">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Blockie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="fill.html" class="btn btn-neutral float-right" title="2. Data-driven template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="principles.html" class="btn btn-neutral float-right" title="2. Overview of principles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

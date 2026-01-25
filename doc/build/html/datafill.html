@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Data-driven template filling &mdash; Blockie 1.1.0 documentation</title>
+  <title>3. Data-driven template filling &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Manual template filling" href="man_fill.html" />
-    <link rel="prev" title="1. Introduction" href="intro.html" /> 
+    <link rel="next" title="4. Automatic variables and blocks" href="autoelems.html" />
+    <link rel="prev" title="2. Overview of principles" href="principles.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,33 +45,31 @@
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Data-driven template filling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#basic-principles">2.1. Basic principles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#variable">2.2. Variable</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setting-variable-value">2.2.1. Setting variable value</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#clearing-variable">2.2.2. Clearing variable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Data-driven template filling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#variable-operations">3.1. Variable operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-variable-value">3.1.1. Setting the variable value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clearing-a-variable">3.1.2. Clearing a variable</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#block">2.3. Block</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setting-block-content">2.3.1. Setting block content</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#block-content-cloning">2.3.2. Block content cloning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-a-block-content-variation">2.3.3. Setting a block content variation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#clearing-a-block">2.3.4. Clearing a block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#block-operations">3.2. Block operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-block-content">3.2.1. Setting the block content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-content-cloning">3.2.2. Block content cloning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-block-content-variation">3.2.3. Setting the block content variation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clearing-a-block">3.2.4. Clearing a block</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#subelements">2.4. Subelements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#template-values">2.5. Template values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#automatic-variables-and-blocks">2.6. Automatic variables and blocks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-left-alignment-variable">2.6.1. Automatic left-alignment variable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-block-variable">2.6.2. Automatic block variable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#automatic-variation-block">2.6.3. Automatic variation block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addtional-features">3.3. Addtional features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subelements">3.3.1. Subelements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-templates">3.3.2. Variable templates</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="man_fill.html">3. Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">4. Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">5. API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -88,9 +86,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2. </span>Data-driven template filling</li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Data-driven template filling</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/fill.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/datafill.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -99,23 +97,9 @@
            <div itemprop="articleBody">
              
   <section id="data-driven-template-filling">
-<span id="tgt-data-fill"></span><h1><span class="section-number">2. </span>Data-driven template filling<a class="headerlink" href="#data-driven-template-filling" title="Link to this heading"></a></h1>
-<section id="basic-principles">
-<span id="tgt-principles"></span><h2><span class="section-number">2.1. </span>Basic principles<a class="headerlink" href="#basic-principles" title="Link to this heading"></a></h2>
-<p>The variable elements of the template that can be filled with specific values from the input
-data are indicated by tags. By default, the tags have an XML-like format and their names use
-uppercase letters. The template consists of two primary elements defined by their corresponding
-tags:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#tgt-variable"><span class="std std-ref">Variables</span></a> defined by a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p></li>
-<li><p><a class="reference internal" href="#tgt-block"><span class="std std-ref">Blocks</span></a> defined by the two start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code>,
-with a content between these tags consisting of other blocks and variables. The whole template
-is also considered to be a block despite not having any explicitly defined start and end tags.</p></li>
-</ul>
-<p>Blocks in the template (including the whole template) can be loaded into the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a>
-objects to perform operations with them and with the variables in their content.</p>
-<p>In most cases, the <strong>template filling logic can be defined purely by the structure of the template
-elements and the structure and values of the input data</strong> without any explicit custom script-like
+<span id="tgt-data-fill"></span><h1><span class="section-number">3. </span>Data-driven template filling<a class="headerlink" href="#data-driven-template-filling" title="Link to this heading"></a></h1>
+<p>In most cases, the template filling logic can be defined purely by the structure of the template
+elements and the structure and values of the input data without any explicit custom script-like
 instructions in the templates or data values.</p>
 <p>The most straightforward way to fill the whole template is to load it into the primary
 <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object through its constructor or a <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute and
@@ -133,13 +117,16 @@ examples within this document together with a Python dictionary used as a data i
 the tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a> and instead of a dictionary, it is also
 possible to use a struct-like object with attributes corresponding to the dictionary keys.</p>
 </div>
-</section>
-<section id="variable">
-<span id="tgt-variable"></span><h2><span class="section-number">2.2. </span>Variable<a class="headerlink" href="#variable" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method also enables the use of <a class="reference internal" href="#tgt-add-features"><span class="std std-ref">additional features</span></a> described later.</p>
+</div>
+<section id="variable-operations">
+<span id="tgt-variable-oper"></span><h2><span class="section-number">3.1. </span>Variable operations<a class="headerlink" href="#variable-operations" title="Link to this heading"></a></h2>
 <p>Variables are the simplest modifiable parts of the template defined by a single tag, e.g.,
 <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p>
-<section id="setting-variable-value">
-<h3><span class="section-number">2.2.1. </span>Setting variable value<a class="headerlink" href="#setting-variable-value" title="Link to this heading"></a></h3>
+<section id="setting-the-variable-value">
+<h3><span class="section-number">3.1.1. </span>Setting the variable value<a class="headerlink" href="#setting-the-variable-value" title="Link to this heading"></a></h3>
 <p>A variable can be <strong>set</strong> to the required value using a <strong>basic data type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>,
 <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">bool</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;WORD1&gt; &lt;WORD2&gt;!&quot;</span><span class="p">)</span>
@@ -152,8 +139,8 @@ possible to use a struct-like object with attributes corresponding to the dictio
 </pre></div>
 </div>
 </section>
-<section id="clearing-variable">
-<h3><span class="section-number">2.2.2. </span>Clearing variable<a class="headerlink" href="#clearing-variable" title="Link to this heading"></a></h3>
+<section id="clearing-a-variable">
+<h3><span class="section-number">3.1.2. </span>Clearing a variable<a class="headerlink" href="#clearing-a-variable" title="Link to this heading"></a></h3>
 <p>A variable can be <strong>cleared</strong>, i.e., removed, by setting it to an <strong>empty string or none</strong>
 (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;NAME&gt; &lt;MIDNAME&gt; &lt;SURNAME&gt;&quot;</span><span class="p">)</span>
@@ -167,14 +154,10 @@ possible to use a struct-like object with attributes corresponding to the dictio
 </div>
 </section>
 </section>
-<section id="block">
-<span id="tgt-block"></span><h2><span class="section-number">2.3. </span>Block<a class="headerlink" href="#block" title="Link to this heading"></a></h2>
-<p>Blocks are used for splitting the template into multiple hierarchical parts. A block is defined
-by the two start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code> with a content between them consisting
-of constant text, other child blocks and <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a>. The whole template is
-considered to be a primary block even without explicitly defined tags.</p>
-<section id="setting-block-content">
-<span id="tgt-set-blk-cont"></span><h3><span class="section-number">2.3.1. </span>Setting block content<a class="headerlink" href="#setting-block-content" title="Link to this heading"></a></h3>
+<section id="block-operations">
+<span id="tgt-block-oper"></span><h2><span class="section-number">3.2. </span>Block operations<a class="headerlink" href="#block-operations" title="Link to this heading"></a></h2>
+<section id="setting-the-block-content">
+<span id="tgt-set-blk-cont"></span><h3><span class="section-number">3.2.1. </span>Setting the block content<a class="headerlink" href="#setting-the-block-content" title="Link to this heading"></a></h3>
 <p>The variables and other subblocks in a block content can be <strong>set</strong> by setting the block value to
 a <strong>non-empty dictionary</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) with keys representing the inner variables and blocks.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
@@ -200,11 +183,10 @@ true value of a basic data type</strong> (non-empty <code class="docutils litera
 </div>
 </section>
 <section id="block-content-cloning">
-<span id="tgt-blk-cont-clone"></span><h3><span class="section-number">2.3.2. </span>Block content cloning<a class="headerlink" href="#block-content-cloning" title="Link to this heading"></a></h3>
+<span id="tgt-blk-cont-clone"></span><h3><span class="section-number">3.2.2. </span>Block content cloning<a class="headerlink" href="#block-content-cloning" title="Link to this heading"></a></h3>
 <p>It is possible to <strong>clone</strong>, i.e., duplicate, the block template by setting its value to a <strong>list
 or tuple of non-empty dictionaries</strong> (<code class="docutils literal notranslate"><span class="pre">[{...},</span> <span class="pre">{...},</span> <span class="pre">...]</span></code>, <code class="docutils literal notranslate"><span class="pre">({...},</span> <span class="pre">{...},</span> <span class="pre">...)</span></code>) with the
-inner dictionaries setting the content of other blocks and <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a> for
-each block clone.</p>
+inner dictionaries setting the content of other blocks and variables for each block clone.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;* &lt;EVENTS&gt;&lt;EVENT&gt;: &lt;MONTH&gt; &lt;DAY&gt;</span><span class="se">\n</span><span class="s2">&lt;/EVENTS&gt;&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;events&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;Christmas&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">},</span>
@@ -221,7 +203,8 @@ each block clone.</p>
 </div>
 <p>A block can also be <strong>cloned with an implicit iterator variable</strong> which is a special single-only
 variable defined by the <code class="docutils literal notranslate"><span class="pre">&lt;*&gt;</span></code> tag that can be set directly using a <strong>list or tuple of basic
-data type</strong> values (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">bool</span></code>) without specifying any <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variable</span></a> name or block content dictionary.</p>
+data type</strong> values (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">bool</span></code>) without specifying any variable
+name or block content dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;LIST&gt;- &lt;*&gt;</span><span class="se">\n</span><span class="s2">&lt;/LIST&gt;&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gloves&quot;</span><span class="p">,</span> <span class="s2">&quot;plastic bags&quot;</span><span class="p">,</span> <span class="s2">&quot;duct tape&quot;</span><span class="p">,</span> <span class="s2">&quot;shovel&quot;</span><span class="p">]})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
@@ -235,8 +218,8 @@ data type</strong> values (<code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 </section>
-<section id="setting-a-block-content-variation">
-<span id="tgt-set-blk-cont-vari"></span><h3><span class="section-number">2.3.3. </span>Setting a block content variation<a class="headerlink" href="#setting-a-block-content-variation" title="Link to this heading"></a></h3>
+<section id="setting-the-block-content-variation">
+<span id="tgt-set-blk-cont-vari"></span><h3><span class="section-number">3.2.3. </span>Setting the block content variation<a class="headerlink" href="#setting-the-block-content-variation" title="Link to this heading"></a></h3>
 <p>It is possible to define multiple <strong>content variations of a block</strong> using intermediary tags with
 a <code class="docutils literal notranslate"><span class="pre">&lt;^BLOCK_NAME&gt;</span></code> format inserted between the start and end block tags. The required content
 variation can be selected by setting an integer (<code class="docutils literal notranslate"><span class="pre">int</span></code>) index of a variation (starting from 0)
@@ -269,7 +252,7 @@ indirectly by wrapping them in a standard parent block that can be cloned, e.g.,
 </div>
 </section>
 <section id="clearing-a-block">
-<span id="tgt-clear-blk"></span><h3><span class="section-number">2.3.4. </span>Clearing a block<a class="headerlink" href="#clearing-a-block" title="Link to this heading"></a></h3>
+<span id="tgt-clear-blk"></span><h3><span class="section-number">3.2.4. </span>Clearing a block<a class="headerlink" href="#clearing-a-block" title="Link to this heading"></a></h3>
 <p>A block can be <strong>cleared</strong>, i.e., removed, by setting it to either an <strong>empty dictionary, list or
 tuple</strong> (<code class="docutils literal notranslate"><span class="pre">{}</span></code>, <code class="docutils literal notranslate"><span class="pre">[]</span></code>, <code class="docutils literal notranslate"><span class="pre">()</span></code>), or to <strong>none, negative number or false</strong> (<code class="docutils literal notranslate"><span class="pre">None</span></code>, negative
 <code class="docutils literal notranslate"><span class="pre">int</span></code>, negative <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
@@ -286,8 +269,12 @@ tuple</strong> (<code class="docutils literal notranslate"><span class="pre">{}<
 (<code class="docutils literal notranslate"><span class="pre">int</span></code>) to a negative value.</p>
 </section>
 </section>
+<section id="addtional-features">
+<span id="tgt-add-features"></span><h2><span class="section-number">3.3. </span>Addtional features<a class="headerlink" href="#addtional-features" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#tgt-data-fill"><span class="std std-ref">data-driven template filling</span></a> approach, i.e. usage of the
+<a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method, also allows to use extended features of <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and blocks</span></a> described in the subsequent sections.</p>
 <section id="subelements">
-<h2><span class="section-number">2.4. </span>Subelements<a class="headerlink" href="#subelements" title="Link to this heading"></a></h2>
+<h3><span class="section-number">3.3.1. </span>Subelements<a class="headerlink" href="#subelements" title="Link to this heading"></a></h3>
 <p>Variables and blocks in a template can reference input data values defined for nested subblocks
 using a <code class="docutils literal notranslate"><span class="pre">.</span></code> (dot) operator. For example, a <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHOR.NAME&gt;</span></code> tag is equivalent to
 <code class="docutils literal notranslate"><span class="pre">&lt;BOOK&gt;&lt;AUTHOR&gt;&lt;NAME&gt;&lt;/AUTHOR&gt;&lt;/BOOK&gt;</span></code> template.</p>
@@ -301,8 +288,8 @@ using a <code class="docutils literal notranslate"><span class="pre">.</span></c
 </pre></div>
 </div>
 <p>It is not possible for subelements to reference data “through” <a class="reference internal" href="#tgt-blk-cont-clone"><span class="std std-ref">cloned blocks</span></a>, e.g., a subelement tag <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHORS.NAME&gt;</span></code> would not work in the
-example below, since the <code class="docutils literal notranslate"><span class="pre">&lt;AUTHORS&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/AUTHORS&gt;</span></code> block is indended to be cloned and a <code class="docutils literal notranslate"><span class="pre">NAME</span></code>
-reference is not sufficient to indicate the required name instance.</p>
+example below, since the <code class="docutils literal notranslate"><span class="pre">&lt;AUTHORS&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/AUTHORS&gt;</span></code> block is indended to be cloned and a
+<code class="docutils literal notranslate"><span class="pre">NAME</span></code> reference is not sufficient to indicate the required name instance.</p>
 <p>However, a cloned block itself can be referenced, as illustrated by the <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHORS&gt;</span> <span class="pre">...</span>
 <span class="pre">&lt;/BOOK.AUTHORS&gt;</span></code> subblock in the following code.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;BOOK.AUTHORS&gt;&lt;NAME&gt; &lt;SURNAME&gt;</span><span class="se">\n</span><span class="s2">&lt;/BOOK.AUTHORS&gt;&quot;</span><span class="p">)</span>
@@ -344,11 +331,11 @@ the top block.</p>
 </pre></div>
 </div>
 </section>
-<section id="template-values">
-<h2><span class="section-number">2.5. </span>Template values<a class="headerlink" href="#template-values" title="Link to this heading"></a></h2>
-<p>String data values used for filling template variables can have a template form themselves, i.e.,
-the variable values can contain other <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variable</span></a> and <a class="reference internal" href="#tgt-block"><span class="std std-ref">block</span></a>
-tags that are filled automatically if corresponding values are found in the input data for them.</p>
+<section id="variable-templates">
+<h3><span class="section-number">3.3.2. </span>Variable templates<a class="headerlink" href="#variable-templates" title="Link to this heading"></a></h3>
+<p>String data values used for filling the template variables can have a template form themselves,
+i.e., the variable values can contain other variable and block <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">tags</span></a> that are
+filled automatically if corresponding values are found in the input data for them.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;&lt;GREETING&gt; Welcome to the world of templating.&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello &lt;NAME&gt;!&quot;</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
@@ -358,9 +345,8 @@ tags that are filled automatically if corresponding values are found in the inpu
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello John! Welcome to the world of templating.
 </pre></div>
 </div>
-<p>The example below shows a more complex template used as a variable value. However, defining the
-templates this way is discouraged, since such a mix of templates and data can be difficult to
-maintain.</p>
+<p>The example below shows a more complex template used as a variable value. Although, such a mix of
+templates and data can be difficult to maintain.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE_STR&gt;.&quot;</span><span class="p">)</span>
 <span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="s2">&quot;01&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;01&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="s2">&quot;2026&quot;</span><span class="p">},</span>
           <span class="s2">&quot;date_str&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;YEAR&gt;&lt;/DATE&gt;&quot;</span><span class="p">})</span>
@@ -372,162 +358,6 @@ maintain.</p>
 </pre></div>
 </div>
 </section>
-<section id="automatic-variables-and-blocks">
-<h2><span class="section-number">2.6. </span>Automatic variables and blocks<a class="headerlink" href="#automatic-variables-and-blocks" title="Link to this heading"></a></h2>
-<p>Automatic <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a> and <a class="reference internal" href="#tgt-block"><span class="std std-ref">blocks</span></a> are filled automatically
-without any values specified in the input data. The automatic elements typically help with the
-formatting of the generated content.</p>
-<section id="automatic-left-alignment-variable">
-<span id="tgt-auto-align-var"></span><h3><span class="section-number">2.6.1. </span>Automatic left-alignment variable<a class="headerlink" href="#automatic-left-alignment-variable" title="Link to this heading"></a></h3>
-<p>A left-alignment automatic variable has a <code class="docutils literal notranslate"><span class="pre">&lt;+&gt;</span></code> tag and can be used to maintain the
-left-alignment of a text within the template having <a class="reference internal" href="#tgt-variable"><span class="std std-ref">variables</span></a> filled with
-values of different character lengths.</p>
-<p>Blockie automatically scans the first character located right after this tag and counts the number
-of consecutive occurrences of this character until a different character is found. Then it
-maintains the column position of the different character regardless of the content generated
-on the line before this character.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Name        Surname     Role</span>
-<span class="s2">----------------------------</span>
-<span class="s2">&lt;CHARACTERS&gt;</span>
-<span class="s2">&lt;NAME&gt;&lt;+&gt;   &lt;SNAME&gt;&lt;+&gt;  &lt;ROLE&gt;</span>
-<span class="s2">&lt;/CHARACTERS&gt;&quot;&quot;&quot;</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;characters&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dave&quot;</span><span class="p">,</span> <span class="s2">&quot;sname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bowman&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;astronaut 1&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="s2">&quot;sname&quot;</span><span class="p">:</span> <span class="s2">&quot;Poole&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;astronaut 2&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Heywood&quot;</span><span class="p">,</span> <span class="s2">&quot;sname&quot;</span><span class="p">:</span> <span class="s2">&quot;Floyd&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;chairman of the US National Council of Astronautics&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;HAL&quot;</span><span class="p">,</span> <span class="s2">&quot;sname&quot;</span><span class="p">:</span> <span class="s2">&quot;9000&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;broken computer that can kill, but can&#39;t lie&quot;</span><span class="p">}]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name        Surname     Role
-----------------------------
-Dave        Bowman      astronaut 1
-Frank       Poole       astronaut 2
-Heywood     Floyd       chairman of the US National Council of Astronautics
-HAL         9000        broken computer that can kill, but can&#39;t lie
-</pre></div>
-</div>
-<p>An example illustrating the use of non-space characters for the left-alignment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Name            Phone number</span>
-<span class="s2">----------------------------</span>
-<span class="s2">&lt;PEOPLE&gt;</span>
-<span class="s2">&lt;NAME&gt;&lt;+&gt;.......&lt;PHONE&gt;</span>
-<span class="s2">&lt;/PEOPLE&gt;&quot;&quot;&quot;</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;people&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dave&quot;</span><span class="p">,</span> <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;0940 123 456&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;0933 987 654&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Heywood&quot;</span><span class="p">,</span> <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;0911 111 111&quot;</span><span class="p">}]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name            Phone number
-----------------------------
-Dave............0940 123 456
-Frank...........0933 987 654
-Heywood.........0911 111 111
-</pre></div>
-</div>
-</section>
-<section id="automatic-block-variable">
-<span id="tgt-auto-block-var"></span><h3><span class="section-number">2.6.2. </span>Automatic block variable<a class="headerlink" href="#automatic-block-variable" title="Link to this heading"></a></h3>
-<p>A <a class="reference internal" href="#tgt-block"><span class="std std-ref">block</span></a> content can be <a class="reference internal" href="#tgt-set-blk-cont"><span class="std std-ref">set</span></a> into a different location
-than its original location, or into multiple different locations within the template using a
-special tag having a <code class="docutils literal notranslate"><span class="pre">&lt;&#64;BLOCK_NAME&gt;</span></code> format. This so-called <em>block variable</em> acts as a target
-for a block content, while the original block is <a class="reference internal" href="#tgt-clear-blk"><span class="std std-ref">cleared</span></a>.</p>
-<p>The block variable can be useful for repeating the referenced content multiple times or for
-maintaining the <a class="reference internal" href="#tgt-auto-align-var"><span class="std std-ref">left-alignment</span></a> as illustrated in the example below.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;LIST&gt;</span>
-<span class="s2">&lt;IDX&gt;a)&lt;^IDX&gt;b)&lt;^IDX&gt;c)&lt;^IDX&gt;d)&lt;^IDX&gt;e)&lt;^IDX&gt;f)&lt;/IDX&gt;</span>
-<span class="s2">&lt;@IDX&gt; &lt;ITEM&gt;&lt;+&gt;        &lt;QTY&gt;</span>
-<span class="s2">&lt;/LIST&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;third&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>a) first                1
-b) second               2
-c) third                3
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The block variable tag(s) must be located within the parent block of a referenced block.</p>
-</div>
-</section>
-<section id="automatic-variation-block">
-<span id="tgt-auto-vari-block"></span><h3><span class="section-number">2.6.3. </span>Automatic variation block<a class="headerlink" href="#automatic-variation-block" title="Link to this heading"></a></h3>
-<p>With <a class="reference internal" href="#tgt-blk-cont-clone"><span class="std std-ref">cloned block contents</span></a> it is often useful to have some part of the
-block content to be different in the first and/or the last clone. An <em>automatic variation block</em>
-can be used to define such part of the content using a special <code class="docutils literal notranslate"><span class="pre">&lt;.&gt;</span></code> block tag having either two
-or three <a class="reference internal" href="#tgt-set-blk-cont-vari"><span class="std std-ref">content variations</span></a>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard</span> <span class="pre">content&lt;^.&gt;last</span> <span class="pre">content&lt;/.&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;.&gt;standard</span> <span class="pre">content&lt;^.&gt;last</span> <span class="pre">content&lt;^.&gt;first</span> <span class="pre">content&lt;/.&gt;</span></code></p></li>
-</ul>
-<p>Where the <code class="docutils literal notranslate"><span class="pre">standard</span> <span class="pre">content</span></code> is used in the second and second to last clones of a parent block,
-the <code class="docutils literal notranslate"><span class="pre">last</span> <span class="pre">content</span></code> is used in the last clone, and the <code class="docutils literal notranslate"><span class="pre">first</span> <span class="pre">content</span></code> is used in the first
-parent block content.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;Characters: &lt;CHARACTERS&gt;&lt;NAME&gt; &lt;SURNAME&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/CHARACTERS&gt;.&quot;</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;characters&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dave&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bowman&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Poole&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Heywood&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Floyd&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;HAL&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;9000&quot;</span><span class="p">}]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Characters: Dave Bowman, Frank Poole, Heywood Floyd, HAL 9000.
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;CHARACTERS&gt;</span>
-<span class="s2">&lt;.&gt;</span>
-<span class="s2">| &lt;NAME&gt;&lt;+&gt;     &lt;SURNAME&gt;&lt;+&gt; |</span>
-<span class="s2">&lt;^.&gt;</span>
-<span class="s2">| &lt;NAME&gt;&lt;+&gt;     &lt;SURNAME&gt;&lt;+&gt; |</span>
-<span class="s2">+----------------------------+</span>
-<span class="s2">&lt;^.&gt;</span>
-<span class="s2">+----------------------------+</span>
-<span class="s2">| &lt;NAME&gt;&lt;+&gt;     &lt;SURNAME&gt;&lt;+&gt; |</span>
-<span class="s2">&lt;/.&gt;</span>
-<span class="s2">&lt;/CHARACTERS&gt;&quot;&quot;&quot;</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;characters&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dave&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bowman&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Poole&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Heywood&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Floyd&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;HAL&quot;</span><span class="p">,</span> <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;9000&quot;</span><span class="p">}]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------------------------+
-| Dave          Bowman       |
-| Frank         Poole        |
-| Heywood       Floyd        |
-| HAL           9000         |
-+----------------------------+
-</pre></div>
-</div>
-</section>
 </section>
 </section>
 
@@ -535,8 +365,8 @@ parent block content.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="intro.html" class="btn btn-neutral float-left" title="1. Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="man_fill.html" class="btn btn-neutral float-right" title="3. Manual template filling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="principles.html" class="btn btn-neutral float-left" title="2. Overview of principles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autoelems.html" class="btn btn-neutral float-right" title="4. Automatic variables and blocks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
