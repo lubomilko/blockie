@@ -103,6 +103,24 @@ def demo_set_block_vari_3() -> None:
 
 
 def demo_set_block_fill_hndl() -> None:
+    def format_date(_block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        if isinstance(data["month"], str) and not data["month"].isdigit():
+            # If month is specified by its name,
+            # then make it uppercase and set the date format to: <MONTH> <DAY>
+            data["month"] = data["month"].upper()
+            data["date"] = 1
+        else:
+            # Set the date format to: <DAY>.<MONTH>.
+            data["date"] = 0
+
+    blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
+    blk.fill({"day": 24, "month": "December", "fill_hndl": format_date})
+    print(blk.content)
+    # prints:
+    # The date is: DECEMBER 24
+
+
+def demo_set_block_fill_hndl_manual() -> None:
     def format_date(block: blockie.Block, data: dict, _clone_subidx: int) -> None:
         if isinstance(data["month"], str) and not data["month"].isdigit():
             # If month is specified by its name,
@@ -114,10 +132,10 @@ def demo_set_block_fill_hndl() -> None:
             block.get_subblock("date").set(vari_idx=0)
 
     blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
-    blk.fill({"day": 24, "month": "December", "fill_hndl": format_date})
+    blk.fill({"day": 24, "month": 12, "fill_hndl": format_date})
     print(blk.content)
     # prints:
-    # The date is: DECEMBER 24
+    # The date is: 24.12.
 
 
 def demo_clear_var() -> None:
@@ -308,6 +326,7 @@ if __name__ == "__main__":
     demo_set_block_vari_2()
     demo_set_block_vari_3()
     demo_set_block_fill_hndl()
+    demo_set_block_fill_hndl_manual()
     demo_clear_var()
     demo_clear_block()
     demo_ref_var()
