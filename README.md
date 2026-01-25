@@ -1,4 +1,6 @@
-# Blockie - introduction
+# Blockie - Lightweight Python template engine
+
+## Introduction
 
 [Blockie](https://github.com/lubomilko/blockie) is a lightweight, fast, universal and easy to
 use low-level Python-based template engine. It was developed as an expandable solution with
@@ -83,3 +85,26 @@ Any required additional template filling logic can be implemented within the Pyt
 by restructuring the original input data and/or using the low-level manual filling functions
 provided by the Blockie module to precisely control the content generation. The script can also
 configure a different format of template tags.
+
+
+## License
+
+> Blockie - Lightweight Python template engine.
+> 
+> Copyright (C) 2025 Lubomir Milko
+> This file is part of blockie <https://github.com/lubomilko/blockie>.
+> 
+> No generative artificial intelligence (AI) was used in the development process.
+> 
+> This program is free software: you can redistribute it and/or modify
+> it under the terms of the GNU General Public License as published by
+> the Free Software Foundation, either version 3 of the License, or
+> (at your option) any later version.
+> 
+> This program is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+> GNU General Public License for more details.
+> 
+> You should have received a copy of the GNU General Public License
+> along with this program. If not, see <https://www.gnu.org/licenses/>.
