@@ -8,8 +8,8 @@ sys.path.insert(0, f"{sys.path[0]}/../src")
 import blockie      # pylint: disable = wrong-import-position   # noqa E402
 
 
-def demo_shoplist_basic() -> None:
-    template = """demo_shoplist_basic:
+def demo_shoplist_basic_1() -> None:
+    template = """demo_shoplist_basic_1:
                 SHOPPING LIST
   Items                             Quantity
 --------------------------------------------
@@ -32,6 +32,33 @@ Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     blk = blockie.Block(template)
     blk.fill(data)
     print(blk.content)
+
+
+def demo_shoplist_basic_2() -> None:
+    template = """demo_shoplist_basic_2:
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+
+Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
+"""
+
+    data = {
+        "items": [
+            {"item": "potatoes", "qty": 2, "unit": 0},
+            {"item": "rice", "qty": 1, "unit": 0},
+            {"item": "orange juice", "qty": 1, "unit": 1},
+            {"item": "cooking magazine", "qty": None, "unit": None},
+        ]
+    }
+
+    # User-defined template filling script:
+    blk = blockie.Block(template)   # 1. Create the primary block and load its template.
+    blk.fill(data)                  # 2. Fill the template blocks and variables with data values.
+    print(blk.content)              # 3. Get the generated content from the primary block.
 
 
 def demo_shoplist_advanced() -> None:
@@ -480,7 +507,8 @@ def demo_references() -> None:
 
 
 if __name__ == "__main__":
-    demo_shoplist_basic()
+    demo_shoplist_basic_1()
+    demo_shoplist_basic_2()
     demo_shoplist_advanced()
     demo_shoplist_basic_obj()
     demo_shoplist_advanced_custom_cfg()
