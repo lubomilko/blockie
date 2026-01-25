@@ -1,0 +1,69 @@
+{
+    "books":
+    [
+        {
+            "title":
+            {
+                "english": "Robur the Conqueror",
+                "original": "Robur-le-Conquérant"
+            },
+            "author":
+            {
+                "name": "Jules",
+                "surname": "Verne",
+                "period":
+                {
+                    "birth": 1828,
+                    "death": 1905
+                },
+                "full_info": "<AUTHOR><NAME> <SURNAME> (<PERIOD.BIRTH>-<PERIOD.DEATH>)</AUTHOR>"
+            },
+            "genre": "science fiction novel",
+            "publication":
+            {
+                "isbn": "3750246963",
+                "publisher": "epubli",
+                "date":
+                {
+                    "year": 2019,
+                    "month": 10,
+                    "day": 29
+                },
+                "language": "english",
+                "page_num": 184
+            }
+        },
+        {
+            "title":
+            {
+                "english": "I, Robot",
+                "original": ""
+            },
+            "author":
+            {
+                "name": "Isaac",
+                "surname": "Asimov",
+                "period":
+                {
+                    "birth": 1920,
+                    "death": 1992
+                },
+                "full_info": "<AUTHOR><NAME> <SURNAME> (<PERIOD.BIRTH>-<PERIOD.DEATH>)</AUTHOR>"
+            },
+            "genre": "science fiction short stories",
+            "publication":
+            {
+                "isbn": "0008279551",
+                "publisher": "HarperCollins",
+                "date":
+                {
+                    "year": 2018,
+                    "month": 5,
+                    "day": 1
+                },
+                "language": "english",
+                "page_num": 256
+            }
+        }
+    ]
+}

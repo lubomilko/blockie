@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; Blockie 1.1.0 documentation</title>
+  <title>1. Introduction &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=fc837d61"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Template tags" href="tags.html" />
+    <link rel="next" title="2. Overview of principles" href="principles.html" />
     <link rel="prev" title="Blockie" href="index.html" /> 
 </head>
 
@@ -44,15 +44,17 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">1.1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart">1.2. Quickstart</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -69,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>Introduction</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,48 +82,77 @@
            <div itemprop="articleBody">
              
   <section id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is an extremely lightweight and simple universal
-Python-based template engine. It can generate various types of text-based content, e.g., standard
-text, source code, data files or markup language content like HTML, XML or markdown.</p>
-<p>Blockie is a minimalistic answer to the existing popular template engines that are usually bulky
-and difficult to use, requiring users to learn a template language and other complex principles,
-with templates often approaching the form of a source code. Many template-based projects do not
-need such complexity, and Blockie offers a much simpler approach with only a few simple but
-extremely multipurpose principles and clean, logicless templates. If a more advanced
-template-filling logic is needed, then it is expected to be defined directly within the
-user-defined Python script, which avoids the need for a custom template language.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The reasoning behind using a standard Python script to control certain parts of the template
-filling is that the input data in many cases need some additional processing anyway, so
-the commands that other template engines define through custom logic constructs within a
-template itself, can just as well be located directly within the script that loads the
-template, provides the input data, and potentially performs additional processing, etc.</p>
-</div>
-<p>The block diagram below illustrates the fairly standard process of generating the content from a
-template using values defined in the input data:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+----------+   +------------+
-| template |   | input data |
-+----------+   +------------+
-      |              |
-      V              V
-  +-----------------------+
-  | Python filling script |
-  |     using blockie     |
-  +-----------------------+
-              |
-              V
-    +-------------------+
-    | generated content |
-    +-------------------+
+<h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, fast, universal and easy to
+use low-level Python-based template engine. It was developed as an expandable solution with
+uncluttered templates for the generation of any type of text-based content, including a
+standard text, markup language, source code, and various data files.</p>
+<p>Blockie uses simple logicless templates consisting of two types of elements: <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and
+blocks</span></a>. In most cases, the logic of filling the template can be <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">driven by the
+input data</span></a> structure and values. No custom script-like statements are needed.
+However, an additional logic can be implemented directly in the Python script running the template
+filling process.</p>
+<section id="installation">
+<h2><span class="section-number">1.1. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>The Blockie package can be installed from the <a class="reference external" href="https://pypi.org/project/blockie/">Python Package Index</a> using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> console
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; pip install blockie</span>
 </pre></div>
 </div>
+</section>
 <section id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>For a quick overview, jump straight to the <a class="reference internal" href="autofill.html#tgt-auto-fill-basic-example"><span class="std std-ref">basic example</span></a> or
-even to the more <a class="reference internal" href="autofill.html#tgt-auto-fill-advanced-example"><span class="std std-ref">advanced example</span></a> that illustrates the
-most important principles of Blockie.</p>
+<h2><span class="section-number">1.2. </span>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
+<p>The content generation follows the sequence below:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>template + input data -&gt; Python filling script -&gt; generated content
+</pre></div>
+</div>
+<p>In the simplest form, the user-defined <em>Python filling script</em> can be a set of just three commands
+illustrated in the example below that shows the most important principles of the <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven
+template filling</span></a> used by Blockie for the input data provided in form of an
+appropriately structured Python dictionary or a struct-like object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                SHOPPING LIST</span>
+<span class="s2">  Items                             Quantity</span>
+<span class="s2">--------------------------------------------</span>
+<span class="s2">&lt;ITEMS&gt;</span>
+<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                         &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;/UNIT&gt;</span>
+<span class="s2">&lt;/ITEMS&gt;</span>
+
+<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># User-defined template filling script:</span>
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>   <span class="c1"># 1. Create the primary block and load its template.</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>                  <span class="c1"># 2. Fill the template blocks and variables with data values.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>              <span class="c1"># 3. Get the generated content from the primary block.</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* potatoes                          2 kg
+* rice                              1 kg
+* orange juice                      1 l
+* cooking magazine
+
+Short list: potatoes, rice, orange juice, cooking magazine
+</pre></div>
+</div>
+<p>Any required additional template filling logic can be implemented within the Python script either
+by restructuring the original input data and/or using the low-level <a class="reference internal" href="manfill.html#tgt-man-fill"><span class="std std-ref">manual filling</span></a> functions provided by the Blockie module to precisely control the content
+generation. The script can also <a class="reference internal" href="config_examples.html#tgt-config"><span class="std std-ref">configure</span></a> a different format of template tags.</p>
 </section>
 </section>
 
@@ -130,7 +161,7 @@ most important principles of Blockie.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Blockie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tags.html" class="btn btn-neutral float-right" title="Template tags" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="principles.html" class="btn btn-neutral float-right" title="2. Overview of principles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

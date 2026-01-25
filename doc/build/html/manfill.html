@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manual template filling &mdash; Blockie 1.1.0 documentation</title>
+  <title>5. Manual template filling &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=fc837d61"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Template format configuration" href="config.html" />
-    <link rel="prev" title="Automatic template filling" href="autofill.html" /> 
+    <link rel="next" title="6. Configuration and examples" href="config_examples.html" />
+    <link rel="prev" title="4. Automatic variables and blocks" href="autoelems.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,20 +44,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Manual template filling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#example-1">Example 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#example-2">Example 2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#example-3">Example 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Manual template filling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#block-object-methods">5.1. Block object methods</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -74,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Manual template filling</li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Manual template filling</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/manfill.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -85,154 +81,107 @@
            <div itemprop="articleBody">
              
   <section id="manual-template-filling">
-<span id="tgt-manual-fill"></span><h1>Manual template filling<a class="headerlink" href="#manual-template-filling" title="Link to this heading"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Filling the templates manually is not needed in a vast majority of common use cases and an
-<a class="reference internal" href="autofill.html#tgt-auto-fill"><span class="std std-ref">automated process</span></a> described before should be preferred.</p>
-<p>The manual template filling process also requires a deeper knowledge of blockie and a
-description of all aspects of this process is beyond the current scope of this document.
-However, the examples in this chapter show some of the basic principles and further reading
-of the <a class="reference internal" href="api.html#tgt-api"><span class="std std-ref">API</span></a> and experimentation is encouraged.</p>
-</div>
-<p>The manual generation of content provides more low-level control over the way the data are being
-filled into the template and allows to perform certain special operations that are otherwise not
-possible. It relies on a manual execution of mainly the following <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods
-in a template filling script:</p>
+<span id="tgt-man-fill"></span><h1><span class="section-number">5. </span>Manual template filling<a class="headerlink" href="#manual-template-filling" title="Link to this heading"></a></h1>
+<section id="block-object-methods">
+<h2><span class="section-number">5.1. </span>Block object methods<a class="headerlink" href="#block-object-methods" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object allows to perform direct manual operations with the template
+<a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and blocks</span></a> using its attributes and methods described in the
+<a class="reference internal" href="api.html#tgt-api"><span class="std std-ref">API</span></a> section.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="api.html#blockie.Block.get_subblock" title="blockie.Block.get_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a>: Loading a block from a template into the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a>
-object.</p></li>
-<li><p><a class="reference internal" href="api.html#blockie.Block.set_variables" title="blockie.Block.set_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set_variables()</span></code></a>: Setting variable values.</p></li>
-<li><p><a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.set_subblock" title="blockie.Block.set_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set_subblock()</span></code></a>: Setting the content of blocks into
-the generated content.</p></li>
-<li><p><a class="reference internal" href="api.html#blockie.Block.clone" title="blockie.Block.clone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clone()</span></code></a>: Cloning the content of a block.</p></li>
-<li><p><a class="reference internal" href="api.html#blockie.Block.clear_variables" title="blockie.Block.clear_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear_variables()</span></code></a>: Removing variable from the generated content.</p></li>
-<li><p><a class="reference internal" href="api.html#blockie.Block.clear" title="blockie.Block.clear"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.clear_subblock" title="blockie.Block.clear_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear_subblock()</span></code></a>: Removing blocks from the
-generated content.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> <strong>attributes</strong>:</p>
+<ul>
+<li><p><a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a>: The text template of the block containing other subblocks and
+variables.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.content" title="blockie.Block.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.content</span></code></a>: The text content generated from the template by the
+<a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> methods.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.name" title="blockie.Block.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.name</span></code></a>: The name corresponding to the name of the block tags.</p></li>
 </ul>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<p>The following examples briefly illustrate the manual template filling process.</p>
-<section id="example-1">
-<h3>Example 1<a class="headerlink" href="#example-1" title="Link to this heading"></a></h3>
+</li>
+<li><p><a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> <strong>methods</strong>:</p>
+<ul>
+<li><p><a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a>: Fills the block template in a semi-automated way using the
+provided input data, as described in the <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">Data-driven template filling</span></a> section.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.get_subblock" title="blockie.Block.get_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a>: Loads a child block from this block’s content into another
+<a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.set_variables" title="blockie.Block.set_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set_variables()</span></code></a>: Sets the variables within the content of this block to
+the specified values.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.set_subblock" title="blockie.Block.set_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set_subblock()</span></code></a>: Sets the finalized block content
+into the content of its parent block.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.clone" title="blockie.Block.clone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clone()</span></code></a>: Duplicates the block template.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.clear_variables" title="blockie.Block.clear_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear_variables()</span></code></a>: Removes the variables from the content of this block.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.clear" title="blockie.Block.clear"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.clear()</span></code></a>: Removes the content of this block from its parent block content.</p></li>
+<li><p><a class="reference internal" href="api.html#blockie.Block.reset" title="blockie.Block.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.reset()</span></code></a>: Resets the block content to its template.</p></li>
+</ul>
+</li>
+</ul>
+<p>The following example illustrates the use of <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object methods to fill the
+template manually.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            SHOPPING LIST</span>
-<span class="s2">  Items                                                         Quantity</span>
-<span class="s2">------------------------------------------------------------------------</span>
+<span class="s2">            SHOPPING LIST</span>
+<span class="s2">  Items                             Quantity</span>
+<span class="s2">--------------------------------------------</span>
 <span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;FLAG&gt;IMPORTANT! &lt;^FLAG&gt;MAYBE? &lt;/FLAG&gt;&lt;ITEM&gt;&lt;+&gt;               &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;/UNIT&gt;</span>
+<span class="s2">&lt;FLAG&gt;IMPORTANT! &lt;^FLAG&gt;MAYBE? &lt;/FLAG&gt;</span>
+<span class="s2">* &lt;@FLAG&gt;&lt;ITEM&gt;&lt;+&gt;                  &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;/UNIT&gt;</span>
 <span class="s2">&lt;/ITEMS&gt;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="c1">#   flag,   item,               qty,    unit</span>
+<span class="c1">#   flag, item,               qty, unit</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>    <span class="s2">&quot;apples&quot;</span><span class="p">,</span>           <span class="s2">&quot;1&quot;</span><span class="p">,</span>    <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">0</span><span class="p">,</span>     <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span>         <span class="s2">&quot;2&quot;</span><span class="p">,</span>    <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>    <span class="s2">&quot;rice&quot;</span><span class="p">,</span>             <span class="s2">&quot;1&quot;</span><span class="p">,</span>    <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>    <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span>     <span class="s2">&quot;1&quot;</span><span class="p">,</span>    <span class="mi">1</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">1</span><span class="p">,</span>     <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>     <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="s2">&quot;apples&quot;</span><span class="p">,</span>           <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span>         <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="s2">&quot;rice&quot;</span><span class="p">,</span>             <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span>     <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">blk_template</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
 <span class="n">blk_items</span> <span class="o">=</span> <span class="n">blk_template</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
-<span class="p">[</span><span class="n">blk_flag</span><span class="p">,</span> <span class="n">blk_unit</span><span class="p">]</span> <span class="o">=</span> <span class="n">blk_items</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;flag&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">blk_flag</span><span class="p">,</span> <span class="n">blk_unit</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">blk_items</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;flag&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">)]</span>
 
-<span class="k">for</span> <span class="n">data_item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-    <span class="n">blk_items</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">data_item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">qty</span><span class="o">=</span><span class="n">data_item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">blk_flag</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">blk_unit</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data_item</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">item_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">blk_items</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">item_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">qty</span><span class="o">=</span><span class="n">item_data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">blk_flag</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="n">item_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;!&quot;</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">item_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;?&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">blk_unit</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">item_data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
     <span class="n">blk_items</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
 <span class="n">blk_items</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk_template</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Generated content output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* IMPORTANT! potatoes                                           2 kg
-* rice                                                          1 kg
-* orange juice                                                  1 l
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* apples                            1 kg
+* IMPORTANT! potatoes               2 kg
+* rice                              1 kg
+* orange juice                      1 l
 * MAYBE? cooking magazine
 </pre></div>
 </div>
-</section>
-<section id="example-2">
-<h3>Example 2<a class="headerlink" href="#example-2" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            SHOPPING LIST</span>
-<span class="s2">  Items                                                         Quantity</span>
-<span class="s2">------------------------------------------------------------------------</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                                                     &lt;QTY&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<p>Filling the whole templates manually is typically not needed and a <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven approach</span></a> should be preferred. However, the <a class="reference internal" href="datafill.html#tgt-fill-hndl"><span class="std std-ref">block fill handler</span></a>
+can be utilized to perform more complex manual operations or to implement custom <a class="reference internal" href="config_examples.html#tgt-extensions"><span class="std std-ref">extensions</span></a> that are not possible with the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method alone.</p>
+<p>The example below shows the use of <a class="reference internal" href="api.html#blockie.Block.get_subblock" title="blockie.Block.get_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a>
+methods within the <a class="reference internal" href="datafill.html#tgt-fill-hndl"><span class="std std-ref">block fill handler</span></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_date</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="c1"># If month is specified by its name,</span>
+        <span class="c1"># then make it uppercase and set the date format to: &lt;MONTH&gt; &lt;DAY&gt;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Set the date format to: &lt;DAY&gt;.&lt;MONTH&gt;.</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1">#   item,                   qty</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s2">&quot;apples&quot;</span><span class="p">,</span>              <span class="s2">&quot;1 kg&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;potatoes&quot;</span><span class="p">,</span>            <span class="s2">&quot;2 kg&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;rice&quot;</span><span class="p">,</span>                <span class="s2">&quot;1 kg&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;orange juice&quot;</span><span class="p">,</span>        <span class="s2">&quot;1 l&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span>    <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="n">blk_template</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk_items</span> <span class="o">=</span> <span class="n">blk_template</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">data_item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-    <span class="n">blk_items</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">autoclone</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">data_item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">qty</span><span class="o">=</span><span class="n">data_item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">blk_items</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk_template</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_date</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Generated content output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* potatoes                                                      2 kg
-* rice                                                          1 kg
-* orange juice                                                  1 l
-* cooking magazine
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: 24.12.
 </pre></div>
 </div>
-</section>
-<section id="example-3">
-<h3>Example 3<a class="headerlink" href="#example-3" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            SHOPPING LIST</span>
-<span class="s2">  Items                                                         Quantity</span>
-<span class="s2">------------------------------------------------------------------------</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                                                     &lt;QTY&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">data_item</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">)</span>
-<span class="n">data_qty</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;1 kg&quot;</span><span class="p">,</span> <span class="s2">&quot;2 kg&quot;</span><span class="p">,</span> <span class="s2">&quot;1 kg&quot;</span><span class="p">,</span> <span class="s2">&quot;1 l&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-<span class="n">blk_template</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk_items</span> <span class="o">=</span> <span class="n">blk_template</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
-
-<span class="n">blk_items</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">data_item</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="n">data_qty</span><span class="p">)</span>
-<span class="n">blk_items</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk_template</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Generated content output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* potatoes                                                      2 kg
-* rice                                                          1 kg
-* orange juice                                                  1 l
-* cooking magazine
-</pre></div>
-</div>
-</section>
 </section>
 </section>
 
@@ -240,8 +189,8 @@ generated content.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="autofill.html" class="btn btn-neutral float-left" title="Automatic template filling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="config.html" class="btn btn-neutral float-right" title="Template format configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="autoelems.html" class="btn btn-neutral float-left" title="4. Automatic variables and blocks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config_examples.html" class="btn btn-neutral float-right" title="6. Configuration and examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
