@@ -2,15 +2,16 @@
 Introduction
 ###################################################################################################
 
-`Blockie <https://github.com/lubomilko/blockie>`_ is a lightweight, fast, universal and easy to
-use Python-based template engine. It was developed as a lower-level and generic solution for the
-generation of any type of text-based content including a standard text, markup language, source
-code, and various data files without using complex program-like logic constructs in the templates.
+`Blockie <https://github.com/lubomilko/blockie>`__ is a lightweight, fast, universal and easy to
+use low-level Python-based template engine. It was developed as an expandable solution with
+uncluttered templates for the generation of any type of text-based content, including a
+standard text, markup language, source code, and various data files.
 
 Blockie uses simple logicless templates consisting of two types of elements: :ref:`variables and
 blocks <tgt_tags>`. In most cases, the logic of filling the template can be :ref:`driven by the
-input data <tgt_data_fill>`. No custom script-like statements are needed. However, an additional
-logic can be implemented directly in the Python script executing the template filling process.
+input data <tgt_data_fill>` structure and values. No custom script-like statements are needed.
+However, an additional logic can be implemented directly in the Python script running the template
+filling process.
 
 
 ***************************************************************************************************
@@ -23,23 +24,23 @@ command:
 
 .. code-block:: console
 
-    pip install blockie
+    > pip install blockie
 
 
 ***************************************************************************************************
 Quickstart
 ***************************************************************************************************
 
-The content generation follows the following sequence:
+The content generation follows the sequence below:
 
 .. code-block:: text
 
     template + input data -> Python filling script -> generated content
 
-In the simplest form, the user-defined *Python filling script* is just a set of three commands
-illustrated in the example below using a more complex template to show most of the
-:ref:`data-driven template filling <tgt_data_fill>` concepts used by Blockie for the input data
-provided in form of an appropriately structured Python dictionary or a struct-like object.
+In the simplest form, the user-defined *Python filling script* can be a set of just three commands
+illustrated in the example below that shows the most important principles of the :ref:`data-driven
+template filling <tgt_data_fill>` used by Blockie for the input data provided in form of an
+appropriately structured Python dictionary or a struct-like object.
 
 .. code-block:: python
 
@@ -50,22 +51,18 @@ provided in form of an appropriately structured Python dictionary or a struct-li
       Items                             Quantity
     --------------------------------------------
     <ITEMS>
-    <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG>
-    * <@FLAG><ITEM><+>                  <QTY><UNIT> kg<^UNIT> l<^UNIT> m</UNIT>
-    <ALTS><.><*>, <^.><*><^.>  - Alternatives: <*>, </.></ALTS>
+    * <ITEM><+>                         <QTY><UNIT> kg<^UNIT> l</UNIT>
     </ITEMS>
     
-    Short list: <ITEMS><ITEM><FLAG>!<^FLAG>?</FLAG><.>, <^.></.></ITEMS>
+    Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
     """
 
     data = {
         "items": [
-            {"flag": 0, "item": "potatoes", "qty": "2", "unit": 0, "alts": None},
-            {"flag": 0, "item": "rice", "qty": "1", "unit": 0, "alts": None},
-            {"flag": None, "item": "orange juice", "qty": "1", "unit": 1,
-             "alts": ["apple juice", "fruit mix juice", "cola"]},
-            {"flag": None, "item": "duct tape", "qty": "50", "unit": 2, "alts": None},
-            {"flag": 1, "item": "cooking magazine", "qty": None, "unit": None, "alts": None}
+            {"item": "potatoes", "qty": 2, "unit": 0},
+            {"item": "rice", "qty": 1, "unit": 0},
+            {"item": "orange juice", "qty": 1, "unit": 1},
+            {"item": "cooking magazine", "qty": None, "unit": None},
         ]
     }
 
@@ -81,14 +78,12 @@ Output:
                     SHOPPING LIST
       Items                             Quantity
     --------------------------------------------
-    * IMPORTANT! potatoes               2 kg
-    * IMPORTANT! rice                   1 kg
+    * potatoes                          2 kg
+    * rice                              1 kg
     * orange juice                      1 l
-      - Alternatives: apple juice, fruit mix juice, cola
-    * duct tape                         50 m
-    * MAYBE? cooking magazine
+    * cooking magazine
     
-    Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
+    Short list: potatoes, rice, orange juice, cooking magazine
 
 Any required additional template filling logic can be implemented within the Python script either
 by restructuring the original input data and/or using the low-level :ref:`manual filling

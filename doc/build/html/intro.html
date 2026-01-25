@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>1. Introduction &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=fc837d61"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -84,31 +84,32 @@
   <section id="introduction">
 <h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/lubomilko/blockie">Blockie</a> is a lightweight, fast, universal and easy to
-use Python-based template engine. It was developed as a lower-level and generic solution for the
-generation of any type of text-based content including a standard text, markup language, source
-code, and various data files without using complex program-like logic constructs in the templates.</p>
+use low-level Python-based template engine. It was developed as an expandable solution with
+uncluttered templates for the generation of any type of text-based content, including a
+standard text, markup language, source code, and various data files.</p>
 <p>Blockie uses simple logicless templates consisting of two types of elements: <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and
 blocks</span></a>. In most cases, the logic of filling the template can be <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">driven by the
-input data</span></a>. No custom script-like statements are needed. However, an additional
-logic can be implemented directly in the Python script executing the template filling process.</p>
+input data</span></a> structure and values. No custom script-like statements are needed.
+However, an additional logic can be implemented directly in the Python script running the template
+filling process.</p>
 <section id="installation">
 <h2><span class="section-number">1.1. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <p>The Blockie package can be installed from the <a class="reference external" href="https://pypi.org/project/blockie/">Python Package Index</a> using the <a class="reference external" href="https://pypi.org/project/pip/">pip</a> console
 command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install blockie</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; pip install blockie</span>
 </pre></div>
 </div>
 </section>
 <section id="quickstart">
 <h2><span class="section-number">1.2. </span>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>The content generation follows the following sequence:</p>
+<p>The content generation follows the sequence below:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>template + input data -&gt; Python filling script -&gt; generated content
 </pre></div>
 </div>
-<p>In the simplest form, the user-defined <em>Python filling script</em> is just a set of three commands
-illustrated in the example below using a more complex template to show most of the
-<a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven template filling</span></a> concepts used by Blockie for the input data
-provided in form of an appropriately structured Python dictionary or a struct-like object.</p>
+<p>In the simplest form, the user-defined <em>Python filling script</em> can be a set of just three commands
+illustrated in the example below that shows the most important principles of the <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven
+template filling</span></a> used by Blockie for the input data provided in form of an
+appropriately structured Python dictionary or a struct-like object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">blockie</span>
 
 <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -116,22 +117,18 @@ provided in form of an appropriately structured Python dictionary or a struct-li
 <span class="s2">  Items                             Quantity</span>
 <span class="s2">--------------------------------------------</span>
 <span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">&lt;FLAG&gt;IMPORTANT! &lt;^FLAG&gt;MAYBE? &lt;/FLAG&gt;</span>
-<span class="s2">* &lt;@FLAG&gt;&lt;ITEM&gt;&lt;+&gt;                  &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;^UNIT&gt; m&lt;/UNIT&gt;</span>
-<span class="s2">&lt;ALTS&gt;&lt;.&gt;&lt;*&gt;, &lt;^.&gt;&lt;*&gt;&lt;^.&gt;  - Alternatives: &lt;*&gt;, &lt;/.&gt;&lt;/ALTS&gt;</span>
+<span class="s2">* &lt;ITEM&gt;&lt;+&gt;                         &lt;QTY&gt;&lt;UNIT&gt; kg&lt;^UNIT&gt; l&lt;/UNIT&gt;</span>
 <span class="s2">&lt;/ITEMS&gt;</span>
 
-<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;FLAG&gt;!&lt;^FLAG&gt;?&lt;/FLAG&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
+<span class="s2">Short list: &lt;ITEMS&gt;&lt;ITEM&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-         <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple juice&quot;</span><span class="p">,</span> <span class="s2">&quot;fruit mix juice&quot;</span><span class="p">,</span> <span class="s2">&quot;cola&quot;</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;duct tape&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;alts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;potatoes&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;rice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;orange juice&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;cooking magazine&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
     <span class="p">]</span>
 <span class="p">}</span>
 
@@ -145,14 +142,12 @@ provided in form of an appropriately structured Python dictionary or a struct-li
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                SHOPPING LIST
   Items                             Quantity
 --------------------------------------------
-* IMPORTANT! potatoes               2 kg
-* IMPORTANT! rice                   1 kg
+* potatoes                          2 kg
+* rice                              1 kg
 * orange juice                      1 l
-  - Alternatives: apple juice, fruit mix juice, cola
-* duct tape                         50 m
-* MAYBE? cooking magazine
+* cooking magazine
 
-Short list: potatoes!, rice!, orange juice, duct tape, cooking magazine?
+Short list: potatoes, rice, orange juice, cooking magazine
 </pre></div>
 </div>
 <p>Any required additional template filling logic can be implemented within the Python script either

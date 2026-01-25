@@ -9,19 +9,23 @@ Tags configuration
 ***************************************************************************************************
 
 The format of :ref:`tags <tgt_tags>` in a template, together with other settings, can be
-configured by the configuration object of the :py:class:`.BlockConfig` class.
+configured by the :py:class:`.BlockConfig` configuration object.
 
-The configuration object attributes define the format of :ref:`primary tags <tgt_tags>`
+The configuration object attributes define the format of :ref:`template tags <tgt_tags>`
 using functions defining how a template tag string is generated from a tag name. The most
 straightforward way to define these tag generators is to use the *lamba* functions.
 
 The tabulator size attribute is used by the :ref:`alignment autotag <tgt_auto_align_var>` when
 tabulators are used for the alignment.
 
-The created :py:class:`.BlockConfig` object can be either assigned directly to the
-:py:attr:`.Block.config` attribute or it can be assigned in the :py:class:`.Block` object
-constructor :py:meth:`.Block.__init__`. All child blocks of a configured block will automatically
-use the same configuration.
+The block configuration can be modified by the :py:attr:`.Block.config` attribute. Alternatively,
+a :py:class:`.BlockConfig` object can be created and set as an attribute to the :py:class:`.Block`
+object constructor or assigned to the :py:attr:`.Block.config` attribute.
+
+All child :py:class:`.Block` objects use the same configuration as their parent block.
+
+A simple demo function using the custom tag format configuration can be found in the
+:ref:`examples <tgt_examples>` listed in the following section.
 
 
 .. _tgt_examples:
@@ -30,8 +34,8 @@ use the same configuration.
 Examples
 ***************************************************************************************************
 
-The *samples/demo_advanced.py* file, provides various examples that should serve as an additional
-source of information and inspiration for further experimentation.
+The *demo_advanced.py* file in the *samples* directory provides various examples that should serve
+as an additional source of information and inspiration for further experimentation.
 
 The most important demo functions are:
 

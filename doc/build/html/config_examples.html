@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>6. Configuration and examples &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=fc837d61"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -86,21 +86,23 @@
 <section id="tags-configuration">
 <h2><span class="section-number">6.1. </span>Tags configuration<a class="headerlink" href="#tags-configuration" title="Link to this heading"></a></h2>
 <p>The format of <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">tags</span></a> in a template, together with other settings, can be
-configured by the configuration object of the <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> class.</p>
-<p>The configuration object attributes define the format of <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">primary tags</span></a>
+configured by the <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> configuration object.</p>
+<p>The configuration object attributes define the format of <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">template tags</span></a>
 using functions defining how a template tag string is generated from a tag name. The most
 straightforward way to define these tag generators is to use the <em>lamba</em> functions.</p>
 <p>The tabulator size attribute is used by the <a class="reference internal" href="autoelems.html#tgt-auto-align-var"><span class="std std-ref">alignment autotag</span></a> when
 tabulators are used for the alignment.</p>
-<p>The created <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> object can be either assigned directly to the
-<a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a> attribute or it can be assigned in the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object
-constructor <a class="reference internal" href="api.html#blockie.Block.__init__" title="blockie.Block.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.__init__()</span></code></a>. All child blocks of a configured block will automatically
-use the same configuration.</p>
+<p>The block configuration can be modified by the <a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a> attribute. Alternatively,
+a <a class="reference internal" href="api.html#blockie.BlockConfig" title="blockie.BlockConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockConfig</span></code></a> object can be created and set as an attribute to the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a>
+object constructor or assigned to the <a class="reference internal" href="api.html#blockie.Block.config" title="blockie.Block.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.config</span></code></a> attribute.</p>
+<p>All child <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> objects use the same configuration as their parent block.</p>
+<p>A simple demo function using the custom tag format configuration can be found in the
+<a class="reference internal" href="#tgt-examples"><span class="std std-ref">examples</span></a> listed in the following section.</p>
 </section>
 <section id="examples">
 <span id="tgt-examples"></span><h2><span class="section-number">6.2. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<p>The <em>samples/demo_advanced.py</em> file, provides various examples that should serve as an additional
-source of information and inspiration for further experimentation.</p>
+<p>The <em>demo_advanced.py</em> file in the <em>samples</em> directory provides various examples that should serve
+as an additional source of information and inspiration for further experimentation.</p>
 <p>The most important demo functions are:</p>
 <ul class="simple">
 <li><p><strong>General examples</strong></p>
