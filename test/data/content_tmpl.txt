@@ -1,0 +1,95 @@
+<SIMPLE1>
+line<.>,<^.>.</.>
+</SIMPLE1>
+
+<SIMPLE2>
+</SIMPLE2>
+
+<TEST1>
+      <VAL>  
+    define val_<ID> =<+>                 <LABEL><.>,<^.><^.>.</.>
+      </VAL>	
+</TEST1>
+
+<TEST2>
+	<VAL>
+    define val_<ID> =<+>                 <LABEL><.>,<^.></.>
+	</VAL>
+</TEST2>
+
+<LINE1>
+<VAL><ID><.>, <^.></.></VAL><.>,<^.></.>
+<VAL><ID><.>, <^.></.></VAL><.>,<^.></.>
+</LINE1>
+
+<LINE2>
+	<VAL>val<.>, <^.></.></VAL><.>,<^.></.>
+	<.>
+	<SEP>
+	<^.>
+	++++++++++++++++++++
+	<^.>
+	--------------------
+	</.>
+</LINE2>
+
+<LINE3>
+	<VAL><DEF><ID><^DEF>(<ID>)</DEF><.>, <^.></.></VAL><.>,<^.></.>
+</LINE3>
+
+<CONTAINER>
+	<LINE4>
+	<VAL>val<.>, <^.></.></VAL><.>,<^.></.>
+	</LINE4>
+</CONTAINER>
+
+const EEP_PARAM_DATA_T app_mirror_as<SECT_NAME>[<SECT_ORIG_NAME>_ARR_SIZE_D] =
+{
+	<BLK_PRM>
+	{data_EE_<ARR>HNDL_<PRM_NAME>_D, <NO_ARR>NO_ARRAY_D</NO_ARR><ARR_DEF>(UNSIGNED8)<SIZE></ARR_DEF>}<.>,<^.></.>
+	</BLK_PRM>
+};
+
+<LOOP_TEST><TEST>111<A><B><^TEST>222<A><B><^TEST>333<A><B></TEST><.>,<^.></.></LOOP_TEST>
+
+
+<MULTI1>
+<BLK>variation 1<^BLK>var2<^BLK>3</BLK><.>,<^.>.</.><+>	further text
+</MULTI1>
+
+<MULTI2>
+<BLK>
+abc_<A><.>,<^.>.</.><+>									further text
+<^BLK>
+defghiabc_<A><.>,<^.>.</.><+>							further text
+<^BLK>
+jklmnopqrabc_<A><.>,<^.>.</.><+>						further text
+</BLK>
+</MULTI2>
+
+<TABLE>
+----------------------------------
+<ROW>
+| <A><+>   | <B><+>   | <C><+>   |
+</ROW>
+----------------------------------
+</TABLE>
+
+
+<HTML_TABLE>
+<table>
+<ROW>
+    <tr>
+    <COL>
+        <.>
+        <td><VALUE><td>
+        <^.>
+        <td><VALUE><td>
+        <^.>
+        <th><VALUE><th>
+        </.>
+    </COL>
+    </tr>
+</ROW>
+</table>
+</HTML_TABLE>

@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Index &mdash; Blockie 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=fc837d61"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -41,12 +41,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tags.html">Template tags</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autofill.html">Automatic template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manfill.html">Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">Template format configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="principles.html">2. Overview of principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
         </div>
@@ -80,6 +81,7 @@
  | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -94,7 +96,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#blockie.Block.__init__">__init__() (blockie.Block method)</a>
+
+      <ul>
+        <li><a href="api.html#blockie.Block.FillState.__init__">(blockie.Block.FillState method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -105,9 +111,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#blockie.BlockConfig.autotag_vari">autotag_vari (blockie.BlockConfig attribute)</a>
+      <li><a href="api.html#blockie.BlockConfig.autotag_blk_var">autotag_blk_var (blockie.BlockConfig attribute)</a>
 </li>
-      <li><a href="api.html#blockie.Block.autotags">autotags (blockie.Block attribute)</a>
+      <li><a href="api.html#blockie.BlockConfig.autotag_vari">autotag_vari (blockie.BlockConfig attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -119,6 +125,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#blockie.Block.FillState">Block.FillState (class in blockie)</a>
+</li>
       <li><a href="api.html#blockie.BlockConfig">BlockConfig (class in blockie)</a>
 </li>
   </ul></td>
@@ -142,6 +150,14 @@
       <li><a href="api.html#blockie.Block.config">config (blockie.Block attribute)</a>
 </li>
       <li><a href="api.html#blockie.Block.content">content (blockie.Block attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#blockie.BlockConfig.enable_autotags">enable_autotags (blockie.BlockConfig attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -207,6 +223,8 @@
 </li>
       <li><a href="api.html#blockie.Block.set_variables">set_variables() (blockie.Block method)</a>
 </li>
+      <li><a href="api.html#blockie.BlockConfig.subelem_sep">subelem_sep (blockie.BlockConfig attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -224,6 +242,8 @@
       <li><a href="api.html#blockie.BlockConfig.tag_gen_blk_vari">tag_gen_blk_vari (blockie.BlockConfig attribute)</a>
 </li>
       <li><a href="api.html#blockie.BlockConfig.tag_gen_var">tag_gen_var (blockie.BlockConfig attribute)</a>
+</li>
+      <li><a href="api.html#blockie.BlockConfig.tag_implct_iter">tag_implct_iter (blockie.BlockConfig attribute)</a>
 </li>
       <li><a href="api.html#blockie.Block.template">template (blockie.Block property)</a>
 </li>

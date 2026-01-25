@@ -23,9 +23,7 @@ typedef struct
 
 set content
 
-
 another set content
-
 
 line one,
 line two,
