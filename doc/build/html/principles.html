@@ -54,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="datafill.html">3. Data-driven template filling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
@@ -112,13 +112,14 @@ by Blockie to precisely control the content generation.</p>
 <section id="template-tags">
 <span id="tgt-tags"></span><h2><span class="section-number">2.2. </span>Template tags<a class="headerlink" href="#template-tags" title="Link to this heading"></a></h2>
 <p>The variable elements of the template that can be filled with specific values from the input
-data are indicated by <em>tags</em>. The tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a>, and by default,
+data are indicated by <em>tags</em>. The tag format is <a class="reference internal" href="config_examples.html#tgt-config"><span class="std std-ref">configurable</span></a>, and by default,
 the tags have an XML-like format and their names use uppercase letters.</p>
 <p>The template can contain two primary non-constant elements defined by their corresponding tags:</p>
 <ul class="simple">
-<li><p><strong>Variables</strong> defined by a single tag, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p></li>
+<li><p><strong>Variables</strong>: The simplest modifiable parts of the template defined by a single tag, e.g.,
+<code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p></li>
 <li><p><strong>Blocks</strong>: Used for splitting the template into multiple hierarchical parts. A block is
-defined by the start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code> with a content between them
+defined by the start and end tags, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;LIST&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/LIST&gt;</span></code>, with a content between them
 consisting of a constant text, other child blocks and variables. The whole template is also
 considered to be a primary block despite not having any explicitly defined start and end tags.</p></li>
 </ul>

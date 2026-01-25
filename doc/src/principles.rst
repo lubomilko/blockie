@@ -44,9 +44,10 @@ the tags have an XML-like format and their names use uppercase letters.
 
 The template can contain two primary non-constant elements defined by their corresponding tags:
 
--   **Variables** defined by a single tag, e.g., ``<NAME>``.
+-   **Variables**: The simplest modifiable parts of the template defined by a single tag, e.g.,
+    ``<NAME>``.
 -   **Blocks**: Used for splitting the template into multiple hierarchical parts. A block is
-    defined by the start and end tags, e.g., ``<LIST> ... </LIST>`` with a content between them
+    defined by the start and end tags, e.g., ``<LIST> ... </LIST>``, with a content between them
     consisting of a constant text, other child blocks and variables. The whole template is also
     considered to be a primary block despite not having any explicitly defined start and end tags.
 

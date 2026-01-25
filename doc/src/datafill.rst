@@ -11,9 +11,8 @@ instructions in the templates or data values.
 The most straightforward way to fill the whole template is to load it into the primary
 :py:class:`.Block` object through its constructor or a :py:attr:`.Block.template` attribute and
 to use the :py:meth:`.Block.fill` method with an input data dictionary (``dict``) having keys
-corresponding to the template tag names (see :ref:`Setting block content <tgt_set_blk_cont>`
-section). The template tags are then replaced with the dictionary values in the generated
-:py:attr:`.Block.content` attribute.
+corresponding to the template :ref:`tag names <tgt_tags>`. The template tags are then replaced
+with the dictionary values in the generated :py:attr:`.Block.content` attribute.
 
 The tag references in the input data and Python filling script can use lowercase letters that
 are by default automatically converted to the corresponding uppercase tag names used in the
@@ -36,10 +35,6 @@ template.
 ***************************************************************************************************
 Variable operations
 ***************************************************************************************************
-
-Variables are the simplest modifiable parts of the template defined by a single tag, e.g.,
-``<NAME>``.
-
 
 Setting the variable value
 ===================================================================================================
@@ -246,6 +241,49 @@ Addtional features
 The :ref:`data-driven template filling <tgt_data_fill>` approach, i.e. usage of the
 :py:meth:`.Block.fill` method, also allows to use extended features of :ref:`variables and blocks
 <tgt_tags>` described in the subsequent sections.
+
+
+.. _tgt_fill_hndl:
+
+Block fill handler
+===================================================================================================
+
+A block can have a custom handler function assigned for performing special :ref:`data-driven
+<tgt_data_fill>` and also :ref:`manual <tgt_man_fill>` operations with the block content.
+
+This custom handler function can be assigned within the dictionary data defining the block content
+values using the special ``fill_hndl`` key with a value of a function having the following
+signature:
+
+.. code-block:: python
+
+    (block: Block, data: dict | object, clone_subidx: int) -> None
+
+The example below shows a simple ``format_date`` fill handler function setting the required
+date format based on the format of a month value specified in the input data (i.e., whether the
+month is specified using its name or number).
+
+.. code-block:: python
+
+    def format_date(_block: blockie.Block, data: dict, _clone_subidx: int) -> None:
+        if isinstance(data["month"], str) and not data["month"].isdigit():
+            # If month is specified by its name,
+            # then make it uppercase and set the date format to: <MONTH> <DAY>
+            data["month"] = data["month"].upper()
+            data["date"] = 1
+        else:
+            # Set the date format to: <DAY>.<MONTH>.
+            data["date"] = 0
+   
+    blk = blockie.Block("The date is: <DATE><DAY>.<MONTH>.<^DATE><MONTH> <DAY></DATE>")
+    blk.fill({"day": 24, "month": "December", "fill_hndl": format_date})
+    print(blk.content)
+
+Output:
+
+.. code-block:: text
+
+    The date is: DECEMBER 24
 
 
 Subelements

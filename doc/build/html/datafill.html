@@ -60,15 +60,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#addtional-features">3.3. Addtional features</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#subelements">3.3.1. Subelements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#variable-templates">3.3.2. Variable templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-fill-handler">3.3.1. Block fill handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subelements">3.3.2. Subelements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-templates">3.3.3. Variable templates</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manfill.html">5. Manual template filling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
@@ -104,9 +105,8 @@ instructions in the templates or data values.</p>
 <p>The most straightforward way to fill the whole template is to load it into the primary
 <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object through its constructor or a <a class="reference internal" href="api.html#blockie.Block.template" title="blockie.Block.template"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.template</span></code></a> attribute and
 to use the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method with an input data dictionary (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) having keys
-corresponding to the template tag names (see <a class="reference internal" href="#tgt-set-blk-cont"><span class="std std-ref">Setting block content</span></a>
-section). The template tags are then replaced with the dictionary values in the generated
-<a class="reference internal" href="api.html#blockie.Block.content" title="blockie.Block.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.content</span></code></a> attribute.</p>
+corresponding to the template <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">tag names</span></a>. The template tags are then replaced
+with the dictionary values in the generated <a class="reference internal" href="api.html#blockie.Block.content" title="blockie.Block.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Block.content</span></code></a> attribute.</p>
 <p>The tag references in the input data and Python filling script can use lowercase letters that
 are by default automatically converted to the corresponding uppercase tag names used in the
 template.</p>
@@ -114,7 +114,7 @@ template.</p>
 <p class="admonition-title">Important</p>
 <p>The tag format and automatic uppercase conversion described above is used in almost all
 examples within this document together with a Python dictionary used as a data input. However,
-the tag format is <a class="reference internal" href="config.html#tgt-config"><span class="std std-ref">configurable</span></a> and instead of a dictionary, it is also
+the tag format is <a class="reference internal" href="config_examples.html#tgt-config"><span class="std std-ref">configurable</span></a> and instead of a dictionary, it is also
 possible to use a struct-like object with attributes corresponding to the dictionary keys.</p>
 </div>
 <div class="admonition note">
@@ -123,8 +123,6 @@ possible to use a struct-like object with attributes corresponding to the dictio
 </div>
 <section id="variable-operations">
 <span id="tgt-variable-oper"></span><h2><span class="section-number">3.1. </span>Variable operations<a class="headerlink" href="#variable-operations" title="Link to this heading"></a></h2>
-<p>Variables are the simplest modifiable parts of the template defined by a single tag, e.g.,
-<code class="docutils literal notranslate"><span class="pre">&lt;NAME&gt;</span></code>.</p>
 <section id="setting-the-variable-value">
 <h3><span class="section-number">3.1.1. </span>Setting the variable value<a class="headerlink" href="#setting-the-variable-value" title="Link to this heading"></a></h3>
 <p>A variable can be <strong>set</strong> to the required value using a <strong>basic data type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>,
@@ -273,8 +271,40 @@ tuple</strong> (<code class="docutils literal notranslate"><span class="pre">{}<
 <span id="tgt-add-features"></span><h2><span class="section-number">3.3. </span>Addtional features<a class="headerlink" href="#addtional-features" title="Link to this heading"></a></h2>
 <p>The <a class="reference internal" href="#tgt-data-fill"><span class="std std-ref">data-driven template filling</span></a> approach, i.e. usage of the
 <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method, also allows to use extended features of <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">variables and blocks</span></a> described in the subsequent sections.</p>
+<section id="block-fill-handler">
+<span id="tgt-fill-hndl"></span><h3><span class="section-number">3.3.1. </span>Block fill handler<a class="headerlink" href="#block-fill-handler" title="Link to this heading"></a></h3>
+<p>A block can have a custom handler function assigned for performing special <a class="reference internal" href="#tgt-data-fill"><span class="std std-ref">data-driven</span></a> and also <a class="reference internal" href="manfill.html#tgt-man-fill"><span class="std std-ref">manual</span></a> operations with the block content.</p>
+<p>This custom handler function can be assigned within the dictionary data defining the block content
+values using the special <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key with a value of a function having the following
+signature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">object</span><span class="p">,</span> <span class="n">clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>The example below shows a simple <code class="docutils literal notranslate"><span class="pre">format_date</span></code> fill handler function setting the required
+date format based on the format of a month value specified in the input data (i.e., whether the
+month is specified using its name or number).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_date</span><span class="p">(</span><span class="n">_block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="c1"># If month is specified by its name,</span>
+        <span class="c1"># then make it uppercase and set the date format to: &lt;MONTH&gt; &lt;DAY&gt;</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Set the date format to: &lt;DAY&gt;.&lt;MONTH&gt;.</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_date</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: DECEMBER 24
+</pre></div>
+</div>
+</section>
 <section id="subelements">
-<h3><span class="section-number">3.3.1. </span>Subelements<a class="headerlink" href="#subelements" title="Link to this heading"></a></h3>
+<h3><span class="section-number">3.3.2. </span>Subelements<a class="headerlink" href="#subelements" title="Link to this heading"></a></h3>
 <p>Variables and blocks in a template can reference input data values defined for nested subblocks
 using a <code class="docutils literal notranslate"><span class="pre">.</span></code> (dot) operator. For example, a <code class="docutils literal notranslate"><span class="pre">&lt;BOOK.AUTHOR.NAME&gt;</span></code> tag is equivalent to
 <code class="docutils literal notranslate"><span class="pre">&lt;BOOK&gt;&lt;AUTHOR&gt;&lt;NAME&gt;&lt;/AUTHOR&gt;&lt;/BOOK&gt;</span></code> template.</p>
@@ -332,7 +362,7 @@ the top block.</p>
 </div>
 </section>
 <section id="variable-templates">
-<h3><span class="section-number">3.3.2. </span>Variable templates<a class="headerlink" href="#variable-templates" title="Link to this heading"></a></h3>
+<h3><span class="section-number">3.3.3. </span>Variable templates<a class="headerlink" href="#variable-templates" title="Link to this heading"></a></h3>
 <p>String data values used for filling the template variables can have a template form themselves,
 i.e., the variable values can contain other variable and block <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">tags</span></a> that are
 filled automatically if corresponding values are found in the input data for them.</p>

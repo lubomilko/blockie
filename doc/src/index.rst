@@ -12,5 +12,5 @@ Blockie
     datafill
     autoelems
     manfill
-    config
+    config_examples
     api

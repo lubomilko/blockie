@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Template format configuration" href="config.html" />
+    <link rel="next" title="6. Configuration and examples" href="config_examples.html" />
     <link rel="prev" title="4. Automatic variables and blocks" href="autoelems.html" /> 
 </head>
 
@@ -50,15 +50,9 @@
 <li class="toctree-l1"><a class="reference internal" href="autoelems.html">4. Automatic variables and blocks</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">5. Manual template filling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#block-object-methods">5.1. Block object methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fill-handler">5.2. Fill handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-extensions">5.3. Custom extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#template-macros">5.3.1. Template macros</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#template-extensions">5.3.2. Template extensions</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="config.html">6. Template format configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_examples.html">6. Configuration and examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">7. API</a></li>
 </ul>
 
@@ -165,23 +159,10 @@ template manually.</p>
 * MAYBE? cooking magazine
 </pre></div>
 </div>
-<p>Filling the templates manually is typically not needed and a <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven approach</span></a> should be preferred. However, using the <a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object methods allows
-to implement more complex operations and custom <a class="reference internal" href="#tgt-extensions"><span class="std std-ref">extensions</span></a> that are not
-possible with the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method alone.</p>
-</section>
-<section id="fill-handler">
-<span id="tgt-fill-hndl"></span><h2><span class="section-number">5.2. </span>Fill handler<a class="headerlink" href="#fill-handler" title="Link to this heading"></a></h2>
-<p>Template <a class="reference internal" href="principles.html#tgt-tags"><span class="std std-ref">blocks</span></a> filled using the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method can have a
-custom function assigned for performing special <a class="reference internal" href="#tgt-man-fill"><span class="std std-ref">manual operations</span></a> with the
-block content. This function can be assigned within the <a class="reference internal" href="datafill.html#tgt-set-blk-cont"><span class="std std-ref">dictionary defining the block
-content values</span></a> by the special <code class="docutils literal notranslate"><span class="pre">fill_hndl</span></code> key with a value of a function
-having the following signature:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">object</span><span class="p">,</span> <span class="n">clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
-</pre></div>
-</div>
-<p>The example below shows a simple <code class="docutils literal notranslate"><span class="pre">format_date</span></code> fill handler function setting the required
-date format based on the format of a month value specified in the input data (i.e., whether the
-month is specified using its name or number).</p>
+<p>Filling the whole templates manually is typically not needed and a <a class="reference internal" href="datafill.html#tgt-data-fill"><span class="std std-ref">data-driven approach</span></a> should be preferred. However, the <a class="reference internal" href="datafill.html#tgt-fill-hndl"><span class="std std-ref">block fill handler</span></a>
+can be utilized to perform more complex manual operations or to implement custom <a class="reference internal" href="config_examples.html#tgt-extensions"><span class="std std-ref">extensions</span></a> that are not possible with the <a class="reference internal" href="api.html#blockie.Block.fill" title="blockie.Block.fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.fill()</span></code></a> method alone.</p>
+<p>The example below shows the use of <a class="reference internal" href="api.html#blockie.Block.get_subblock" title="blockie.Block.get_subblock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.get_subblock()</span></code></a> and <a class="reference internal" href="api.html#blockie.Block.set" title="blockie.Block.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Block.set()</span></code></a>
+methods within the <a class="reference internal" href="datafill.html#tgt-fill-hndl"><span class="std std-ref">block fill handler</span></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_date</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
         <span class="c1"># If month is specified by its name,</span>
@@ -193,254 +174,14 @@ month is specified using its name or number).</p>
         <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">vari_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="s2">&quot;The date is: &lt;DATE&gt;&lt;DAY&gt;.&lt;MONTH&gt;.&lt;^DATE&gt;&lt;MONTH&gt; &lt;DAY&gt;&lt;/DATE&gt;&quot;</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;December&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_date</span><span class="p">})</span>
+<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">format_date</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: DECEMBER 24
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The date is: 24.12.
 </pre></div>
 </div>
-</section>
-<section id="custom-extensions">
-<span id="tgt-extensions"></span><h2><span class="section-number">5.3. </span>Custom extensions<a class="headerlink" href="#custom-extensions" title="Link to this heading"></a></h2>
-<p>The following subsections provide examples of useful custom extensions created using the
-<a class="reference internal" href="#tgt-man-fill"><span class="std std-ref">manual filling methods</span></a> and <a class="reference internal" href="#tgt-fill-hndl"><span class="std std-ref">fill handler</span></a> of the
-<a class="reference internal" href="api.html#blockie.Block" title="blockie.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a> object. The examples should serve as an inspiration for further experimentation
-and creation of other features.</p>
-<section id="template-macros">
-<h3><span class="section-number">5.3.1. </span>Template macros<a class="headerlink" href="#template-macros" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;VLIST_A&gt;</span>
-<span class="s2">&lt;/VLIST_A&gt;</span>
-
-<span class="s2">&lt;HLIST_A&gt;</span>
-<span class="s2">&lt;/HLIST_A&gt;</span>
-
-<span class="s2">&lt;HLIST_B&gt;</span>
-<span class="s2">&lt;/HLIST_B&gt;</span>
-
-<span class="s2">&lt;MACROS&gt;</span>
-<span class="s2">&lt;VLIST&gt;</span>
-<span class="s2">&lt;DESC&gt;:</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">- &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&lt;/VLIST&gt;</span>
-
-<span class="s2">&lt;HLIST&gt;</span>
-<span class="s2">&lt;DESC&gt;:</span>
-<span class="s2">&lt;ITEMS&gt;&lt;*&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
-<span class="s2">&lt;/HLIST&gt;</span>
-<span class="s2">&lt;/MACROS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">ref_blk_hndl</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Set this block template to the template of a macro block defined in the first part of this block name.</span>
-    <span class="n">block</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;macros&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">template</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span>
-    <span class="s2">&quot;vlist_a&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-        <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;PC hardware&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="p">]},</span>
-    <span class="s2">&quot;hlist_a&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-        <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;fruits&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]},</span>
-    <span class="s2">&quot;hlist_b&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-        <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;vegetables&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;carrot&quot;</span><span class="p">,</span> <span class="s2">&quot;tomatoe&quot;</span><span class="p">,</span> <span class="s2">&quot;pepper&quot;</span><span class="p">]},</span>
-    <span class="s2">&quot;macros&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PC hardware:
-- case
-- display
-- keyboard
-- mouse
-
-fruits:
-apple, banana, orange
-
-vegetables:
-carrot, tomatoe, pepper
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;LISTS&gt;</span>
-<span class="s2">&lt;REF_BLK&gt;</span>
-
-<span class="s2">&lt;/LISTS&gt;</span>
-
-<span class="s2">&lt;MACROS&gt;</span>
-<span class="s2">&lt;VLIST&gt;</span>
-<span class="s2">&lt;DESC&gt;:</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">- &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&lt;/VLIST&gt;</span>
-
-<span class="s2">&lt;HLIST&gt;</span>
-<span class="s2">&lt;DESC&gt;:</span>
-<span class="s2">&lt;ITEMS&gt;&lt;*&gt;&lt;.&gt;, &lt;^.&gt;&lt;/.&gt;&lt;/ITEMS&gt;</span>
-<span class="s2">&lt;/HLIST&gt;</span>
-<span class="s2">&lt;/MACROS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">ref_blk_hndl</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Set the &#39;ref_blk&#39; variable value to the template of the block defined by the &#39;ref&#39; data attribute.</span>
-    <span class="n">block</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">ref_blk</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;macros&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span>
-    <span class="s2">&quot;lists&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-            <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="s2">&quot;vlist&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;PC hardware&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="p">]},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-            <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="s2">&quot;hlist&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;fruits&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ref_blk_hndl</span><span class="p">,</span>
-            <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="s2">&quot;hlist&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;vegetables&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;carrot&quot;</span><span class="p">,</span> <span class="s2">&quot;tomatoe&quot;</span><span class="p">,</span> <span class="s2">&quot;pepper&quot;</span><span class="p">]}],</span>
-    <span class="s2">&quot;macros&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PC hardware:
-- case
-- display
-- keyboard
-- mouse
-
-fruits:
-apple, banana, orange
-
-vegetables:
-carrot, tomatoe, pepper
-</pre></div>
-</div>
-</section>
-<section id="template-extensions">
-<h3><span class="section-number">5.3.2. </span>Template extensions<a class="headerlink" href="#template-extensions" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;INTRO&gt;This is a list of &lt;DESC&gt;:&lt;/INTRO&gt;</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">- &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-
-<span class="s2">&lt;OUTRO&gt;There are &lt;NUM&gt; items in total.&lt;/OUTRO&gt;</span>
-
-<span class="s2">&lt;EXTENSIONS&gt;</span>
-<span class="s2">&lt;EXT_BLKS&gt;INTRO,ITEMS&lt;/EXT_BLKS&gt;</span>
-<span class="s2">&lt;INTRO&gt;</span>
-<span class="s2">+--------------------------+</span>
-<span class="s2">| My list of &lt;DESC&gt;&lt;+&gt;     |</span>
-<span class="s2">+--------------------------+</span>
-<span class="s2">&lt;/INTRO&gt;</span>
-
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&lt;/EXTENSIONS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">ext_blk_hndl</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Get the block with extensions from the &#39;extensions&#39; subblock.</span>
-    <span class="n">blk_extensions</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;extensions&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blk_extensions</span><span class="p">,</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">):</span>
-        <span class="c1"># Loop through block names defined in the &#39;EXT_BLKS&#39; block content.</span>
-        <span class="k">for</span> <span class="n">ext_blk_name</span> <span class="ow">in</span> <span class="n">blk_extensions</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="s2">&quot;ext_blks&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
-            <span class="c1"># Replace the subblocks of this block with the templates of block extensions.</span>
-            <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">ext_blk_name</span><span class="p">)</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">blk_extensions</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">ext_blk_name</span><span class="p">)</span><span class="o">.</span><span class="n">template</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span>
-    <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ext_blk_hndl</span><span class="p">,</span>
-    <span class="s2">&quot;intro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;PC hardware&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;outro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;NUM&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
-    <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+--------------------------+
-| My list of PC hardware   |
-+--------------------------+
-
-* case
-* display
-* keyboard
-* mouse
-
-There are 4 items in total.
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;INTRO&gt;This is a list of &lt;DESC&gt;:&lt;/INTRO&gt;</span>
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">- &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-
-<span class="s2">&lt;OUTRO&gt;There are &lt;NUM&gt; items in total.&lt;/OUTRO&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">extensions</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;INTRO&gt;</span>
-<span class="s2">+--------------------------+</span>
-<span class="s2">| My list of &lt;DESC&gt;&lt;+&gt;     |</span>
-<span class="s2">+--------------------------+</span>
-<span class="s2">&lt;/INTRO&gt;</span>
-
-<span class="s2">&lt;ITEMS&gt;</span>
-<span class="s2">* &lt;*&gt;</span>
-<span class="s2">&lt;/ITEMS&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">ext_blk_hndl</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_clone_subidx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Loop through extended block names defined in the &#39;ext_blk_names&#39; data attribute.</span>
-    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ext_blk_names&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="c1"># Replace this block template with the template of a subblock within the &#39;ext_blks&#39; Block data attrib.</span>
-        <span class="n">block</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ext_blks&quot;</span><span class="p">,</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">())</span><span class="o">.</span><span class="n">get_subblock</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">template</span>
-
-<span class="n">blk</span> <span class="o">=</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-<span class="n">blk</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span>
-    <span class="s2">&quot;fill_hndl&quot;</span><span class="p">:</span> <span class="n">ext_blk_hndl</span><span class="p">,</span>
-    <span class="s2">&quot;ext_blks&quot;</span><span class="p">:</span> <span class="n">blockie</span><span class="o">.</span><span class="n">Block</span><span class="p">(</span><span class="n">extensions</span><span class="p">),</span>
-    <span class="s2">&quot;ext_blk_names&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;intro&quot;</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;intro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;PC hardware&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">,</span> <span class="s2">&quot;keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;outro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;NUM&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+--------------------------+
-| My list of PC hardware   |
-+--------------------------+
-
-* case
-* display
-* keyboard
-* mouse
-
-There are 4 items in total.
-</pre></div>
-</div>
-</section>
 </section>
 </section>
 
@@ -449,7 +190,7 @@ There are 4 items in total.
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="autoelems.html" class="btn btn-neutral float-left" title="4. Automatic variables and blocks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="config.html" class="btn btn-neutral float-right" title="6. Template format configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="config_examples.html" class="btn btn-neutral float-right" title="6. Configuration and examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
