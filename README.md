@@ -1,110 +1,85 @@
-# Blockie Python template engine
+# Blockie - introduction
 
-[Blockie](https://github.com/lubomilko/blockie) is an extremely lightweight and simple universal
-Python-based template engine. It can generate various types of text-based content, e.g., standard
-text, source code, data files or markup language content like HTML, XML or markdown.
+[Blockie](https://github.com/lubomilko/blockie) is a lightweight, fast, universal and easy to
+use low-level Python-based template engine. It was developed as an expandable solution with
+uncluttered templates for the generation of any type of text-based content, including a
+standard text, markup language, source code, and various data files.
 
-Blockie is aimed to be used in template-based projects that do not need templates containing
-complex custom commands or programming language parsers. Instead, Blockie uses only a few simple
-but extremely multipurpose principles and clean, logicless templates. If a more advanced
-template-filling logic is needed, then it is expected to be defined directly within the
-user-defined Python script, which avoids the need for a custom template language.
-
-The block diagram below illustrates the fairly standard process of generating the content from a
-template using values defined in the input data:
-
-``` text
-    +----------+   +------------+
-    | template |   | input data |
-    +----------+   +------------+
-          |              |
-          V              V
-      +-----------------------+
-      | Python filling script |
-      |     using blockie     |
-      +-----------------------+
-                  |
-                  V
-        +-------------------+
-        | generated content |
-        +-------------------+
-``` 
+Blockie uses simple logicless templates consisting of two types of elements: *variables* and
+*blocks*. In most cases, the logic of filling the template can be driven by the input data
+structure and values. No custom script-like statements are needed. However, an additional
+logic can be implemented directly in the Python script running the template filling process.
 
 Please read the full [documentation here](https://lubomilko.github.io/blockie).
 
 
 ## Installation
 
-The Blockie package can be installed from the [Python Package Index](https://pypi.org/) using the
-following *pip* console command:
+The Blockie package can be installed from the [Python Package Index](https://pypi.org/project/blockie/)
+using the [pip](https://pypi.org/project/pip/) console command:
 
-```console
-pip install blockie
+``` console
+> pip install blockie
 ```
 
-Alternatively, it is also possible to install the Blockie package from a *\*.tar.gz* source
-distribution that can be downloaded from the *dist* directory:
-
-```console
-pip install blockie-<version>.tar.gz
-```
 
 ## Quick start
 
-The following Python script serves as a simple illustration of all basic principles. The template
-is loaded from the `template` string and filled using the `data` dictionary with the `FLAG`
-variable in the template defined by the script since the Blockie templates are logicless. At the
-end the generated content is printed out.
-
-``` python
-    import blockie
-
-
-    template = """
-                                SHOPPING LIST
-      Items                                                         Quantity
-    ------------------------------------------------------------------------
-    <ITEMS>
-    * <FLAG>IMPORTANT! <^FLAG>MAYBE? </FLAG><ITEM><+>               <QTY><UNIT> kg<^UNIT> l</UNIT>
-    </ITEMS>
-
-
-    Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
-    """
-
-    important_items = ("potatoes", "rice")
-    maybe_items = ("cooking magazine",)
-
-    data = {
-        "items": [
-            {"item": "apples", "qty": "1", "unit": 0},
-            {"item": "potatoes", "qty": "2", "unit": 0},
-            {"item": "rice", "qty": "1", "unit": 0},
-            {"item": "orange juice", "qty": "1", "unit": 1},
-            {"item": "cooking magazine", "qty": None, "unit": None}
-        ]
-    }
-
-    for item in data["items"]:
-        item["flag"] = 0 if item["item"] in important_items else 1 if item["item"] in maybe_items else None
-
-    blk = blockie.Block(template)
-    blk.fill(data)
-    print(blk.content)
-```
-
-Prints the following generated content:
+The content generation follows the sequence below:
 
 ``` text
-                            SHOPPING LIST
-  Items                                                         Quantity
-------------------------------------------------------------------------
-* apples                                                        1 kg
-* IMPORTANT! potatoes                                           2 kg
-* IMPORTANT! rice                                               1 kg
-* orange juice                                                  1 l
-* MAYBE? cooking magazine
-
-
-Short list: apples, potatoes, rice, orange juice, cooking magazine
+template + input data -> Python filling script -> generated content
 ```
+
+In the simplest form, the user-defined *Python filling script* can be a set of just three commands
+illustrated in the example below that shows the most important principles of the data-driven
+template filling used by Blockie for the input data provided in form of an appropriately
+structured Python dictionary or a struct-like object.
+
+``` python
+import blockie
+
+template = """
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+<ITEMS>
+* <ITEM><+>                         <QTY><UNIT> kg<^UNIT> l</UNIT>
+</ITEMS>
+
+Short list: <ITEMS><ITEM><.>, <^.></.></ITEMS>
+"""
+
+data = {
+    "items": [
+        {"item": "potatoes", "qty": 2, "unit": 0},
+        {"item": "rice", "qty": 1, "unit": 0},
+        {"item": "orange juice", "qty": 1, "unit": 1},
+        {"item": "cooking magazine", "qty": None, "unit": None},
+    ]
+}
+
+# User-defined template filling script:
+blk = blockie.Block(template)   # 1. Create the primary block and load its template.
+blk.fill(data)                  # 2. Fill the template blocks and variables with data values.
+print(blk.content)              # 3. Get the generated content from the primary block.
+```
+
+Output:
+
+``` text
+                SHOPPING LIST
+  Items                             Quantity
+--------------------------------------------
+* potatoes                          2 kg
+* rice                              1 kg
+* orange juice                      1 l
+* cooking magazine
+
+Short list: potatoes, rice, orange juice, cooking magazine
+```
+
+Any required additional template filling logic can be implemented within the Python script either
+by restructuring the original input data and/or using the low-level manual filling functions
+provided by the Blockie module to precisely control the content generation. The script can also
+configure a different format of template tags.
